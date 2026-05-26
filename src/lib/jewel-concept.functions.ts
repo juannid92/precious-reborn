@@ -179,7 +179,7 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
 
     const form = new FormData();
     form.append("prompt", prompt);
-    form.append("negative_prompt", NEGATIVE_PROMPT);
+    form.append("negative_prompt", buildNegativePrompt(data));
     form.append("output_format", "png");
     form.append("aspect_ratio", "1:1");
     form.append("style_preset", "photographic");
