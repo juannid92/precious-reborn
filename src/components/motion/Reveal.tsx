@@ -12,12 +12,14 @@ type Props = {
   delay?: number;
   y?: number;
   className?: string;
+  /** ScrollTrigger start. Default "top 85%". Use "top bottom" per anticipare. */
+  start?: string;
 };
 
 /**
  * Fades + slides children into view on scroll. SSR-safe.
  */
-export function Reveal({ children, as = "div", delay = 0, y = 32, className }: Props) {
+export function Reveal({ children, as = "div", delay = 0, y = 32, className, start = "top 85%" }: Props) {
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -35,13 +37,14 @@ export function Reveal({ children, as = "div", delay = 0, y = 32, className }: P
           duration: 1.1,
           delay,
           ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+          scrollTrigger: { trigger: el, start, once: true },
         }
       );
     }, el);
 
     return () => ctx.revert();
-  }, [delay, y]);
+  }, [delay, y, start]);
+
 
   const Tag = as as "div";
   return (

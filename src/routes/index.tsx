@@ -500,12 +500,12 @@ function JewelGenesisSection() {
           <div className="md:col-span-2">
             <p className="eyebrow text-gold-deep">§ ·</p>
           </div>
-          <Reveal as="div" className="md:col-span-7">
+          <Reveal as="div" className="md:col-span-7" start="top bottom">
             <h2 className="display-lg">
               Come <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>nasce</em> un gioiello.
             </h2>
           </Reveal>
-          <Reveal as="p" delay={0.1} className="md:col-span-3 text-muted-foreground leading-relaxed md:pb-3">
+          <Reveal as="p" delay={0.1} className="md:col-span-3 text-muted-foreground leading-relaxed md:pb-3" start="top bottom">
             Cinque gesti, in un unico laboratorio. Niente serie, niente scorciatoie: solo la traiettoria che porta un'idea a diventare materia preziosa.
           </Reveal>
         </div>
@@ -568,7 +568,7 @@ function JewelGenesisSection() {
         </div>
 
         {/* CTA chiusura — ponte verso configuratore atelier */}
-        <Reveal className="mt-20 md:mt-28 md:pl-[8%] lg:pl-[10%] md:pr-[6%] lg:pr-[8%] md:mx-auto md:max-w-5xl lg:max-w-6xl">
+        <Reveal start="top bottom" className="mt-20 md:mt-28 md:pl-[8%] lg:pl-[10%] md:pr-[6%] lg:pr-[8%] md:mx-auto md:max-w-5xl lg:max-w-6xl">
           <div className="relative overflow-hidden rounded-3xl border border-gold-deep/30 bg-obsidian text-bone p-8 md:p-12">
             <span
               aria-hidden="true"
