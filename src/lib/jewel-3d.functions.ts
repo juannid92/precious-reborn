@@ -1,41 +1,41 @@
 /**
- * Server function — generazione bozza 3D del gioiello via Fal.ai Trellis 2.
+ * Server functions — generazione bozza 3D del gioiello via Fal.ai Trellis 2.
  *
- * PROVIDER: SOLO Fal.ai (modello "fal-ai/trellis-2").
+ * Trellis 2 impiega 30–90s: una singola call sincrona supera il timeout
+ * del worker. Esponiamo quindi due server function:
+ *   - submitTrellis3DJob: carica l'immagine concept su fal storage e
+ *     sottomette il job → ritorna requestId.
+ *   - pollTrellis3DJob: controlla lo stato e, se completato, ritorna l'URL del GLB.
  *
- * FLUSSO:
- *   1. Riceve un'immagine concept come data URL (data:image/...;base64,...).
- *   2. La carica su fal storage → URL pubblico HTTPS.
- *   3. Chiama fal.subscribe("fal-ai/trellis-2") con SOLO image_url.
- *      fal.subscribe gestisce internamente il polling della coda.
- *   4. Ritorna result.data.model_glb.url come `modelUrl` (URL remoto al .glb).
- *
- * SICUREZZA:
- *   - FAL_KEY letta SOLO dentro .handler() (mai bundled lato client).
+ * SICUREZZA: FAL_KEY letta SOLO dentro .handler().
  */
 import { createServerFn } from "@tanstack/react-start";
 import { fal } from "@fal-ai/client";
 import { z } from "zod";
 
-const Jewel3DInputSchema = z.object({
+const ENDPOINT = "fal-ai/trellis-2";
+
+// ─── Schemas ────────────────────────────────────────────────────
+const SubmitInputSchema = z.object({
   imageDataUrl: z
     .string()
     .max(12_000_000)
     .regex(/^data:image\/(png|jpe?g|webp);base64,/i, "Formato immagine non valido."),
 });
 
-export type Jewel3DInput = z.infer<typeof Jewel3DInputSchema>;
+const PollInputSchema = z.object({
+  requestId: z.string().min(1).max(256),
+});
 
-export type Jewel3DResult = {
-  modelUrl: string;
-  contentType: string;
-  endpoint: string;
-  sizeBytes: number;
-};
+export type SubmitTrellis3DResult = { requestId: string };
 
-const ENDPOINT = "fal-ai/trellis-2";
+export type PollTrellis3DResult =
+  | { status: "IN_QUEUE" | "IN_PROGRESS" }
+  | { status: "COMPLETED"; glbUrl: string; contentType: string; sizeBytes: number }
+  | { status: "FAILED"; error: string };
 
-function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string; ext: string } {
+// ─── Helpers ────────────────────────────────────────────────────
+function dataUrlToBlob(dataUrl: string): { blob: Blob; ext: string } {
   const match = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/.exec(dataUrl);
   if (!match) throw new Error("Concept image: formato data URL non valido.");
   const mime = match[1];
@@ -49,22 +49,25 @@ function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string; ext: string
       : mime.includes("webp")
         ? "webp"
         : "png";
-  return { blob: new Blob([bytes], { type: mime }), mime, ext };
+  return { blob: new Blob([bytes], { type: mime }), ext };
 }
 
-export const generateJewel3D = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => Jewel3DInputSchema.parse(input))
-  .handler(async ({ data }): Promise<Jewel3DResult> => {
-    const apiKey = process.env.FAL_KEY;
-    if (!apiKey) {
-      throw new Error(
-        "Servizio 3D temporaneamente non disponibile. La chiave Fal.ai non è configurata.",
-      );
-    }
+function ensureKey(): string {
+  const apiKey = process.env.FAL_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "Servizio 3D temporaneamente non disponibile. La chiave Fal.ai non è configurata.",
+    );
+  }
+  return apiKey;
+}
 
-    fal.config({ credentials: apiKey });
+// ─── 1) Submit ──────────────────────────────────────────────────
+export const submitTrellis3DJob = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => SubmitInputSchema.parse(input))
+  .handler(async ({ data }): Promise<SubmitTrellis3DResult> => {
+    fal.config({ credentials: ensureKey() });
 
-    // 1) Carica concept su fal storage → URL pubblico HTTPS
     const { blob, ext } = dataUrlToBlob(data.imageDataUrl);
     const file = new File([blob], `concept.${ext}`, { type: blob.type });
 
@@ -81,35 +84,73 @@ export const generateJewel3D = createServerFn({ method: "POST" })
     }
 
     if (!/^https?:\/\//i.test(imageUrl)) {
-      console.error("[jewel-3d] fal.storage.upload returned non-HTTP URL:", imageUrl);
+      console.error("[jewel-3d] fal.storage returned non-HTTP URL:", imageUrl);
       throw new Error("URL immagine non pubblico restituito da Fal storage.");
     }
 
-    // 2) fal.subscribe: gestisce polling internamente (30–90s tipici)
-    let result: { data?: { model_glb?: { url?: string; content_type?: string; file_size?: number } } };
     try {
-      result = (await fal.subscribe(ENDPOINT, {
-        input: {
-          image_url: imageUrl,
-        },
-        logs: true,
-      })) as typeof result;
+      const submitted = await fal.queue.submit(ENDPOINT, {
+        input: { image_url: imageUrl },
+      });
+      return { requestId: submitted.request_id };
     } catch (error) {
-      console.error("Fal.ai error details:", JSON.stringify(error, null, 2));
-      throw new Error(`Fal.ai trellis-2 failed: ${JSON.stringify(error)}`);
+      console.error("Fal.ai submit error details:", JSON.stringify(error, null, 2));
+      throw new Error(`Fal.ai trellis-2 submit failed: ${JSON.stringify(error)}`);
+    }
+  });
+
+// ─── 2) Poll ────────────────────────────────────────────────────
+export const pollTrellis3DJob = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => PollInputSchema.parse(input))
+  .handler(async ({ data }): Promise<PollTrellis3DResult> => {
+    fal.config({ credentials: ensureKey() });
+
+    let status: { status: string };
+    try {
+      status = (await fal.queue.status(ENDPOINT, {
+        requestId: data.requestId,
+        logs: true,
+      })) as { status: string };
+    } catch (error) {
+      console.error("Fal.ai status error details:", JSON.stringify(error, null, 2));
+      return { status: "FAILED", error: "Errore nel controllo dello stato 3D." };
     }
 
-    const modelGlb = result?.data?.model_glb;
-    const modelUrl = modelGlb?.url;
-    if (!modelUrl) {
-      console.error("[jewel-3d] missing model_glb.url in fal result:", JSON.stringify(result, null, 2));
-      throw new Error("Risposta 3D Fal.ai senza URL del modello GLB.");
+    if (status.status === "COMPLETED") {
+      let result: {
+        data?: {
+          model_glb?: { url?: string; content_type?: string; file_size?: number };
+        };
+      };
+      try {
+        result = (await fal.queue.result(ENDPOINT, {
+          requestId: data.requestId,
+        })) as typeof result;
+      } catch (error) {
+        console.error("Fal.ai result error details:", JSON.stringify(error, null, 2));
+        return { status: "FAILED", error: "Errore nel recupero del risultato 3D." };
+      }
+      const modelGlb = result?.data?.model_glb;
+      const url = modelGlb?.url;
+      if (!url) {
+        console.error("[jewel-3d] missing model_glb.url:", JSON.stringify(result, null, 2));
+        return { status: "FAILED", error: "Risposta 3D senza URL del modello GLB." };
+      }
+      return {
+        status: "COMPLETED",
+        glbUrl: url,
+        contentType: modelGlb?.content_type || "model/gltf-binary",
+        sizeBytes: modelGlb?.file_size ?? 0,
+      };
     }
 
+    if (status.status === "FAILED") {
+      console.error("[jewel-3d] Trellis job FAILED:", JSON.stringify(status, null, 2));
+      return { status: "FAILED", error: "Generazione 3D fallita." };
+    }
+
+    // IN_QUEUE | IN_PROGRESS (e qualsiasi altro stato intermedio)
     return {
-      modelUrl,
-      contentType: modelGlb?.content_type || "model/gltf-binary",
-      endpoint: ENDPOINT,
-      sizeBytes: modelGlb?.file_size ?? 0,
+      status: status.status === "IN_PROGRESS" ? "IN_PROGRESS" : "IN_QUEUE",
     };
   });
