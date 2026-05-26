@@ -33,6 +33,7 @@ export function SiteHeader() {
     : "bg-bone/65 backdrop-blur-md text-ink";
 
   return (
+    <>
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${headerBg}`}>
       <div className="container-cara flex items-center justify-between py-4 lg:py-6">
         <Link to="/" onClick={() => setOpen(false)} aria-label="Cara Preziosi" className="group flex items-center gap-2.5">
