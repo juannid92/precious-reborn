@@ -1,0 +1,150 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { brand, storia, atelierManifesto } from "@/content/site";
+import { Reveal } from "@/components/motion/Reveal";
+
+export const Route = createFileRoute("/storia")({
+  head: () => ({
+    meta: [
+      { title: `Il laboratorio — ${brand.name} · Nicola Caradonna, maestro orafo` },
+      {
+        name: "description",
+        content:
+          "L'atelier Cara Preziosi a Bari. Quarant'anni di mestiere orafo, tradizione italiana e tecnologie CAD/3D. La storia del maestro Nicola Caradonna.",
+      },
+      { property: "og:title", content: `Il laboratorio — ${brand.name}` },
+      { property: "og:description", content: "Quattro decenni di mestiere orafo. La storia dell'atelier." },
+      { property: "og:image", content: storia.hero.image },
+    ],
+    links: [{ rel: "canonical", href: "/storia" }],
+  }),
+  component: StoriaPage,
+});
+
+function StoriaPage() {
+  return (
+    <>
+      {/* HERO */}
+      <section className="relative h-[100svh] min-h-[600px] bg-obsidian text-bone overflow-hidden noise">
+        <img
+          src={storia.hero.image}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover opacity-50"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-obsidian/30 via-obsidian/40 to-obsidian/90" />
+        <div className="relative container-cara h-full flex flex-col justify-end pb-20 md:pb-32">
+          <p className="eyebrow text-gold mb-8">{storia.hero.eyebrow}</p>
+          <Reveal as="h1" className="display-xl">
+            L'elegante tradizione<br />
+            di <em className="italic font-display text-gold" style={{ fontStyle: "italic" }}>Cara Preziosi</em>.
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="mt-10 max-w-2xl text-lg text-bone/75 leading-relaxed">{storia.hero.lead}</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* MANIFESTO QUOTE */}
+      <section className="bg-bone text-ink py-32 md:py-56">
+        <div className="container-narrow">
+          <Reveal>
+            <p className="eyebrow text-gold-deep mb-10">{atelierManifesto.eyebrow}</p>
+          </Reveal>
+          <Reveal>
+            <p className="display-lg whitespace-pre-line">
+              <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>"{atelierManifesto.bigQuote}"</em>
+            </p>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="mt-10 font-display italic text-gold-deep text-xl">{atelierManifesto.signature}</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* INTRO + LAB IMAGE */}
+      <section className="bg-bone-deep text-ink noise">
+        <div className="grid md:grid-cols-12 md:items-stretch">
+          <div className="md:col-span-6 relative aspect-[4/3] md:aspect-auto md:h-[80vh] overflow-hidden">
+            <img src={storia.intro.image} alt="Laboratorio Cara Preziosi" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+          </div>
+          <div className="md:col-span-5 md:col-start-8 flex flex-col justify-center p-10 md:p-16 lg:p-20">
+            <Reveal>
+              <p className="eyebrow text-gold-deep mb-6">L'atelier</p>
+              <h2 className="display-md mb-8">{storia.intro.title}</h2>
+              <p className="text-lg leading-relaxed text-muted-foreground">{storia.intro.body}</p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS TIMELINE */}
+      <section className="bg-obsidian text-bone py-32 md:py-48 noise">
+        <div className="container-cara">
+          <div className="grid gap-10 md:grid-cols-12 mb-20">
+            <div className="md:col-span-2">
+              <p className="eyebrow text-gold">{storia.processo.eyebrow}</p>
+            </div>
+            <Reveal as="h2" className="display-lg md:col-span-9">
+              {storia.processo.title.split(" ").map((w, i, arr) => (
+                <span key={i}>
+                  {i === arr.length - 1 ? (
+                    <em className="italic font-display text-gold" style={{ fontStyle: "italic" }}>{w}</em>
+                  ) : (
+                    w
+                  )}{" "}
+                </span>
+              ))}
+            </Reveal>
+          </div>
+          <div className="grid gap-1 md:grid-cols-3">
+            {storia.processo.steps.map((s) => (
+              <Reveal key={s.number}>
+                <div className="border-l border-bone/20 pl-8 py-6 md:py-10 h-full">
+                  <p className="font-display italic text-gold text-3xl mb-6">— {s.number}</p>
+                  <h3 className="display-md text-bone mb-5">{s.title}</h3>
+                  <p className="text-bone/70 text-base leading-relaxed">{s.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* INNOVAZIONE */}
+      <section className="bg-bone text-ink noise">
+        <div className="grid md:grid-cols-12 md:items-stretch">
+          <div className="md:col-span-5 flex flex-col justify-center p-10 md:p-16 lg:p-20">
+            <Reveal>
+              <p className="eyebrow text-gold-deep mb-6">Tradizione + Futuro</p>
+              <h2 className="display-md mb-8 whitespace-pre-line">{storia.innovazione.title}</h2>
+              <p className="text-lg leading-relaxed text-muted-foreground">{storia.innovazione.body}</p>
+            </Reveal>
+          </div>
+          <div className="md:col-span-7 md:col-start-6 relative aspect-[4/3] md:aspect-auto md:h-[80vh] overflow-hidden">
+            <img src={storia.innovazione.image} alt="Mani del maestro orafo" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+          </div>
+        </div>
+      </section>
+
+      {/* CLOSING */}
+      <section className="bg-obsidian text-bone py-32 md:py-48 noise">
+        <div className="container-cara text-center max-w-4xl mx-auto">
+          <Reveal>
+            <h2 className="display-lg mb-10">
+              Vieni a <em className="italic font-display text-gold" style={{ fontStyle: "italic" }}>trovarci</em>.
+            </h2>
+            <p className="text-bone/70 text-lg leading-relaxed max-w-xl mx-auto mb-10">
+              L'atelier è in Via Beatillo 14, a Bari. Bevi un caffè con noi.
+            </p>
+            <Link to="/contatti" className="btn-ghost text-bone">
+              Prenota una visita
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
