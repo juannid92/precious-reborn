@@ -165,7 +165,14 @@ function AtelierCreatePage() {
     }
   }, [router]);
 
-  // ─── Generazione bozza 3D Stability AI ──────────────────────
+  // ─── Generazione bozza 3D Fal.ai Trellis 2 (submit + polling) ────
+  const stop3DPolling = useCallback(() => {
+    if (poll3DTimerRef.current) {
+      clearInterval(poll3DTimerRef.current);
+      poll3DTimerRef.current = null;
+    }
+  }, []);
+
   const run3DGeneration = useCallback(async () => {
     if (!generatedUrl || !generatedUrl.startsWith("data:image/")) {
       setModel3dError("Genera prima il concept immagine.");
@@ -173,21 +180,72 @@ function AtelierCreatePage() {
       return;
     }
     const myReq = ++req3dIdRef.current;
+    stop3DPolling();
     setModel3dError(null);
     setModelUrl(null);
     setModel3dStage("generating");
+
+    let requestId: string;
     try {
-      const res = await generate3DFn({ data: { imageDataUrl: generatedUrl } });
+      const sub = await submit3DFn({ data: { imageDataUrl: generatedUrl } });
       if (req3dIdRef.current !== myReq) return;
-      setModelUrl(res.modelUrl);
-      setModel3dStage("ready");
+      requestId = sub.requestId;
     } catch (err) {
       if (req3dIdRef.current !== myReq) return;
-      console.error("[atelier-3d] generation failed:", err);
+      console.error("[atelier-3d] submit failed:", err);
       setModel3dError(err instanceof Error ? err.message : "Errore inatteso 3D.");
       setModel3dStage("error");
+      return;
     }
-  }, [generatedUrl, generate3DFn]);
+
+    let attempts = 0;
+    const MAX_ATTEMPTS = 36; // 36 × 5s = 3 min
+    poll3DTimerRef.current = setInterval(async () => {
+      attempts++;
+      if (req3dIdRef.current !== myReq) {
+        stop3DPolling();
+        return;
+      }
+      if (attempts > MAX_ATTEMPTS) {
+        stop3DPolling();
+        setModel3dError("Timeout: la generazione 3D ha impiegato troppo tempo.");
+        setModel3dStage("error");
+        return;
+      }
+      try {
+        const res = await poll3DFn({ data: { requestId } });
+        if (req3dIdRef.current !== myReq) {
+          stop3DPolling();
+          return;
+        }
+        if (res.status === "COMPLETED") {
+          stop3DPolling();
+          setModelUrl(res.glbUrl);
+          setModel3dStage("ready");
+          return;
+        }
+        if (res.status === "FAILED") {
+          stop3DPolling();
+          setModel3dError(res.error || "Generazione 3D fallita.");
+          setModel3dStage("error");
+          return;
+        }
+        // IN_QUEUE | IN_PROGRESS → continua a fare polling
+      } catch (err) {
+        if (req3dIdRef.current !== myReq) {
+          stop3DPolling();
+          return;
+        }
+        console.error("[atelier-3d] polling failed:", err);
+        stop3DPolling();
+        setModel3dError(err instanceof Error ? err.message : "Errore inatteso 3D.");
+        setModel3dStage("error");
+      }
+    }, 5000);
+  }, [generatedUrl, submit3DFn, poll3DFn, stop3DPolling]);
+
+  // Stop polling alla smontaggio del componente
+  useEffect(() => stop3DPolling, [stop3DPolling]);
 
   const downloadModel = useCallback(() => {
     if (!modelUrl) return;
