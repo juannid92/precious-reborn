@@ -138,7 +138,7 @@ function buildPrompt(input: JewelConceptInput): string {
 }
 
 const BASE_NEGATIVE =
-  "low quality, blurry, deformed, distorted proportions, ugly, text, watermark, logo, signature, plastic, toy, cartoon, anime, multiple objects, person, hand, body";
+  "person, human, hands, body, model, wearing, worn by, people, face, fingers, arm, neck, skin, portrait, mannequin, low quality, blurry, deformed, distorted proportions, ugly, text, watermark, logo, signature, plastic, toy, cartoon, anime, multiple objects";
 
 function buildNegativePrompt(input: JewelConceptInput): string {
   const extra = input.budget ? BUDGET_VISUAL[input.budget].negative : "";
