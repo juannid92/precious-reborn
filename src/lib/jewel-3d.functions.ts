@@ -122,12 +122,12 @@ export const generateJewel3D = createServerFn({ method: "POST" })
       if (attempt > maxAttempts) {
         throw new Error("Generazione 3D Fal.ai in timeout (oltre 3 minuti).");
       }
-      let status: Awaited<ReturnType<typeof fal.queue.status>>;
+      let status: { status: string };
       try {
-        status = await fal.queue.status(ENDPOINT, {
+        status = (await fal.queue.status(ENDPOINT, {
           requestId,
           logs: false,
-        });
+        })) as { status: string };
       } catch (err) {
         console.error("[jewel-3d] fal.queue.status failed:", err);
         throw new Error(
