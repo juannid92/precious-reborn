@@ -97,9 +97,9 @@ export const generateJewel3D = createServerFn({ method: "POST" })
       const submitted = await fal.queue.submit(ENDPOINT, {
         input: {
           image_url: imageUrl,
-          resolution: 1024,
+          resolution: "1024",
           decimation_target: 100000,
-          texture_size: 2048,
+          texture_size: "2048",
           remesh: true,
         },
       });
