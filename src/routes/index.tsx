@@ -500,12 +500,12 @@ function JewelGenesisSection() {
           <div className="md:col-span-2">
             <p className="eyebrow text-gold-deep">§ ·</p>
           </div>
-          <Reveal as="div" className="md:col-span-7">
+          <Reveal as="div" className="md:col-span-7" start="top bottom">
             <h2 className="display-lg">
               Come <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>nasce</em> un gioiello.
             </h2>
           </Reveal>
-          <Reveal as="p" delay={0.1} className="md:col-span-3 text-muted-foreground leading-relaxed md:pb-3">
+          <Reveal as="p" delay={0.1} className="md:col-span-3 text-muted-foreground leading-relaxed md:pb-3" start="top bottom">
             Cinque gesti, in un unico laboratorio. Niente serie, niente scorciatoie: solo la traiettoria che porta un'idea a diventare materia preziosa.
           </Reveal>
         </div>
