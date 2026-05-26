@@ -251,18 +251,50 @@ function AtelierCreatePage() {
   // Stop polling alla smontaggio del componente
   useEffect(() => stop3DPolling, [stop3DPolling]);
 
+  const safeFilename = useCallback(
+    (ext: string) => {
+      const safeType = (type ?? "gioiello").replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
+      const safeStyle = (style ?? "concept").replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
+      return `cara-preziosi-${safeType}-${safeStyle}.${ext}`;
+    },
+    [type, style],
+  );
+
   const downloadModel = useCallback(() => {
     if (!modelUrl) return;
-    const safeType = (type ?? "gioiello").replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
-    const safeStyle = (style ?? "concept").replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
-    const filename = `cara-preziosi-${safeType}-${safeStyle}.glb`;
     const a = document.createElement("a");
     a.href = modelUrl;
-    a.download = filename;
+    a.download = safeFilename("glb");
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }, [modelUrl, type, style]);
+  }, [modelUrl, safeFilename]);
+
+  const downloadOBJ = useCallback(async () => {
+    if (!modelUrl) return;
+    try {
+      const [{ GLTFLoader }, { OBJExporter }] = await Promise.all([
+        import("three/examples/jsm/loaders/GLTFLoader.js"),
+        import("three/examples/jsm/exporters/OBJExporter.js"),
+      ]);
+      const loader = new GLTFLoader();
+      const gltf = await loader.loadAsync(modelUrl);
+      const exporter = new OBJExporter();
+      const objString = exporter.parse(gltf.scene);
+      const blob = new Blob([objString], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = safeFilename("obj");
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("[atelier-3d] OBJ export failed:", err);
+      setModel3dError("Conversione OBJ fallita. Riprova.");
+    }
+  }, [modelUrl, safeFilename]);
 
   // ─── Entrance + step reveal motion ───
   useEffect(() => {
@@ -671,6 +703,14 @@ function AtelierCreatePage() {
                                   >
                                     <Download className="h-4 w-4" />
                                     Scarica modello 3D (.glb)
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={downloadOBJ}
+                                    className="btn-primary"
+                                  >
+                                    <Download className="h-4 w-4" />
+                                    Scarica modello 3D (.obj)
                                   </button>
                                   <button
                                     type="button"
