@@ -568,7 +568,7 @@ function JewelGenesisSection() {
         </div>
 
         {/* CTA chiusura — ponte verso configuratore atelier */}
-        <Reveal className="mt-20 md:mt-28 md:pl-[8%] lg:pl-[10%] md:pr-[6%] lg:pr-[8%] md:mx-auto md:max-w-5xl lg:max-w-6xl">
+        <Reveal start="top bottom" className="mt-20 md:mt-28 md:pl-[8%] lg:pl-[10%] md:pr-[6%] lg:pr-[8%] md:mx-auto md:max-w-5xl lg:max-w-6xl">
           <div className="relative overflow-hidden rounded-3xl border border-gold-deep/30 bg-obsidian text-bone p-8 md:p-12">
             <span
               aria-hidden="true"
