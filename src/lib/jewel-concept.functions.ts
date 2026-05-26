@@ -123,22 +123,22 @@ function buildPrompt(input: JewelConceptInput): string {
     : "";
 
   return [
-    `Editorial product photograph of a ${TYPE_EN[input.type]},`,
+    `Professional jewelry product photography of a single ${TYPE_EN[input.type]},`,
     `${STYLE_EN[input.style]},`,
     `crafted in ${METAL_EN[input.metal]}, ${stonePart}.`,
     budgetPart,
     notesPart,
-    "Single hero piece centered on a soft cream linen background,",
-    "dramatic studio lighting, soft warm key light from upper right,",
-    "subtle golden rim light, macro focus, ultra-detailed jewelry photography,",
-    "shallow depth of field, fine craftsmanship, cinematic, 8k.",
+    "Isolated product shot on a clean neutral white/cream background,",
+    "no people, no hands, no human, no model, no body, not worn,",
+    "studio lighting, macro shot, ultra-detailed, high detail,",
+    "shallow depth of field, fine craftsmanship, luxury jewelry catalog style, 8k.",
   ]
     .filter(Boolean)
     .join(" ");
 }
 
 const BASE_NEGATIVE =
-  "low quality, blurry, deformed, distorted proportions, ugly, text, watermark, logo, signature, plastic, toy, cartoon, anime, multiple objects, person, hand, body";
+  "person, human, hands, body, model, wearing, worn by, people, face, fingers, arm, neck, skin, portrait, mannequin, low quality, blurry, deformed, distorted proportions, ugly, text, watermark, logo, signature, plastic, toy, cartoon, anime, multiple objects";
 
 function buildNegativePrompt(input: JewelConceptInput): string {
   const extra = input.budget ? BUDGET_VISUAL[input.budget].negative : "";
