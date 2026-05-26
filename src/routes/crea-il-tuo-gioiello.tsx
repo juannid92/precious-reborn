@@ -140,6 +140,10 @@ function AtelierCreatePage() {
   const resetFlow = useCallback(() => {
     reqIdRef.current++;
     req3dIdRef.current++;
+    if (poll3DTimerRef.current) {
+      clearInterval(poll3DTimerRef.current);
+      poll3DTimerRef.current = null;
+    }
     setInspiration(null);
     setType(null);
     setStyle(null);
