@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
+    "@fal-ai/client": "^1.10.1",
     "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/fraunces": "^5.2.9",
     "@fontsource/inter": "^5.2.8",
