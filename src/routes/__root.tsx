@@ -109,6 +109,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: `${brand.name} — Laboratorio orafo a Bari` },
       { name: "twitter:description", content: brand.shortDescription },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png" },
+      { title: "Lovable App" },
+      { property: "og:title", content: "Lovable App" },
+      { name: "twitter:title", content: "Lovable App" },
+      { name: "description", content: "Reimagines and rebuilds the Cara Preziosi website with modern design and improved content management." },
+      { property: "og:description", content: "Reimagines and rebuilds the Cara Preziosi website with modern design and improved content management." },
+      { name: "twitter:description", content: "Reimagines and rebuilds the Cara Preziosi website with modern design and improved content management." },
     ],
     links: [
       {
