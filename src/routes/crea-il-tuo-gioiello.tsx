@@ -130,7 +130,9 @@ function AtelierCreatePage() {
   const heroRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const generateFn = useServerFn(generateJewelConcept);
-  const generate3DFn = useServerFn(generateJewel3D);
+  const submit3DFn = useServerFn(submitTrellis3DJob);
+  const poll3DFn = useServerFn(pollTrellis3DJob);
+  const poll3DTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const reqIdRef = useRef(0);
   const req3dIdRef = useRef(0);
   const router = useRouter();
