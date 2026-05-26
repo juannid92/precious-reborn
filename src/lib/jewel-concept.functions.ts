@@ -76,11 +76,38 @@ const STONE_EN: Record<Exclude<JewelConceptInput["stones"][number], "nessuna">, 
   perla: "lustrous cultured pearls",
 };
 
-const BUDGET_EN: Record<NonNullable<JewelConceptInput["budget"]>, string> = {
-  "up-to-1000": "entry-level couture (500€–1000€): refined but essential, smaller stones, lighter metalwork",
-  "1000-2000": "mid-range bespoke (1000€–2000€): carefully crafted, modest stones, balanced metalwork",
-  "3000-5000": "high-end bespoke (3000€–5000€): more elaborate composition, selected gemstones, richer metalwork",
-  "5000-plus": "luxury haute-joaillerie (5000€+): statement piece, premium gemstones, intricate goldsmith craftsmanship",
+/**
+ * BUDGET → vincoli VISIVI concreti per Stability.
+ * Termini astratti come "entry-level" vengono ignorati dal modello: servono
+ * descrittori fisici (carati pietre, spessore metallo, numero pietre,
+ * complessità) per ottenere un'immagine coerente con la fascia di prezzo.
+ */
+const BUDGET_VISUAL: Record<
+  NonNullable<JewelConceptInput["budget"]>,
+  { positive: string; negative: string }
+> = {
+  "up-to-1000": {
+    positive:
+      "modest scale, delicate and lightweight piece, thin slender metal band or chain (1-2mm), very small accent stones only (0.02-0.10 carat each, melee size), at most 1-3 tiny stones, simple and restrained composition, minimal metalwork, understated entry-level fine jewelry",
+    negative:
+      "large gemstones, big stones, oversized stones, statement piece, heavy metalwork, thick band, many stones, pave setting, halo setting, cluster, elaborate, ornate, luxury haute joaillerie, multi-carat diamond, huge center stone",
+  },
+  "1000-2000": {
+    positive:
+      "small to modest scale, refined lightweight piece, slim metal (1.5-2.5mm), small stones (0.10-0.30 carat each), few stones total (1-5), balanced and elegant but restrained composition",
+    negative:
+      "large gemstones, oversized center stone, multi-carat, heavy sculptural metalwork, pave cluster, halo, opulent, haute joaillerie",
+  },
+  "3000-5000": {
+    positive:
+      "medium scale, well-proportioned piece, medium metal weight (2-3mm), medium stones (0.30-0.80 carat each), selected gemstones with refined setting, moderate complexity",
+    negative: "huge multi-carat center stone, extravagant haute joaillerie, oversized statement",
+  },
+  "5000-plus": {
+    positive:
+      "generous scale, statement piece, substantial metalwork, prominent center gemstone (1 carat or more) with accent stones, elaborate goldsmith craftsmanship, haute-joaillerie complexity",
+    negative: "tiny stones only, plain band, minimal entry-level look",
+  },
 };
 
 function buildPrompt(input: JewelConceptInput): string {
@@ -91,10 +118,12 @@ function buildPrompt(input: JewelConceptInput): string {
   const stonePart = stonesEn ? `set with ${stonesEn}` : "no gemstones, pure metalwork";
   const notes = input.notes?.trim();
   const notesPart = notes ? `Client note: "${notes.slice(0, 400)}".` : "";
-  const budgetPart = input.budget ? `Target tier: ${BUDGET_EN[input.budget]}.` : "";
+  const budgetPart = input.budget
+    ? `IMPORTANT scale and proportions constraint: ${BUDGET_VISUAL[input.budget].positive}.`
+    : "";
 
   return [
-    `Editorial product photograph of a luxury ${TYPE_EN[input.type]},`,
+    `Editorial product photograph of a ${TYPE_EN[input.type]},`,
     `${STYLE_EN[input.style]},`,
     `crafted in ${METAL_EN[input.metal]}, ${stonePart}.`,
     budgetPart,
@@ -102,14 +131,19 @@ function buildPrompt(input: JewelConceptInput): string {
     "Single hero piece centered on a soft cream linen background,",
     "dramatic studio lighting, soft warm key light from upper right,",
     "subtle golden rim light, macro focus, ultra-detailed jewelry photography,",
-    "shallow depth of field, museum-grade craftsmanship, cinematic, 8k, high-end atelier aesthetic.",
+    "shallow depth of field, fine craftsmanship, cinematic, 8k.",
   ]
     .filter(Boolean)
     .join(" ");
 }
 
-const NEGATIVE_PROMPT =
+const BASE_NEGATIVE =
   "low quality, blurry, deformed, distorted proportions, ugly, text, watermark, logo, signature, plastic, toy, cartoon, anime, multiple objects, person, hand, body";
+
+function buildNegativePrompt(input: JewelConceptInput): string {
+  const extra = input.budget ? BUDGET_VISUAL[input.budget].negative : "";
+  return extra ? `${BASE_NEGATIVE}, ${extra}` : BASE_NEGATIVE;
+}
 
 /** Decodifica un data URL base64 in Blob (runtime Worker-compatibile). */
 function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string } {
@@ -145,7 +179,7 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
 
     const form = new FormData();
     form.append("prompt", prompt);
-    form.append("negative_prompt", NEGATIVE_PROMPT);
+    form.append("negative_prompt", buildNegativePrompt(data));
     form.append("output_format", "png");
     form.append("aspect_ratio", "1:1");
     form.append("style_preset", "photographic");
