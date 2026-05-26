@@ -706,6 +706,14 @@ function AtelierCreatePage() {
                                   </button>
                                   <button
                                     type="button"
+                                    onClick={downloadOBJ}
+                                    className="btn-primary"
+                                  >
+                                    <Download className="h-4 w-4" />
+                                    Scarica modello 3D (.obj)
+                                  </button>
+                                  <button
+                                    type="button"
                                     onClick={run3DGeneration}
                                     className="btn-ghost text-ink"
                                   >
