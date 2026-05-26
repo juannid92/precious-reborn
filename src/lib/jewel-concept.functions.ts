@@ -1,19 +1,18 @@
 /**
- * Server function — generazione concept gioiello via Stability AI v2beta.
+ * Server function — generazione concept gioiello via Together AI.
+ *
+ * PROVIDER: Together AI — modello `black-forest-labs/FLUX.1-kontext-pro`.
+ * Endpoint: POST https://api.together.xyz/v1/images/generations
  *
  * SICUREZZA:
- * - STABILITY_API_KEY letta SOLO dentro .handler() (mai bundled lato client).
+ * - TOGETHER_API_KEY letta SOLO dentro .handler() (mai bundled lato client).
  * - Validazione input con Zod.
  *
- * ENDPOINT:
- * - Text-to-image (no reference)  → /v2beta/stable-image/generate/core
- *   Motivo: rapido, economico, qualità eccellente su still life / gioielli.
- * - Image-to-image (con reference) → /v2beta/stable-image/generate/sd3
- *   Motivo: /core NON supporta image-to-image; sd3 supporta mode=image-to-image
- *   con parametro `strength`, offrendo il controllo richiesto sulla reference.
+ * MODE:
+ * - text-to-image: nessuna reference → body senza image_url
+ * - image-to-image (kontext): se l'utente carica un'ispirazione → image_url
  *
- * RISPOSTA: accept=image/* → bytes binari → convertiti in data:image/<fmt>;base64
- * per essere consumati direttamente dal ConceptPreviewPanel.
+ * RISPOSTA: response_format=b64_json → base64 → data:image/png;base64,...
  */
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
@@ -31,7 +30,7 @@ const JewelInputSchema = z.object({
   /** Data URL (data:image/...;base64,...) opzionale dell'ispirazione caricata. */
   inspirationDataUrl: z
     .string()
-    .max(8_000_000) // ~6MB base64 ≈ 4.5MB immagine
+    .max(8_000_000)
     .regex(/^data:image\/(png|jpe?g|webp);base64,/i)
     .optional(),
 });
@@ -76,38 +75,15 @@ const STONE_EN: Record<Exclude<JewelConceptInput["stones"][number], "nessuna">, 
   perla: "lustrous cultured pearls",
 };
 
-/**
- * BUDGET → vincoli VISIVI concreti per Stability.
- * Termini astratti come "entry-level" vengono ignorati dal modello: servono
- * descrittori fisici (carati pietre, spessore metallo, numero pietre,
- * complessità) per ottenere un'immagine coerente con la fascia di prezzo.
- */
-const BUDGET_VISUAL: Record<
-  NonNullable<JewelConceptInput["budget"]>,
-  { positive: string; negative: string }
-> = {
-  "up-to-1000": {
-    positive:
-      "modest scale, delicate and lightweight piece, thin slender metal band or chain (1-2mm), very small accent stones only (0.02-0.10 carat each, melee size), at most 1-3 tiny stones, simple and restrained composition, minimal metalwork, understated entry-level fine jewelry",
-    negative:
-      "large gemstones, big stones, oversized stones, statement piece, heavy metalwork, thick band, many stones, pave setting, halo setting, cluster, elaborate, ornate, luxury haute joaillerie, multi-carat diamond, huge center stone",
-  },
-  "1000-2000": {
-    positive:
-      "small to modest scale, refined lightweight piece, slim metal (1.5-2.5mm), small stones (0.10-0.30 carat each), few stones total (1-5), balanced and elegant but restrained composition",
-    negative:
-      "large gemstones, oversized center stone, multi-carat, heavy sculptural metalwork, pave cluster, halo, opulent, haute joaillerie",
-  },
-  "3000-5000": {
-    positive:
-      "medium scale, well-proportioned piece, medium metal weight (2-3mm), medium stones (0.30-0.80 carat each), selected gemstones with refined setting, moderate complexity",
-    negative: "huge multi-carat center stone, extravagant haute joaillerie, oversized statement",
-  },
-  "5000-plus": {
-    positive:
-      "generous scale, statement piece, substantial metalwork, prominent center gemstone (1 carat or more) with accent stones, elaborate goldsmith craftsmanship, haute-joaillerie complexity",
-    negative: "tiny stones only, plain band, minimal entry-level look",
-  },
+const BUDGET_VISUAL: Record<NonNullable<JewelConceptInput["budget"]>, string> = {
+  "up-to-1000":
+    "modest scale, delicate and lightweight piece, thin slender metal band or chain (1-2mm), very small accent stones only (0.02-0.10 carat each, melee size), at most 1-3 tiny stones, simple and restrained composition, minimal metalwork, understated entry-level fine jewelry",
+  "1000-2000":
+    "small to modest scale, refined lightweight piece, slim metal (1.5-2.5mm), small stones (0.10-0.30 carat each), few stones total (1-5), balanced and elegant but restrained composition",
+  "3000-5000":
+    "medium scale, well-proportioned piece, medium metal weight (2-3mm), medium stones (0.30-0.80 carat each), selected gemstones with refined setting, moderate complexity",
+  "5000-plus":
+    "generous scale, statement piece, substantial metalwork, prominent center gemstone (1 carat or more) with accent stones, elaborate goldsmith craftsmanship, haute-joaillerie complexity",
 };
 
 function buildPrompt(input: JewelConceptInput): string {
@@ -119,51 +95,29 @@ function buildPrompt(input: JewelConceptInput): string {
   const notes = input.notes?.trim();
   const notesPart = notes ? `Client note: "${notes.slice(0, 400)}".` : "";
   const budgetPart = input.budget
-    ? `IMPORTANT scale and proportions constraint: ${BUDGET_VISUAL[input.budget].positive}.`
+    ? `IMPORTANT scale and proportions constraint: ${BUDGET_VISUAL[input.budget]}.`
     : "";
 
-  return [
-    `Professional jewelry product photography of a single ${TYPE_EN[input.type]},`,
+  const description = [
+    `A single ${TYPE_EN[input.type]},`,
     `${STYLE_EN[input.style]},`,
     `crafted in ${METAL_EN[input.metal]}, ${stonePart}.`,
     budgetPart,
     notesPart,
-    "Isolated product shot on a clean neutral white/cream background,",
-    "no people, no hands, no human, no model, no body, not worn,",
-    "studio lighting, macro shot, ultra-detailed, high detail,",
-    "shallow depth of field, fine craftsmanship, luxury jewelry catalog style, 8k.",
   ]
     .filter(Boolean)
     .join(" ");
-}
 
-const BASE_NEGATIVE =
-  "person, human, hands, body, model, wearing, worn by, people, face, fingers, arm, neck, skin, portrait, mannequin, low quality, blurry, deformed, distorted proportions, ugly, text, watermark, logo, signature, plastic, toy, cartoon, anime, multiple objects";
-
-function buildNegativePrompt(input: JewelConceptInput): string {
-  const extra = input.budget ? BUDGET_VISUAL[input.budget].negative : "";
-  return extra ? `${BASE_NEGATIVE}, ${extra}` : BASE_NEGATIVE;
-}
-
-/** Decodifica un data URL base64 in Blob (runtime Worker-compatibile). */
-function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string } {
-  const match = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/.exec(dataUrl);
-  if (!match) throw new Error("Inspiration image: formato data URL non valido.");
-  const mime = match[1];
-  const b64 = match[2];
-  const bin = atob(b64);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return { blob: new Blob([bytes], { type: mime }), mime };
+  return `${description} professional jewelry product photography, isolated product shot on a clean neutral white or cream background, no people, no hands, no human, no model, no body, not worn, studio lighting, macro shot, luxury jewelry catalog style, ultra-detailed, 8k.`;
 }
 
 export const generateJewelConcept = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => JewelInputSchema.parse(input))
   .handler(async ({ data }): Promise<JewelConceptResult> => {
-    const apiKey = process.env.STABILITY_API_KEY;
+    const apiKey = process.env.TOGETHER_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "Servizio temporaneamente non disponibile. La chiave Stability non è configurata.",
+        "Servizio temporaneamente non disponibile. La chiave Together AI non è configurata.",
       );
     }
 
@@ -173,23 +127,21 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
       ? "image-to-image"
       : "text-to-image";
 
-    const endpoint = hasReference
-      ? "https://api.stability.ai/v2beta/stable-image/generate/sd3"
-      : "https://api.stability.ai/v2beta/stable-image/generate/core";
+    const endpoint = "https://api.together.xyz/v1/images/generations";
 
-    const form = new FormData();
-    form.append("prompt", prompt);
-    form.append("negative_prompt", buildNegativePrompt(data));
-    form.append("output_format", "png");
-    form.append("aspect_ratio", "1:1");
-    form.append("style_preset", "photographic");
+    const body: Record<string, unknown> = {
+      model: "black-forest-labs/FLUX.1-kontext-pro",
+      prompt,
+      width: 1024,
+      height: 1024,
+      steps: 28,
+      n: 1,
+      response_format: "b64_json",
+    };
 
     if (hasReference) {
-      const { blob } = dataUrlToBlob(data.inspirationDataUrl!);
-      form.append("mode", "image-to-image");
-      form.append("model", "sd3.5-large");
-      form.append("strength", "0.65"); // bilancia reference vs prompt
-      form.append("image", blob, "inspiration.png");
+      // FLUX.1-kontext supporta image_url come riferimento visivo.
+      body.image_url = data.inspirationDataUrl;
     }
 
     let res: Response;
@@ -198,70 +150,97 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
-          Accept: "image/*",
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: form,
+        body: JSON.stringify(body),
       });
     } catch (err) {
-      console.error(`[jewel-concept] Stability network error (${endpoint}):`, err);
+      console.error(`[jewel-concept] Together network error:`, err);
       throw new Error(
-        `Errore di rete contattando Stability (${endpoint}). ${
+        `Errore di rete contattando Together AI. ${
           err instanceof Error ? err.message : String(err)
         }`,
       );
     }
 
+    const rawText = await res.text();
+
     if (!res.ok) {
       const status = res.status;
-      const bodyText = await res.text().catch(() => "");
-      let upstreamMsg = bodyText.slice(0, 400);
+      let upstreamMsg = rawText.slice(0, 400);
       try {
-        const parsed = JSON.parse(bodyText) as {
-          name?: string;
-          errors?: string[];
+        const parsed = JSON.parse(rawText) as {
+          error?: { message?: string; type?: string } | string;
           message?: string;
         };
-        upstreamMsg =
-          parsed?.errors?.join("; ") ||
-          parsed?.message ||
-          parsed?.name ||
-          upstreamMsg;
+        if (typeof parsed.error === "object" && parsed.error) {
+          upstreamMsg = parsed.error.message || parsed.error.type || upstreamMsg;
+        } else if (typeof parsed.error === "string") {
+          upstreamMsg = parsed.error;
+        } else if (parsed.message) {
+          upstreamMsg = parsed.message;
+        }
       } catch {
-        /* lascia bodyText raw */
+        /* lascia rawText */
       }
       console.error(
-        `[jewel-concept] Stability ${status} on ${endpoint} (mode=${mode}): ${bodyText.slice(
-          0,
-          800,
-        )}`,
+        `[jewel-concept] Together ${status} (mode=${mode}): ${rawText.slice(0, 800)}`,
       );
 
       if (status === 401 || status === 403) {
-        throw new Error(`Stability API key non valida o non autorizzata (${status}). ${upstreamMsg}`);
+        throw new Error(`Together API key non valida o non autorizzata (${status}). ${upstreamMsg}`);
       }
       if (status === 402) {
-        throw new Error(`Credito Stability esaurito (402). ${upstreamMsg}`);
+        throw new Error(`Credito Together esaurito (402). ${upstreamMsg}`);
       }
       if (status === 429) {
-        throw new Error("Atelier sovraccarico: troppe richieste su Stability. Riprova tra poco.");
+        throw new Error("Atelier sovraccarico: troppe richieste su Together. Riprova tra poco.");
       }
       if (status === 413) {
-        throw new Error("Immagine di ispirazione troppo grande per Stability (413).");
+        throw new Error("Immagine di ispirazione troppo grande per Together (413).");
       }
-      throw new Error(`Generazione Stability fallita (${status} su ${endpoint}). ${upstreamMsg}`);
+      throw new Error(`Generazione Together fallita (${status}). ${upstreamMsg}`);
     }
 
-    // Successo: bytes immagine
-    const contentType = res.headers.get("content-type") || "image/png";
-    const buf = await res.arrayBuffer();
-    if (!buf.byteLength) {
-      console.error(`[jewel-concept] Stability empty body (${endpoint})`);
-      throw new Error("Risposta vuota da Stability.");
+    let payload: {
+      data?: Array<{ b64_json?: string; url?: string }>;
+    };
+    try {
+      payload = JSON.parse(rawText);
+    } catch (err) {
+      console.error("[jewel-concept] Together response non-JSON:", rawText.slice(0, 400));
+      throw new Error("Risposta non valida da Together AI.");
     }
 
-    // base64 da ArrayBuffer (Worker-safe via Buffer in nodejs_compat)
-    const b64 = Buffer.from(buf).toString("base64");
-    const imageUrl = `data:${contentType};base64,${b64}`;
+    const first = payload.data?.[0];
+    if (!first) {
+      console.error("[jewel-concept] Together empty data array");
+      throw new Error("Risposta vuota da Together AI.");
+    }
+
+    let imageUrl: string;
+    if (first.b64_json) {
+      imageUrl = `data:image/png;base64,${first.b64_json}`;
+    } else if (first.url) {
+      // Fallback: scarica e converte in data URL così il resto del flusso
+      // (incluso Trellis 2) può consumarlo come prima.
+      try {
+        const imgRes = await fetch(first.url);
+        if (!imgRes.ok) {
+          throw new Error(`download fallito (${imgRes.status})`);
+        }
+        const contentType = imgRes.headers.get("content-type") || "image/png";
+        const buf = await imgRes.arrayBuffer();
+        const b64 = Buffer.from(buf).toString("base64");
+        imageUrl = `data:${contentType};base64,${b64}`;
+      } catch (err) {
+        console.error("[jewel-concept] Together image url fetch failed:", err);
+        throw new Error("Impossibile recuperare l'immagine generata da Together.");
+      }
+    } else {
+      throw new Error("Together AI non ha restituito né b64_json né url.");
+    }
 
     return { imageUrl, prompt, endpoint, mode };
   });
