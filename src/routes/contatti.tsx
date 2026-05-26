@@ -195,16 +195,27 @@ function ContactForm() {
     setSending(true);
     const form = e.currentTarget;
     const data = new FormData(form);
-    const name = String(data.get("name") ?? "");
-    const email = String(data.get("email") ?? "");
-    const phone = String(data.get("phone") ?? "");
-    const message = String(data.get("message") ?? "");
-    const subject = encodeURIComponent(`Richiesta atelier — ${name}`);
-    const body = encodeURIComponent(
-      `Nome: ${name}\nEmail: ${email}\nTelefono: ${phone}\n\n${message}`
-    );
-    window.location.href = `mailto:${contacts.email}?subject=${subject}&body=${body}`;
-    setTimeout(() => setSending(false), 1500);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    // Estraggo il numero dal link wa.me già configurato in site.ts
+    const waNumber = contacts.whatsappHref.replace(/\D/g, "");
+    const lines = [
+      `*Prenotazione visita — ${name || "—"}*`,
+      "",
+      `Nome: ${name || "—"}`,
+      `Email: ${email || "—"}`,
+      `Telefono: ${phone || "—"}`,
+      "",
+      "Messaggio:",
+      message || "—",
+    ];
+    const text = encodeURIComponent(lines.join("\n"));
+    const url = `https://wa.me/${waNumber}?text=${text}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    setTimeout(() => setSending(false), 1200);
   };
 
   return (
@@ -221,10 +232,11 @@ function ContactForm() {
         disabled={sending}
         className="btn-primary group disabled:opacity-60"
       >
-        {sending ? "Apertura email…" : "Invia richiesta"}
+        {sending ? "Apertura WhatsApp…" : "Invia su WhatsApp"}
       </button>
       <p className="text-xs text-muted-foreground">
-        Inviando il messaggio si aprirà la tua app email con il contenuto già compilato.
+        Inviando il messaggio si aprirà WhatsApp con i tuoi dati già compilati,
+        pronti per essere inviati all'atelier.
       </p>
     </form>
   );
