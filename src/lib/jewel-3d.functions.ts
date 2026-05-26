@@ -1,43 +1,52 @@
 /**
- * Server function — generazione bozza 3D del gioiello via Stability AI.
+ * Server function — generazione bozza 3D del gioiello via Fal.ai Trellis 2.
  *
- * PROVIDER: SOLO Stability AI. Nessun altro provider 3D.
+ * PROVIDER: SOLO Fal.ai (modello "fal-ai/trellis-2"). Stability AI rimosso.
  *
- * ENDPOINT: POST https://api.stability.ai/v2beta/3d/stable-fast-3d
- *   - Image-to-3D sincrono (no polling), risponde direttamente con un file .glb (model/gltf-binary).
- *   - Input multipart/form-data, campo `image` (immagine sorgente, PNG/JPEG/WEBP, ≤ ~10MB).
+ * FLUSSO:
+ *   1. Riceve un'immagine concept come data URL (data:image/...;base64,...).
+ *   2. La carica su fal storage per ottenere un image_url pubblico.
+ *   3. Sottomette il job in coda (fal.queue.submit) e fa polling
+ *      con fal.queue.status finché completed (Trellis 2 richiede 30-90s).
+ *   4. Recupera il risultato con fal.queue.result, estrae result.model_glb.url
+ *      e lo ritorna come `modelUrl` (URL remoto al .glb).
  *
  * SICUREZZA:
- *   - STABILITY_API_KEY letta SOLO dentro .handler() (mai bundled lato client).
- *   - Validazione input con Zod, data URL formato + size limit.
+ *   - FAL_KEY letta SOLO dentro .handler() (mai bundled lato client).
  *
- * RISPOSTA: bytes binari .glb → base64 → data:model/gltf-binary;base64,... consumato da <model-viewer>.
+ * COMPATIBILITÀ:
+ *   - Il return shape è invariato rispetto alla precedente implementazione
+ *     Stability: { modelUrl, contentType, endpoint, sizeBytes }. Il viewer
+ *     <model-viewer> e il download .glb continuano a funzionare senza modifiche.
  */
 import { createServerFn } from "@tanstack/react-start";
+import { fal } from "@fal-ai/client";
 import { z } from "zod";
 
 const Jewel3DInputSchema = z.object({
   /** Data URL (data:image/...;base64,...) dell'immagine concept generata. */
   imageDataUrl: z
     .string()
-    .max(12_000_000) // ~9MB base64 ≈ 7MB immagine
+    .max(12_000_000)
     .regex(/^data:image\/(png|jpe?g|webp);base64,/i, "Formato immagine non valido."),
 });
 
 export type Jewel3DInput = z.infer<typeof Jewel3DInputSchema>;
 
 export type Jewel3DResult = {
-  /** data:model/gltf-binary;base64,... — direttamente assegnabile a <model-viewer src>. */
+  /** URL diretto al .glb su fal storage — assegnabile a <model-viewer src>. */
   modelUrl: string;
-  /** Mime reale ritornato da Stability (es. "model/gltf-binary"). */
+  /** Mime del file restituito. */
   contentType: string;
-  /** Endpoint Stability effettivamente chiamato. */
+  /** Endpoint Fal effettivamente usato. */
   endpoint: string;
-  /** Byte size del .glb generato. */
+  /** Byte size del .glb generato (0 se non noto). */
   sizeBytes: number;
 };
 
-function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string } {
+const ENDPOINT = "fal-ai/trellis-2";
+
+function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string; ext: string } {
   const match = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/.exec(dataUrl);
   if (!match) throw new Error("Concept image: formato data URL non valido.");
   const mime = match[1];
@@ -45,97 +54,125 @@ function dataUrlToBlob(dataUrl: string): { blob: Blob; mime: string } {
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return { blob: new Blob([bytes], { type: mime }), mime };
+  const ext =
+    mime.includes("jpeg") || mime.includes("jpg")
+      ? "jpg"
+      : mime.includes("webp")
+        ? "webp"
+        : "png";
+  return { blob: new Blob([bytes], { type: mime }), mime, ext };
 }
-
-const ENDPOINT = "https://api.stability.ai/v2beta/3d/stable-fast-3d";
 
 export const generateJewel3D = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => Jewel3DInputSchema.parse(input))
   .handler(async ({ data }): Promise<Jewel3DResult> => {
-    const apiKey = process.env.STABILITY_API_KEY;
+    const apiKey = process.env.FAL_KEY;
     if (!apiKey) {
       throw new Error(
-        "Servizio 3D temporaneamente non disponibile. La chiave Stability non è configurata.",
+        "Servizio 3D temporaneamente non disponibile. La chiave Fal.ai non è configurata.",
       );
     }
 
-    const { blob, mime } = dataUrlToBlob(data.imageDataUrl);
-    const ext = mime.includes("jpeg") || mime.includes("jpg") ? "jpg" : mime.includes("webp") ? "webp" : "png";
+    fal.config({ credentials: apiKey });
 
-    const form = new FormData();
-    form.append("image", blob, `concept.${ext}`);
-    // Parametri opzionali ragionevoli per still life / gioielli
-    form.append("texture_resolution", "1024");
-    form.append("foreground_ratio", "0.85");
-    form.append("remesh", "none");
+    // 1) Carica l'immagine concept su fal storage → URL pubblico
+    const { blob, ext } = dataUrlToBlob(data.imageDataUrl);
+    const file = new File([blob], `concept.${ext}`, { type: blob.type });
 
-    
-
-    let res: Response;
+    let imageUrl: string;
     try {
-      res = await fetch(ENDPOINT, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          Accept: "model/gltf-binary",
-        },
-        body: form,
-      });
+      imageUrl = await fal.storage.upload(file);
     } catch (err) {
-      console.error(`[jewel-3d] Network error on ${ENDPOINT}:`, err);
+      console.error("[jewel-3d] fal.storage.upload failed:", err);
       throw new Error(
-        `Errore di rete contattando Stability 3D. ${err instanceof Error ? err.message : String(err)}`,
+        `Caricamento immagine su Fal storage fallito. ${
+          err instanceof Error ? err.message : String(err)
+        }`,
       );
     }
 
-    
+    // 2) Submit in coda (Trellis 2 è asincrono, 30-90s)
+    let requestId: string;
+    try {
+      const submitted = await fal.queue.submit(ENDPOINT, {
+        input: {
+          image_url: imageUrl,
+          resolution: 1024,
+          decimation_target: 100000,
+          texture_size: 2048,
+          remesh: true,
+        },
+      });
+      requestId = submitted.request_id;
+    } catch (err) {
+      console.error(`[jewel-3d] fal.queue.submit failed on ${ENDPOINT}:`, err);
+      throw new Error(
+        `Sottomissione job 3D fallita su Fal.ai. ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      );
+    }
 
-    if (!res.ok) {
-      const status = res.status;
-      const bodyText = await res.text().catch(() => "");
-      let upstreamMsg = bodyText.slice(0, 400);
+    // 3) Polling status fino a COMPLETED (max ~3 minuti)
+    const maxAttempts = 60; // 60 * 3s = 180s
+    const intervalMs = 3000;
+    let attempt = 0;
+    while (true) {
+      attempt++;
+      if (attempt > maxAttempts) {
+        throw new Error("Generazione 3D Fal.ai in timeout (oltre 3 minuti).");
+      }
+      let status: Awaited<ReturnType<typeof fal.queue.status>>;
       try {
-        const parsed = JSON.parse(bodyText) as {
-          name?: string;
-          errors?: string[];
-          message?: string;
-        };
-        upstreamMsg =
-          parsed?.errors?.join("; ") || parsed?.message || parsed?.name || upstreamMsg;
-      } catch {
-        /* raw */
+        status = await fal.queue.status(ENDPOINT, {
+          requestId,
+          logs: false,
+        });
+      } catch (err) {
+        console.error("[jewel-3d] fal.queue.status failed:", err);
+        throw new Error(
+          `Errore controllando lo stato del job Fal.ai. ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
       }
-      console.error(
-        `[jewel-3d] Stability ${status} on ${ENDPOINT}: ${bodyText.slice(0, 800)}`,
+      if (status.status === "COMPLETED") break;
+      if (status.status === "IN_QUEUE" || status.status === "IN_PROGRESS") {
+        await new Promise((r) => setTimeout(r, intervalMs));
+        continue;
+      }
+      console.error("[jewel-3d] fal queue unexpected status:", status);
+      throw new Error(`Job 3D Fal.ai terminato in stato inatteso: ${String(status.status)}.`);
+    }
+
+    // 4) Recupera il risultato
+    let resultPayload: {
+      data?: {
+        model_glb?: { url?: string; content_type?: string; file_size?: number };
+      };
+    };
+    try {
+      resultPayload = (await fal.queue.result(ENDPOINT, { requestId })) as typeof resultPayload;
+    } catch (err) {
+      console.error("[jewel-3d] fal.queue.result failed:", err);
+      throw new Error(
+        `Recupero risultato 3D Fal.ai fallito. ${
+          err instanceof Error ? err.message : String(err)
+        }`,
       );
-
-      if (status === 401 || status === 403) {
-        throw new Error(`Stability API key non valida o non autorizzata (${status}). ${upstreamMsg}`);
-      }
-      if (status === 402) {
-        throw new Error(`Credito Stability esaurito (402). ${upstreamMsg}`);
-      }
-      if (status === 429) {
-        throw new Error("Atelier 3D sovraccarico: troppe richieste su Stability. Riprova tra poco.");
-      }
-      if (status === 413) {
-        throw new Error("Immagine concept troppo grande per Stability 3D (413).");
-      }
-      throw new Error(`Generazione 3D Stability fallita (${status}). ${upstreamMsg}`);
     }
 
-    const contentType = res.headers.get("content-type") || "model/gltf-binary";
-    const buf = await res.arrayBuffer();
-    if (!buf.byteLength) {
-      console.error(`[jewel-3d] Stability empty body (${ENDPOINT})`);
-      throw new Error("Risposta 3D vuota da Stability.");
+    const modelGlb = resultPayload?.data?.model_glb;
+    const modelUrl = modelGlb?.url;
+    if (!modelUrl) {
+      console.error("[jewel-3d] missing model_glb.url in fal result:", resultPayload);
+      throw new Error("Risposta 3D Fal.ai senza URL del modello GLB.");
     }
 
-    const b64 = Buffer.from(buf).toString("base64");
-    const modelUrl = `data:${contentType};base64,${b64}`;
-
-    
-
-    return { modelUrl, contentType, endpoint: ENDPOINT, sizeBytes: buf.byteLength };
+    return {
+      modelUrl,
+      contentType: modelGlb?.content_type || "model/gltf-binary",
+      endpoint: ENDPOINT,
+      sizeBytes: modelGlb?.file_size ?? 0,
+    };
   });
