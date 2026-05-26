@@ -1,47 +1,27 @@
-## Stato attuale
+## Problema
 
-1. **Runtime error AtelierServicesPinned.tsx:152** → è **stale**. Il file attuale a riga 152 è JSX valido (`className="absolute inset-x-0 top-[18%]..."`) e l'ultimo `npm run build` è passato (exit 0). L'errore arriva da un salvataggio rotto precedente non più presente. Si risolve con un refresh del dev server.
+Sul mobile, cliccando l'hamburger il menù appare come una striscia blu sottile in alto con solo la X visibile: lo sfondo non copre il viewport, i link di navigazione sono compressi e dietro si vedono la hero e il cookie modal.
 
-2. **JewelGenesisSection ("Come nasce un gioiello")** → testo che compare in ritardo durante lo scroll. Attuale trigger `top 95%` con `from()` GSAP: il problema strutturale è che `from()` parte da `autoAlpha: 0` quindi se lo ScrollTrigger non si attiva immediatamente (o l'utente scrolla veloce) il testo resta invisibile per qualche frame.
+## Causa
 
-3. **AtelierServicesPinned (servizi atelier)** → da non toccare, come richiesto.
+Il pannello del menù è dentro `<header>` (`SiteHeader.tsx`, righe 90–154) con `fixed inset-0`. L'`<header>` usa `backdrop-blur-xl` (riga 26–27). Per specifica CSS, `backdrop-filter` diverso da `none` crea un *containing block* per i discendenti `position: fixed`. Risultato: il menù non si ancora più al viewport ma all'header, che è alto solo ~70px.
 
-4. **PinnedProcess** → modificato in precedenza con `startTime = i - 0.6` che può creare valori negativi nella timeline (RangeError potenziale). Da verificare.
+## Fix
 
-## Piano di intervento
+Renderizzare il pannello mobile fuori dall'header tramite `createPortal` su `document.body`, così sfugge al containing block dell'header e torna a coprire l'intero viewport.
 
-### Fix 1 — Eliminare definitivamente l'errore stale
-- Restart del dev server per scaricare la cache esbuild dell'errore fantasma su `AtelierServicesPinned.tsx:152`.
-- Nessuna modifica al file (è già corretto).
+### Modifiche a `src/components/layout/SiteHeader.tsx`
 
-### Fix 2 — JewelGenesisSection: animazione anticipata o disattivata
-**Opzione consigliata**: rimuovere completamente l'animazione `from()` su questa sezione. Il testo sarà sempre visibile, niente ritardi possibili, nessun rischio di blank-state. La sezione mantiene il connettore dorato verticale (`data-genesis-rail`) che è puramente decorativo.
+1. Importare `createPortal` da `react-dom`.
+2. Aggiungere uno stato `mounted` (true dopo il primo `useEffect`) per evitare problemi in SSR/prima idratazione.
+3. Estrarre il blocco `Mobile fullscreen takeover` (righe 89–154) e renderlo via `createPortal(panel, document.body)` solo quando `mounted` è true.
+4. Lasciare invariato il bottone hamburger dentro l'header e tutta la logica di `open`/`setOpen`/lock scroll.
+5. Verificare che il pannello mantenga: sfondo blu pieno (`oklch(0.215 0.130 265)`), X in alto a destra, nav links da `navigation` con stati attivi, blocco contatti/atelier/social in basso. Niente cambi di contenuto né di stile, solo riposizionamento DOM via portal.
 
-Tecnicamente: cancello il blocco `gsap.utils.toArray("[data-genesis-step]").forEach(...)` dentro `useEffect`. Tengo solo il draw del rail dorato.
+### Verifica
 
-### Fix 3 — PinnedProcess: stabilizzare timeline
-- Riporto `startTime = i` (no offset negativo) per evitare RangeError quando GSAP normalizza la timeline.
-- Mantengo `scrub: 0.5` per reattività.
-
-### Fix 4 — Verifica finale
-- `npm run build` per confermare zero errori TS.
-- Navigazione browser su `/`, scroll fino a "Come nasce un gioiello" → verifico che il testo sia subito visibile.
-- Scroll fino a PinnedProcess → verifico crossfade fluido.
-- Scroll fino ad AtelierServicesPinned → verifico che la sezione (non toccata) funzioni come prima.
-
-## Dettagli tecnici
-
-**File modificati**:
-- `src/routes/index.tsx` — funzione `JewelGenesisSection`, rimozione blocco animazione step (mantengo solo rail draw)
-- `src/components/motion/PinnedProcess.tsx` — ripristino `startTime = i`
-
-**File NON toccati**:
-- `src/components/motion/AtelierServicesPinned.tsx` (esplicitamente escluso dall'utente)
-
-**Rischio**: minimo. Sto rimuovendo animazioni problematiche, non aggiungendo logica nuova. Niente refactor, niente cambio layout, niente cambio copy.
-
-## Conferma necessaria
-
-Procedo con:
-- **Rimozione totale animazione "Come nasce un gioiello"** (testo sempre visibile, niente fade-in)?
-- O preferisci **mantenere un fade-in istantaneo** (0.2s) come compromesso?
+- Aprire il preview mobile a 390×844.
+- Cliccare l'hamburger: il pannello deve coprire tutto lo schermo, sfondo blu solido, link leggibili in bianco/oro, X chiude correttamente.
+- Cliccare un link: chiude il menù e naviga.
+- Riaprire scroll del body dopo chiusura (già gestito dall'effetto esistente).
+- Controllare che desktop ≥ lg non sia toccato (la `lg:hidden` rimane sul wrapper portalizzato).
