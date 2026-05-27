@@ -15,6 +15,7 @@
  * RISPOSTA: response_format=b64_json → base64 → data:image/png;base64,...
  */
 import { createServerFn } from "@tanstack/react-start";
+import { fal } from "@fal-ai/client";
 import { z } from "zod";
 
 const JewelInputSchema = z.object({
