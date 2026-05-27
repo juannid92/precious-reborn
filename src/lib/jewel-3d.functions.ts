@@ -17,10 +17,11 @@ const ENDPOINT = "fal-ai/trellis-2";
 
 // ─── Schemas ────────────────────────────────────────────────────
 const SubmitInputSchema = z.object({
-  imageDataUrl: z
+  trellisImageUrl: z
     .string()
-    .max(12_000_000)
-    .regex(/^data:image\/(png|jpe?g|webp);base64,/i, "Formato immagine non valido."),
+    .url()
+    .max(2048)
+    .regex(/^https?:\/\//i, "URL immagine non pubblico."),
 });
 
 const PollInputSchema = z.object({
