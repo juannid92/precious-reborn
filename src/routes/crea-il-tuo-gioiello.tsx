@@ -366,6 +366,7 @@ function AtelierCreatePage() {
       clearTimeout(tAnalyze);
       if (reqIdRef.current !== myReq) return;
       setGeneratedUrl(res.imageUrl);
+      setTrellisImageUrl(res.trellisImageUrl);
       setPreviewStage("ready");
     } catch (err) {
       clearTimeout(tAnalyze);
