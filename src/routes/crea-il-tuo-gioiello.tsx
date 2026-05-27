@@ -362,6 +362,12 @@ function AtelierCreatePage() {
       return;
     }
     const myReq = ++reqIdRef.current;
+    // Invalida ogni job 3D in corso o completato: l'utente dovrà ri-cliccare "Genera 3D"
+    req3dIdRef.current++;
+    stop3DPolling();
+    setModel3dStage("idle");
+    setModelUrl(null);
+    setModel3dError(null);
     setErrorMessage(null);
     setGeneratedUrl(null);
     setTrellisImageUrl(null);
