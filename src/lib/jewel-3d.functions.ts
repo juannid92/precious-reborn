@@ -36,23 +36,6 @@ export type PollTrellis3DResult =
   | { status: "FAILED"; error: string };
 
 // ─── Helpers ────────────────────────────────────────────────────
-function dataUrlToBlob(dataUrl: string): { blob: Blob; ext: string } {
-  const match = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/.exec(dataUrl);
-  if (!match) throw new Error("Concept image: formato data URL non valido.");
-  const mime = match[1];
-  const b64 = match[2];
-  const bin = atob(b64);
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  const ext =
-    mime.includes("jpeg") || mime.includes("jpg")
-      ? "jpg"
-      : mime.includes("webp")
-        ? "webp"
-        : "png";
-  return { blob: new Blob([bytes], { type: mime }), ext };
-}
-
 function ensureKey(): string {
   const apiKey = process.env.FAL_KEY;
   if (!apiKey) {
@@ -69,30 +52,14 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<SubmitTrellis3DResult> => {
     fal.config({ credentials: ensureKey() });
 
-    const { blob, ext } = dataUrlToBlob(data.imageDataUrl);
-    const file = new File([blob], `concept.${ext}`, { type: blob.type });
-
-    let imageUrl: string;
-    try {
-      imageUrl = await fal.storage.upload(file);
-    } catch (err) {
-      console.error("[jewel-3d] fal.storage.upload failed:", err);
-      throw new Error(
-        `Caricamento immagine su Fal storage fallito. ${
-          err instanceof Error ? err.message : String(err)
-        }`,
-      );
-    }
-
-    if (!/^https?:\/\//i.test(imageUrl)) {
-      console.error("[jewel-3d] fal.storage returned non-HTTP URL:", imageUrl);
-      throw new Error("URL immagine non pubblico restituito da Fal storage.");
-    }
+    const imageUrl = data.trellisImageUrl;
+    console.log("[jewel-3d] using trellisImageUrl:", imageUrl);
 
     try {
       const submitted = await fal.queue.submit(ENDPOINT, {
         input: { image_url: imageUrl },
       });
+      console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
       return { requestId: submitted.request_id };
     } catch (error) {
       console.error("Fal.ai submit error details:", JSON.stringify(error, null, 2));
