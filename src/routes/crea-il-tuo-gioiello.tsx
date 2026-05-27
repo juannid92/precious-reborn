@@ -180,6 +180,13 @@ function AtelierCreatePage() {
   }, []);
 
   const run3DGeneration = useCallback(async () => {
+    // Guardia: un solo job alla volta
+    if (model3dStage === "generating" || poll3DTimerRef.current) {
+      if (import.meta.env.DEV) {
+        console.log("[atelier-3d] click ignorato: job 3D già in corso");
+      }
+      return;
+    }
     if (!generatedUrl || !generatedUrl.startsWith("data:image/")) {
       setModel3dError("Genera prima il concept immagine.");
       setModel3dStage("error");
@@ -201,6 +208,9 @@ function AtelierCreatePage() {
       const sub = await submit3DFn({ data: { trellisImageUrl } });
       if (req3dIdRef.current !== myReq) return;
       requestId = sub.requestId;
+      if (import.meta.env.DEV) {
+        console.log("[atelier-3d] submitted Trellis 2 requestId:", requestId);
+      }
     } catch (err) {
       if (req3dIdRef.current !== myReq) return;
       console.error("[atelier-3d] submit failed:", err);
@@ -210,7 +220,7 @@ function AtelierCreatePage() {
     }
 
     let attempts = 0;
-    const MAX_ATTEMPTS = 36; // 36 × 5s = 3 min
+    const MAX_ATTEMPTS = 26; // 26 × 6s ≈ 2 min 36 s
     poll3DTimerRef.current = setInterval(async () => {
       attempts++;
       if (req3dIdRef.current !== myReq) {
@@ -219,6 +229,9 @@ function AtelierCreatePage() {
       }
       if (attempts > MAX_ATTEMPTS) {
         stop3DPolling();
+        if (import.meta.env.DEV) {
+          console.log("[atelier-3d] requestId", requestId, "TIMEOUT after", attempts, "tentativi");
+        }
         setModel3dError("Timeout: la generazione 3D ha impiegato troppo tempo.");
         setModel3dStage("error");
         return;
@@ -229,14 +242,23 @@ function AtelierCreatePage() {
           stop3DPolling();
           return;
         }
+        if (import.meta.env.DEV) {
+          console.log("[atelier-3d] poll", attempts, "status:", res.status);
+        }
         if (res.status === "COMPLETED") {
           stop3DPolling();
+          if (import.meta.env.DEV) {
+            console.log("[atelier-3d] requestId", requestId, "COMPLETED in", attempts, "tentativi");
+          }
           setModelUrl(res.glbUrl);
           setModel3dStage("ready");
           return;
         }
         if (res.status === "FAILED") {
           stop3DPolling();
+          if (import.meta.env.DEV) {
+            console.log("[atelier-3d] requestId", requestId, "FAILED after", attempts, "tentativi");
+          }
           setModel3dError(res.error || "Generazione 3D fallita.");
           setModel3dStage("error");
           return;
@@ -252,8 +274,8 @@ function AtelierCreatePage() {
         setModel3dError(err instanceof Error ? err.message : "Errore inatteso 3D.");
         setModel3dStage("error");
       }
-    }, 5000);
-  }, [generatedUrl, trellisImageUrl, submit3DFn, poll3DFn, stop3DPolling]);
+    }, 6000);
+  }, [model3dStage, generatedUrl, trellisImageUrl, submit3DFn, poll3DFn, stop3DPolling]);
 
   // Stop polling alla smontaggio del componente
   useEffect(() => stop3DPolling, [stop3DPolling]);
@@ -340,6 +362,12 @@ function AtelierCreatePage() {
       return;
     }
     const myReq = ++reqIdRef.current;
+    // Invalida ogni job 3D in corso o completato: l'utente dovrà ri-cliccare "Genera 3D"
+    req3dIdRef.current++;
+    stop3DPolling();
+    setModel3dStage("idle");
+    setModelUrl(null);
+    setModel3dError(null);
     setErrorMessage(null);
     setGeneratedUrl(null);
     setTrellisImageUrl(null);
@@ -375,7 +403,7 @@ function AtelierCreatePage() {
       setErrorMessage(err instanceof Error ? err.message : "Errore inatteso.");
       setPreviewStage("error");
     }
-  }, [type, style, metal, stones, budget, notes, inspiration, generateFn]);
+  }, [type, style, metal, stones, budget, notes, inspiration, generateFn, stop3DPolling]);
 
   // Avvia la generazione quando si entra nello step Concept
   useEffect(() => {
