@@ -403,7 +403,7 @@ function AtelierCreatePage() {
       setErrorMessage(err instanceof Error ? err.message : "Errore inatteso.");
       setPreviewStage("error");
     }
-  }, [type, style, metal, stones, budget, notes, inspiration, generateFn]);
+  }, [type, style, metal, stones, budget, notes, inspiration, generateFn, stop3DPolling]);
 
   // Avvia la generazione quando si entra nello step Concept
   useEffect(() => {
