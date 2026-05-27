@@ -263,7 +263,7 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
       : pngMime.includes("webp")
         ? "webp"
         : "png";
-    const file = new File([pngBytes], `jewel.${ext}`, { type: pngMime });
+    const file = new File([pngBytes as unknown as BlobPart], `jewel.${ext}`, { type: pngMime });
 
     let trellisImageUrl: string;
     try {
