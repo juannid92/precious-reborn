@@ -120,6 +120,7 @@ function AtelierCreatePage() {
   const [notes, setNotes] = useState("");
   const [previewStage, setPreviewStage] = useState<PreviewStage>("idle");
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [trellisImageUrl, setTrellisImageUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // ─── Stato bozza 3D ─────────────────────────────────────────
