@@ -120,6 +120,7 @@ function AtelierCreatePage() {
   const [notes, setNotes] = useState("");
   const [previewStage, setPreviewStage] = useState<PreviewStage>("idle");
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
+  const [trellisImageUrl, setTrellisImageUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // ─── Stato bozza 3D ─────────────────────────────────────────
@@ -152,6 +153,7 @@ function AtelierCreatePage() {
     setBudget(null);
     setNotes("");
     setGeneratedUrl(null);
+    setTrellisImageUrl(null);
     setErrorMessage(null);
     setPreviewStage("idle");
     setModel3dStage("idle");
@@ -183,6 +185,11 @@ function AtelierCreatePage() {
       setModel3dStage("error");
       return;
     }
+    if (!trellisImageUrl) {
+      setModel3dError("URL immagine 3D mancante. Rigenera il concept.");
+      setModel3dStage("error");
+      return;
+    }
     const myReq = ++req3dIdRef.current;
     stop3DPolling();
     setModel3dError(null);
@@ -191,7 +198,7 @@ function AtelierCreatePage() {
 
     let requestId: string;
     try {
-      const sub = await submit3DFn({ data: { imageDataUrl: generatedUrl } });
+      const sub = await submit3DFn({ data: { trellisImageUrl } });
       if (req3dIdRef.current !== myReq) return;
       requestId = sub.requestId;
     } catch (err) {
@@ -246,7 +253,7 @@ function AtelierCreatePage() {
         setModel3dStage("error");
       }
     }, 5000);
-  }, [generatedUrl, submit3DFn, poll3DFn, stop3DPolling]);
+  }, [generatedUrl, trellisImageUrl, submit3DFn, poll3DFn, stop3DPolling]);
 
   // Stop polling alla smontaggio del componente
   useEffect(() => stop3DPolling, [stop3DPolling]);
@@ -335,6 +342,7 @@ function AtelierCreatePage() {
     const myReq = ++reqIdRef.current;
     setErrorMessage(null);
     setGeneratedUrl(null);
+    setTrellisImageUrl(null);
     setPreviewStage("analyzing");
 
     // micro-pausa estetica: lettura ispirazione
@@ -358,6 +366,7 @@ function AtelierCreatePage() {
       clearTimeout(tAnalyze);
       if (reqIdRef.current !== myReq) return;
       setGeneratedUrl(res.imageUrl);
+      setTrellisImageUrl(res.trellisImageUrl);
       setPreviewStage("ready");
     } catch (err) {
       clearTimeout(tAnalyze);
