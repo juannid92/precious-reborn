@@ -253,7 +253,7 @@ function AtelierCreatePage() {
         setModel3dStage("error");
       }
     }, 5000);
-  }, [generatedUrl, submit3DFn, poll3DFn, stop3DPolling]);
+  }, [generatedUrl, trellisImageUrl, submit3DFn, poll3DFn, stop3DPolling]);
 
   // Stop polling alla smontaggio del componente
   useEffect(() => stop3DPolling, [stop3DPolling]);
