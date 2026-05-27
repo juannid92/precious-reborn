@@ -222,8 +222,13 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
     }
 
     let imageUrl: string;
+    let pngBytes: Uint8Array;
+    let pngMime = "image/png";
     if (first.b64_json) {
       imageUrl = `data:image/png;base64,${first.b64_json}`;
+      const bin = atob(first.b64_json);
+      pngBytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) pngBytes[i] = bin.charCodeAt(i);
     } else if (first.url) {
       // Fallback: scarica e converte in data URL così il resto del flusso
       // (incluso Trellis 2) può consumarlo come prima.
@@ -232,10 +237,11 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
         if (!imgRes.ok) {
           throw new Error(`download fallito (${imgRes.status})`);
         }
-        const contentType = imgRes.headers.get("content-type") || "image/png";
+        pngMime = imgRes.headers.get("content-type") || "image/png";
         const buf = await imgRes.arrayBuffer();
+        pngBytes = new Uint8Array(buf);
         const b64 = Buffer.from(buf).toString("base64");
-        imageUrl = `data:${contentType};base64,${b64}`;
+        imageUrl = `data:${pngMime};base64,${b64}`;
       } catch (err) {
         console.error("[jewel-concept] Together image url fetch failed:", err);
         throw new Error("Impossibile recuperare l'immagine generata da Together.");
@@ -244,5 +250,37 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
       throw new Error("Together AI non ha restituito né b64_json né url.");
     }
 
-    return { imageUrl, prompt, endpoint, mode };
+    // Upload su Fal.ai storage per ottenere un URL pubblico consumabile da Trellis 2.
+    const falKey = process.env.FAL_KEY;
+    if (!falKey) {
+      throw new Error(
+        "Servizio temporaneamente non disponibile. La chiave Fal.ai non è configurata.",
+      );
+    }
+    fal.config({ credentials: falKey });
+    const ext = pngMime.includes("jpeg") || pngMime.includes("jpg")
+      ? "jpg"
+      : pngMime.includes("webp")
+        ? "webp"
+        : "png";
+    const file = new File([pngBytes], `jewel.${ext}`, { type: pngMime });
+
+    let trellisImageUrl: string;
+    try {
+      trellisImageUrl = await fal.storage.upload(file);
+    } catch (err) {
+      console.error("[jewel-concept] fal.storage.upload failed:", err);
+      throw new Error(
+        `Upload immagine su Fal storage fallito. ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      );
+    }
+    if (!/^https?:\/\//i.test(trellisImageUrl)) {
+      console.error("[jewel-concept] fal.storage non-HTTP URL:", trellisImageUrl);
+      throw new Error("URL immagine non pubblico restituito da Fal storage.");
+    }
+    console.log("[jewel-concept] fal.storage upload OK:", trellisImageUrl);
+
+    return { imageUrl, trellisImageUrl, prompt, endpoint, mode };
   });
