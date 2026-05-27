@@ -153,6 +153,7 @@ function AtelierCreatePage() {
     setBudget(null);
     setNotes("");
     setGeneratedUrl(null);
+    setTrellisImageUrl(null);
     setErrorMessage(null);
     setPreviewStage("idle");
     setModel3dStage("idle");
