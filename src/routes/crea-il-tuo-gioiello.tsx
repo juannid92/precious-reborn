@@ -342,6 +342,7 @@ function AtelierCreatePage() {
     const myReq = ++reqIdRef.current;
     setErrorMessage(null);
     setGeneratedUrl(null);
+    setTrellisImageUrl(null);
     setPreviewStage("analyzing");
 
     // micro-pausa estetica: lettura ispirazione
