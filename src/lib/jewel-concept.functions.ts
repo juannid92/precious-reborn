@@ -40,6 +40,7 @@ export type JewelConceptInput = z.infer<typeof JewelInputSchema>;
 
 export type JewelConceptResult = {
   imageUrl: string;
+  trellisImageUrl: string;
   prompt: string;
   endpoint: string;
   mode: "text-to-image" | "image-to-image";
