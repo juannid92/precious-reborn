@@ -185,6 +185,11 @@ function AtelierCreatePage() {
       setModel3dStage("error");
       return;
     }
+    if (!trellisImageUrl) {
+      setModel3dError("URL immagine 3D mancante. Rigenera il concept.");
+      setModel3dStage("error");
+      return;
+    }
     const myReq = ++req3dIdRef.current;
     stop3DPolling();
     setModel3dError(null);
@@ -193,7 +198,7 @@ function AtelierCreatePage() {
 
     let requestId: string;
     try {
-      const sub = await submit3DFn({ data: { imageDataUrl: generatedUrl } });
+      const sub = await submit3DFn({ data: { trellisImageUrl } });
       if (req3dIdRef.current !== myReq) return;
       requestId = sub.requestId;
     } catch (err) {
