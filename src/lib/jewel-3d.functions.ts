@@ -55,9 +55,31 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
     const imageUrl = data.trellisImageUrl;
     console.log("[jewel-3d] using trellisImageUrl:", imageUrl);
 
+    // Step 1: rimuovi sfondo con birefnet per migliorare la ricostruzione 3D.
+    let cleanImageUrl: string;
+    try {
+      const bgResult = (await fal.subscribe("fal-ai/birefnet", {
+        input: {
+          image_url: imageUrl,
+          model: "General Use (Light)",
+        },
+      })) as { data?: { image?: { url?: string } } };
+
+      const url = bgResult.data?.image?.url;
+      if (!url || !/^https?:\/\//i.test(url)) {
+        throw new Error("birefnet: URL immagine pulita mancante o non valido.");
+      }
+      cleanImageUrl = url;
+      console.log("[jewel-3d] birefnet OK, clean image:", cleanImageUrl);
+    } catch (error) {
+      console.error("Fal.ai birefnet error details:", JSON.stringify(error, null, 2));
+      throw new Error(`Fal.ai birefnet failed: ${JSON.stringify(error)}`);
+    }
+
+    // Step 2: sottometti Trellis 2 con l'immagine senza sfondo.
     try {
       const submitted = await fal.queue.submit(ENDPOINT, {
-        input: { image_url: imageUrl },
+        input: { image_url: cleanImageUrl },
       });
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
       return { requestId: submitted.request_id };
@@ -65,6 +87,7 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
       console.error("Fal.ai submit error details:", JSON.stringify(error, null, 2));
       throw new Error(`Fal.ai trellis-2 submit failed: ${JSON.stringify(error)}`);
     }
+
   });
 
 // ─── 2) Poll ────────────────────────────────────────────────────
