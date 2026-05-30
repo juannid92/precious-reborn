@@ -119,9 +119,11 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
       const submitted = await fal.queue.submit(ENDPOINT, {
         // I tipi TS di @fal-ai/client per trellis-2 indicano stringhe,
         // ma il server valida come literal numerici (resolution: 512|1024|1536,
-        // texture_size: 1024|2048|4096). Cast a unknown per allinearci al runtime.
-        input: trellisInput as unknown as Parameters<typeof fal.queue.submit>[1]["input"],
+        // texture_size: 1024|2048|4096). Cast per allinearci al runtime.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: trellisInput as any,
       });
+
 
 
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
