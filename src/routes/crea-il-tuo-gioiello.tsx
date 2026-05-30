@@ -546,6 +546,8 @@ function AtelierCreatePage() {
     // Invalida ogni job 3D in corso o completato: l'utente dovrà ri-cliccare "Genera 3D"
     req3dIdRef.current++;
     stop3DPolling();
+    trellisRequestIdRef.current = null;
+    trellisSourceUrlRef.current = null;
     stopConceptPolling();
     conceptRequestIdRef.current = null;
     setModel3dStage("idle");
