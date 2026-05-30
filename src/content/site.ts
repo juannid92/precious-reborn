@@ -51,7 +51,6 @@ export const contacts = {
 export const navigation = [
   { to: "/", label: "Home" },
   { to: "/categorie", label: "Collezioni" },
-  { to: "/anelli", label: "Anelli" },
   { to: "/servizi", label: "Servizi" },
   { to: "/crea-il-tuo-gioiello", label: "Crea il tuo gioiello" },
   { to: "/storia", label: "Il Laboratorio" },
