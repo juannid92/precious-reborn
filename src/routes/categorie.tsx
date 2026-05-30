@@ -80,16 +80,9 @@ function CategoriePage() {
                   <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
                     {cat.description}
                   </p>
-                  {cat.slug === "anelli" ? (
-                    <Link to="/anelli" className="btn-primary group">
-                      Esplora gli anelli
-                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    </Link>
-                  ) : (
-                    <Link to="/contatti" className="underline-gold text-sm uppercase tracking-[0.28em]">
-                      Richiedi in atelier
-                    </Link>
-                  )}
+                  <Link to="/contatti" className="underline-gold text-sm uppercase tracking-[0.28em]">
+                    Richiedi in atelier
+                  </Link>
                 </Reveal>
               </div>
             </article>
