@@ -1,18 +1,18 @@
 /**
- * Server function — generazione concept gioiello via Together AI.
+ * Server function — generazione concept gioiello via Fal.ai GPT Image 2.
  *
- * PROVIDER: Together AI — modello `black-forest-labs/FLUX.1-kontext-pro`.
- * Endpoint: POST https://api.together.xyz/v1/images/generations
+ * PROVIDER: Fal.ai — modello `fal-ai/gpt-image-2`.
  *
  * SICUREZZA:
- * - TOGETHER_API_KEY letta SOLO dentro .handler() (mai bundled lato client).
+ * - FAL_KEY letta SOLO dentro .handler() (mai bundled lato client).
  * - Validazione input con Zod.
  *
  * MODE:
- * - text-to-image: nessuna reference → body senza image_url
- * - image-to-image (kontext): se l'utente carica un'ispirazione → image_url
+ * - text-to-image: nessuna reference → input senza image_urls
+ * - image-to-image: se l'utente carica un'ispirazione → image_urls
  *
- * RISPOSTA: response_format=b64_json → base64 → data:image/png;base64,...
+ * RISPOSTA: Fal restituisce direttamente un URL pubblico (https://...),
+ * usato sia come preview UI sia come input diretto per Trellis 2.
  */
 import { createServerFn } from "@tanstack/react-start";
 import { fal } from "@fal-ai/client";
@@ -110,147 +110,22 @@ function buildPrompt(input: JewelConceptInput): string {
     .filter(Boolean)
     .join(" ");
 
-  return `${description} professional jewelry product photography, isolated product shot on a clean neutral white or cream background, no people, no hands, no human, no model, no body, not worn, studio lighting, macro shot, luxury jewelry catalog style, ultra-detailed, 8k.`;
+  return `${description} professional jewelry product photography, isometric view, 45-degree angle, flat white background, soft diffused studio lighting, no harsh reflections, no specular highlights, sharp focus on all edges, clean geometry visible, no shadows on background, top-lit, even illumination, no people, no hands, no human, no model, not worn, luxury jewelry catalog style.`;
+}
+
+function dataUrlToFile(dataUrl: string, filename: string): File {
+  const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+  if (!match) throw new Error("Data URL non valido per l'ispirazione.");
+  const mime = match[1];
+  const bin = atob(match[2]);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new File([bytes as unknown as BlobPart], filename, { type: mime });
 }
 
 export const generateJewelConcept = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => JewelInputSchema.parse(input))
   .handler(async ({ data }): Promise<JewelConceptResult> => {
-    const apiKey = process.env.TOGETHER_API_KEY;
-    if (!apiKey) {
-      throw new Error(
-        "Servizio temporaneamente non disponibile. La chiave Together AI non è configurata.",
-      );
-    }
-
-    const prompt = buildPrompt(data);
-    const hasReference = Boolean(data.inspirationDataUrl);
-    const mode: "text-to-image" | "image-to-image" = hasReference
-      ? "image-to-image"
-      : "text-to-image";
-
-    const endpoint = "https://api.together.xyz/v1/images/generations";
-
-    const body: Record<string, unknown> = {
-      model: "black-forest-labs/FLUX.1-kontext-pro",
-      prompt,
-      width: 1024,
-      height: 1024,
-      steps: 28,
-      n: 1,
-      response_format: "b64_json",
-    };
-
-    if (hasReference) {
-      // FLUX.1-kontext supporta image_url come riferimento visivo.
-      body.image_url = data.inspirationDataUrl;
-    }
-
-    let res: Response;
-    try {
-      res = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-    } catch (err) {
-      console.error(`[jewel-concept] Together network error:`, err);
-      throw new Error(
-        `Errore di rete contattando Together AI. ${
-          err instanceof Error ? err.message : String(err)
-        }`,
-      );
-    }
-
-    const rawText = await res.text();
-
-    if (!res.ok) {
-      const status = res.status;
-      let upstreamMsg = rawText.slice(0, 400);
-      try {
-        const parsed = JSON.parse(rawText) as {
-          error?: { message?: string; type?: string } | string;
-          message?: string;
-        };
-        if (typeof parsed.error === "object" && parsed.error) {
-          upstreamMsg = parsed.error.message || parsed.error.type || upstreamMsg;
-        } else if (typeof parsed.error === "string") {
-          upstreamMsg = parsed.error;
-        } else if (parsed.message) {
-          upstreamMsg = parsed.message;
-        }
-      } catch {
-        /* lascia rawText */
-      }
-      console.error(
-        `[jewel-concept] Together ${status} (mode=${mode}): ${rawText.slice(0, 800)}`,
-      );
-
-      if (status === 401 || status === 403) {
-        throw new Error(`Together API key non valida o non autorizzata (${status}). ${upstreamMsg}`);
-      }
-      if (status === 402) {
-        throw new Error(`Credito Together esaurito (402). ${upstreamMsg}`);
-      }
-      if (status === 429) {
-        throw new Error("Atelier sovraccarico: troppe richieste su Together. Riprova tra poco.");
-      }
-      if (status === 413) {
-        throw new Error("Immagine di ispirazione troppo grande per Together (413).");
-      }
-      throw new Error(`Generazione Together fallita (${status}). ${upstreamMsg}`);
-    }
-
-    let payload: {
-      data?: Array<{ b64_json?: string; url?: string }>;
-    };
-    try {
-      payload = JSON.parse(rawText);
-    } catch (err) {
-      console.error("[jewel-concept] Together response non-JSON:", rawText.slice(0, 400));
-      throw new Error("Risposta non valida da Together AI.");
-    }
-
-    const first = payload.data?.[0];
-    if (!first) {
-      console.error("[jewel-concept] Together empty data array");
-      throw new Error("Risposta vuota da Together AI.");
-    }
-
-    let imageUrl: string;
-    let pngBytes: Uint8Array;
-    let pngMime = "image/png";
-    if (first.b64_json) {
-      imageUrl = `data:image/png;base64,${first.b64_json}`;
-      const bin = atob(first.b64_json);
-      pngBytes = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) pngBytes[i] = bin.charCodeAt(i);
-    } else if (first.url) {
-      // Fallback: scarica e converte in data URL così il resto del flusso
-      // (incluso Trellis 2) può consumarlo come prima.
-      try {
-        const imgRes = await fetch(first.url);
-        if (!imgRes.ok) {
-          throw new Error(`download fallito (${imgRes.status})`);
-        }
-        pngMime = imgRes.headers.get("content-type") || "image/png";
-        const buf = await imgRes.arrayBuffer();
-        pngBytes = new Uint8Array(buf);
-        const b64 = Buffer.from(buf).toString("base64");
-        imageUrl = `data:${pngMime};base64,${b64}`;
-      } catch (err) {
-        console.error("[jewel-concept] Together image url fetch failed:", err);
-        throw new Error("Impossibile recuperare l'immagine generata da Together.");
-      }
-    } else {
-      throw new Error("Together AI non ha restituito né b64_json né url.");
-    }
-
-    // Upload su Fal.ai storage per ottenere un URL pubblico consumabile da Trellis 2.
     const falKey = process.env.FAL_KEY;
     if (!falKey) {
       throw new Error(
@@ -258,29 +133,61 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
       );
     }
     fal.config({ credentials: falKey });
-    const ext = pngMime.includes("jpeg") || pngMime.includes("jpg")
-      ? "jpg"
-      : pngMime.includes("webp")
-        ? "webp"
-        : "png";
-    const file = new File([pngBytes as unknown as BlobPart], `jewel.${ext}`, { type: pngMime });
 
-    let trellisImageUrl: string;
+    const prompt = buildPrompt(data);
+    const hasReference = Boolean(data.inspirationDataUrl);
+    const mode: "text-to-image" | "image-to-image" = hasReference
+      ? "image-to-image"
+      : "text-to-image";
+    const endpoint = "fal-ai/gpt-image-2";
+
+    // Se presente un'ispirazione, caricala su Fal storage per ottenere un URL pubblico.
+    let inspirationUrl: string | undefined;
+    if (hasReference && data.inspirationDataUrl) {
+      try {
+        const refFile = dataUrlToFile(data.inspirationDataUrl, "inspiration");
+        inspirationUrl = await fal.storage.upload(refFile);
+      } catch (err) {
+        console.error("[jewel-concept] inspiration upload failed:", err);
+        throw new Error(
+          `Upload ispirazione su Fal storage fallito. ${
+            err instanceof Error ? err.message : String(err)
+          }`,
+        );
+      }
+    }
+
+    const input: Record<string, unknown> = {
+      prompt,
+      image_size: "square_hd",
+      quality: "high",
+      n: 1,
+    };
+    if (inspirationUrl) {
+      input.image_urls = [inspirationUrl];
+    }
+
+    let result: { data?: { images?: Array<{ url?: string }> } };
     try {
-      trellisImageUrl = await fal.storage.upload(file);
+      result = (await fal.subscribe(endpoint, { input })) as typeof result;
     } catch (err) {
-      console.error("[jewel-concept] fal.storage.upload failed:", err);
+      console.error(`[jewel-concept] Fal GPT Image 2 error:`, err);
       throw new Error(
-        `Upload immagine su Fal storage fallito. ${
+        `Generazione immagine fallita. ${
           err instanceof Error ? err.message : String(err)
         }`,
       );
     }
-    if (!/^https?:\/\//i.test(trellisImageUrl)) {
-      console.error("[jewel-concept] fal.storage non-HTTP URL:", trellisImageUrl);
-      throw new Error("URL immagine non pubblico restituito da Fal storage.");
+
+    const imageUrl = result.data?.images?.[0]?.url;
+    if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
+      console.error("[jewel-concept] Fal GPT Image 2 risposta inattesa:", result);
+      throw new Error("Fal.ai non ha restituito un URL immagine valido.");
     }
-    console.log("[jewel-concept] fal.storage upload OK:", trellisImageUrl);
+
+    // GPT Image 2 restituisce già un URL pubblico Fal: usalo direttamente per Trellis 2.
+    const trellisImageUrl = imageUrl;
+    console.log("[jewel-concept] Fal GPT Image 2 OK:", imageUrl);
 
     return { imageUrl, trellisImageUrl, prompt, endpoint, mode };
   });
