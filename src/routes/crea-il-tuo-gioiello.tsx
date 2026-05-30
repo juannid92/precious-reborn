@@ -187,17 +187,12 @@ function AtelierCreatePage() {
       }
       return;
     }
-    if (!generatedUrl || !/^(data:image\/|https?:\/\/)/i.test(generatedUrl)) {
-      setModel3dError("Genera prima il concept immagine.");
-      setModel3dStage("error");
-      return;
-    }
+    const sourceImageUrl = trellisImageUrl || generatedUrl;
     if (import.meta.env.DEV) {
-      console.log("[atelier-3d] GPT image URL:", generatedUrl);
-      console.log("[atelier-3d] 3D source image URL:", trellisImageUrl);
+      console.log("Concept image URL:", sourceImageUrl);
     }
-    if (!trellisImageUrl) {
-      setModel3dError("URL immagine 3D mancante. Rigenera il concept.");
+    if (!sourceImageUrl || !/^https?:\/\//i.test(sourceImageUrl)) {
+      setModel3dError("Genera prima il concept immagine.");
       setModel3dStage("error");
       return;
     }
@@ -209,7 +204,7 @@ function AtelierCreatePage() {
 
     let requestId: string;
     try {
-      const sub = await submit3DFn({ data: { trellisImageUrl } });
+      const sub = await submit3DFn({ data: { trellisImageUrl: sourceImageUrl } });
       if (req3dIdRef.current !== myReq) return;
       requestId = sub.requestId;
       if (import.meta.env.DEV) {
