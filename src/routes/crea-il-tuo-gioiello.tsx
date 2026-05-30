@@ -290,6 +290,7 @@ function AtelierCreatePage() {
 
   // Stop polling alla smontaggio del componente
   useEffect(() => stop3DPolling, [stop3DPolling]);
+  useEffect(() => stopConceptPolling, [stopConceptPolling]);
 
   const safeFilename = useCallback(
     (ext: string) => {
