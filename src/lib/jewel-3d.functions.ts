@@ -109,14 +109,15 @@ export const pollTrellis3DJob = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<PollTrellis3DResult> => {
     fal.config({ credentials: ensureKey() });
 
-    let status: { status: string };
+    let status: { status: string; logs?: unknown };
     try {
       status = (await fal.queue.status(ENDPOINT, {
         requestId: data.requestId,
         logs: true,
-      })) as { status: string };
+      })) as { status: string; logs?: unknown };
+      console.log("[jewel-3d] Trellis status:", status.status, "requestId:", data.requestId);
     } catch (error) {
-      console.error("Fal.ai status error details:", JSON.stringify(error, null, 2));
+      console.error("[jewel-3d] Fal.ai status error:", JSON.stringify(error, null, 2));
       return { status: "FAILED", error: "Errore nel controllo dello stato 3D." };
     }
 
@@ -125,26 +126,36 @@ export const pollTrellis3DJob = createServerFn({ method: "POST" })
         data?: {
           model_glb?: { url?: string; content_type?: string; file_size?: number };
         };
+        requestId?: string;
       };
       try {
         result = (await fal.queue.result(ENDPOINT, {
           requestId: data.requestId,
         })) as typeof result;
       } catch (error) {
-        console.error("Fal.ai result error details:", JSON.stringify(error, null, 2));
+        console.error("[jewel-3d] Fal.ai result fetch error:", JSON.stringify(error, null, 2));
         return { status: "FAILED", error: "Errore nel recupero del risultato 3D." };
       }
-      const modelGlb = result?.data?.model_glb;
-      const url = modelGlb?.url;
-      if (!url) {
-        console.error("[jewel-3d] missing model_glb.url:", JSON.stringify(result, null, 2));
-        return { status: "FAILED", error: "Risposta 3D senza URL del modello GLB." };
+
+      console.log("[jewel-3d] Trellis result:", JSON.stringify(result, null, 2));
+      const modelUrl = result?.data?.model_glb?.url;
+      console.log("[jewel-3d] model_glb url:", modelUrl);
+
+      if (!modelUrl) {
+        console.error(
+          "[jewel-3d] model_glb.url mancante nel risultato Trellis 2. Full result:",
+          JSON.stringify(result, null, 2),
+        );
+        return {
+          status: "FAILED",
+          error: "model_glb.url mancante nel risultato Trellis 2.",
+        };
       }
       return {
         status: "COMPLETED",
-        glbUrl: url,
-        contentType: modelGlb?.content_type || "model/gltf-binary",
-        sizeBytes: modelGlb?.file_size ?? 0,
+        glbUrl: modelUrl,
+        contentType: result.data?.model_glb?.content_type || "model/gltf-binary",
+        sizeBytes: result.data?.model_glb?.file_size ?? 0,
       };
     }
 
@@ -153,8 +164,8 @@ export const pollTrellis3DJob = createServerFn({ method: "POST" })
       return { status: "FAILED", error: "Generazione 3D fallita." };
     }
 
-    // IN_QUEUE | IN_PROGRESS (e qualsiasi altro stato intermedio)
     return {
       status: status.status === "IN_PROGRESS" ? "IN_PROGRESS" : "IN_QUEUE",
     };
   });
+
