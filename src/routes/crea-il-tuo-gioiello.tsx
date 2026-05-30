@@ -15,7 +15,7 @@ import { RequestSummaryCard } from "@/components/atelier/RequestSummaryCard";
 const Jewel3DViewer = lazy(() =>
   import("@/components/atelier/Jewel3DViewer").then((m) => ({ default: m.Jewel3DViewer })),
 );
-import { generateJewelConcept } from "@/lib/jewel-concept.functions";
+import { submitJewelConceptJob, pollJewelConceptJob } from "@/lib/jewel-concept.functions";
 import { submitTrellis3DJob, pollTrellis3DJob } from "@/lib/jewel-3d.functions";
 
 type Model3DStage = "idle" | "generating" | "ready" | "error";
@@ -130,17 +130,29 @@ function AtelierCreatePage() {
 
   const heroRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
-  const generateFn = useServerFn(generateJewelConcept);
+  const submitConceptFn = useServerFn(submitJewelConceptJob);
+  const pollConceptFn = useServerFn(pollJewelConceptJob);
   const submit3DFn = useServerFn(submitTrellis3DJob);
   const poll3DFn = useServerFn(pollTrellis3DJob);
+  const pollConceptTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const conceptRequestIdRef = useRef<string | null>(null);
   const poll3DTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const reqIdRef = useRef(0);
   const req3dIdRef = useRef(0);
   const router = useRouter();
 
+  const stopConceptPolling = useCallback(() => {
+    if (pollConceptTimerRef.current) {
+      clearInterval(pollConceptTimerRef.current);
+      pollConceptTimerRef.current = null;
+    }
+  }, []);
+
   const resetFlow = useCallback(() => {
     reqIdRef.current++;
     req3dIdRef.current++;
+    stopConceptPolling();
+    conceptRequestIdRef.current = null;
     if (poll3DTimerRef.current) {
       clearInterval(poll3DTimerRef.current);
       poll3DTimerRef.current = null;
@@ -161,7 +173,7 @@ function AtelierCreatePage() {
     setModel3dError(null);
     setStep(0);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [stopConceptPolling]);
 
   const goBack = useCallback(() => {
     if (typeof window !== "undefined" && window.history.length > 1) {
@@ -278,6 +290,7 @@ function AtelierCreatePage() {
 
   // Stop polling alla smontaggio del componente
   useEffect(() => stop3DPolling, [stop3DPolling]);
+  useEffect(() => stopConceptPolling, [stopConceptPolling]);
 
   const safeFilename = useCallback(
     (ext: string) => {
@@ -371,7 +384,73 @@ function AtelierCreatePage() {
     return () => ctx.revert();
   }, [step]);
 
-  // ─── Generazione concept reale via Together (server-side) ───
+  // ─── Polling concept image (queue async) ──────────────────────
+  const startConceptPolling = useCallback(
+    (requestId: string, myReq: number) => {
+      stopConceptPolling();
+      let attempts = 0;
+      const MAX_ATTEMPTS = 40; // 40 × 6s = 4 min
+      pollConceptTimerRef.current = setInterval(async () => {
+        attempts++;
+        if (reqIdRef.current !== myReq) {
+          stopConceptPolling();
+          return;
+        }
+        if (attempts > MAX_ATTEMPTS) {
+          stopConceptPolling();
+          if (import.meta.env.DEV) {
+            console.log("[atelier-concept] requestId", requestId, "TIMEOUT after", attempts);
+          }
+          setErrorMessage(
+            "La generazione immagine sta impiegando troppo tempo. Puoi riprovare a riprendere il polling.",
+          );
+          setPreviewStage("error");
+          return;
+        }
+        try {
+          const res = await pollConceptFn({ data: { requestId } });
+          if (reqIdRef.current !== myReq) {
+            stopConceptPolling();
+            return;
+          }
+          if (import.meta.env.DEV) {
+            console.log("[atelier-concept] poll", attempts, "status:", res.status);
+          }
+          if (res.status === "COMPLETED") {
+            stopConceptPolling();
+            conceptRequestIdRef.current = null;
+            if (import.meta.env.DEV) {
+              console.log("[atelier-concept] image URL:", res.imageUrl);
+            }
+            setGeneratedUrl(res.imageUrl);
+            setTrellisImageUrl(res.trellisImageUrl);
+            setPreviewStage("ready");
+            return;
+          }
+          if (res.status === "FAILED") {
+            stopConceptPolling();
+            conceptRequestIdRef.current = null;
+            setErrorMessage(res.error || "Generazione immagine fallita.");
+            setPreviewStage("error");
+            return;
+          }
+          // IN_QUEUE | IN_PROGRESS → continua
+        } catch (err) {
+          if (reqIdRef.current !== myReq) {
+            stopConceptPolling();
+            return;
+          }
+          console.error("[atelier-concept] polling failed:", err);
+          stopConceptPolling();
+          setErrorMessage(err instanceof Error ? err.message : "Errore inatteso.");
+          setPreviewStage("error");
+        }
+      }, 6000);
+    },
+    [pollConceptFn, stopConceptPolling],
+  );
+
+  // ─── Generazione concept reale via Fal GPT Image 2 (queue async) ───
   const runGeneration = useCallback(async () => {
     if (!type || !style || !metal) {
       setErrorMessage("Completa tipologia, stile e materia prima di generare il concept.");
@@ -382,6 +461,8 @@ function AtelierCreatePage() {
     // Invalida ogni job 3D in corso o completato: l'utente dovrà ri-cliccare "Genera 3D"
     req3dIdRef.current++;
     stop3DPolling();
+    stopConceptPolling();
+    conceptRequestIdRef.current = null;
     setModel3dStage("idle");
     setModelUrl(null);
     setModel3dError(null);
@@ -396,7 +477,7 @@ function AtelierCreatePage() {
     }, 900);
 
     try {
-      const res = await generateFn({
+      const sub = await submitConceptFn({
         data: {
           type: type as "anello" | "collana" | "bracciale" | "orecchini",
           style: style as "minimal" | "classico" | "moderno" | "statement" | "romantico" | "bespoke",
@@ -410,17 +491,49 @@ function AtelierCreatePage() {
       });
       clearTimeout(tAnalyze);
       if (reqIdRef.current !== myReq) return;
-      setGeneratedUrl(res.imageUrl);
-      setTrellisImageUrl(res.trellisImageUrl);
-      setPreviewStage("ready");
+      conceptRequestIdRef.current = sub.requestId;
+      if (import.meta.env.DEV) {
+        console.log("[atelier-concept] submitted requestId:", sub.requestId);
+      }
+      setPreviewStage("generating");
+      startConceptPolling(sub.requestId, myReq);
     } catch (err) {
       clearTimeout(tAnalyze);
       if (reqIdRef.current !== myReq) return;
-      console.error("[atelier] generation failed:", err);
+      console.error("[atelier] generation submit failed:", err);
       setErrorMessage(err instanceof Error ? err.message : "Errore inatteso.");
       setPreviewStage("error");
     }
-  }, [type, style, metal, stones, budget, notes, inspiration, generateFn, stop3DPolling]);
+  }, [
+    type,
+    style,
+    metal,
+    stones,
+    budget,
+    notes,
+    inspiration,
+    submitConceptFn,
+    startConceptPolling,
+    stop3DPolling,
+    stopConceptPolling,
+  ]);
+
+  // Riprende il polling sullo stesso requestId senza lanciare un nuovo job.
+  const resumeConceptPolling = useCallback(() => {
+    const rid = conceptRequestIdRef.current;
+    if (!rid) {
+      void runGeneration();
+      return;
+    }
+    const myReq = ++reqIdRef.current;
+    setErrorMessage(null);
+    setPreviewStage("generating");
+    if (import.meta.env.DEV) {
+      console.log("[atelier-concept] resume polling requestId:", rid);
+    }
+    startConceptPolling(rid, myReq);
+  }, [runGeneration, startConceptPolling]);
+  void resumeConceptPolling;
 
   // Avvia la generazione quando si entra nello step Concept
   useEffect(() => {
