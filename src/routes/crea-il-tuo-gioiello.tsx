@@ -15,7 +15,7 @@ import { RequestSummaryCard } from "@/components/atelier/RequestSummaryCard";
 const Jewel3DViewer = lazy(() =>
   import("@/components/atelier/Jewel3DViewer").then((m) => ({ default: m.Jewel3DViewer })),
 );
-import { generateJewelConcept } from "@/lib/jewel-concept.functions";
+import { submitJewelConceptJob, pollJewelConceptJob } from "@/lib/jewel-concept.functions";
 import { submitTrellis3DJob, pollTrellis3DJob } from "@/lib/jewel-3d.functions";
 
 type Model3DStage = "idle" | "generating" | "ready" | "error";
