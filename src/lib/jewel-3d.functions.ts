@@ -78,9 +78,22 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
 
     // Step 2: sottometti Trellis 2 con l'immagine senza sfondo.
     try {
+      const trellisInput = {
+        image_url: cleanImageUrl,
+        resolution: "1024",
+        texture_size: "2048",
+        mesh_simplify: 0.95,
+        remesh: true,
+        foreground_ratio: 0.92,
+      };
       const submitted = await fal.queue.submit(ENDPOINT, {
-        input: { image_url: cleanImageUrl },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: trellisInput as any,
       });
+
+
+
+
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
       return { requestId: submitted.request_id };
     } catch (error) {
