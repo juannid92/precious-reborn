@@ -292,8 +292,8 @@ function HomePage() {
           </Marquee>
         </Suspense>
         <div className="text-center mt-10">
-          <Link to="/anelli" className="underline-gold text-sm uppercase tracking-[0.28em]">
-            Vedi tutti gli anelli
+          <Link to="/categorie" className="underline-gold text-sm uppercase tracking-[0.28em]">
+            Vedi la collezione
           </Link>
         </div>
       </section>
