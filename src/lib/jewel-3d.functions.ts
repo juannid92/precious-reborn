@@ -196,11 +196,21 @@ export const pollTrellis3DJob = createServerFn({ method: "POST" })
       .maybeSingle();
 
     if (error) {
-      console.error("[jewel-3d] poll DB error:", error);
-      return { status: "FAILED", error: "Errore nel recupero dello stato 3D dal DB." };
+      console.error("[jewel-3d] poll DB error FULL:", JSON.stringify({
+        message: error.message,
+        code: (error as { code?: string }).code,
+        details: (error as { details?: string }).details,
+        hint: (error as { hint?: string }).hint,
+        requestId: data.requestId,
+      }, null, 2));
+      return {
+        status: "FAILED",
+        error: `Errore DB poll: ${error.message}${(error as { code?: string }).code ? ` [${(error as { code?: string }).code}]` : ""}`,
+      };
     }
 
     if (!row) {
+      console.log("[jewel-3d] poll: nessuna riga per requestId:", data.requestId);
       // Riga non ancora visibile (race insert) → trattiamo come in coda.
       return { status: "IN_QUEUE" };
     }
