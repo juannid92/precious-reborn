@@ -110,7 +110,7 @@ function buildPrompt(input: JewelConceptInput): string {
     .filter(Boolean)
     .join(" ");
 
-  return `${description} professional jewelry product photography, isometric view, 45-degree angle, flat white background, soft diffused studio lighting, no harsh reflections, no specular highlights, sharp focus on all edges, clean geometry visible, no shadows on background, top-lit, even illumination, no people, no hands, no human, no model, not worn, luxury jewelry catalog style.`;
+  return `${description} professional jewelry product photography, isometric view, 45-degree angle, flat white background, soft diffused studio lighting, no harsh reflections, no specular highlights, sharp focus on all edges, clean geometry visible, no shadows on background, top-lit, even illumination, suitable for 3D reconstruction, no people, no hands, no human, no model, not worn, luxury jewelry catalog style.`;
 }
 
 function dataUrlToFile(dataUrl: string, filename: string): File {
