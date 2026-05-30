@@ -310,7 +310,7 @@ function AtelierCreatePage() {
       const gltf = await loader.loadAsync(modelUrl);
       const exporter = new STLExporter();
       const stlBinary = exporter.parse(gltf.scene, { binary: true }) as DataView;
-      const blob = new Blob([stlBinary], { type: "application/octet-stream" });
+      const blob = new Blob([new Uint8Array(stlBinary.buffer)], { type: "application/octet-stream" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
