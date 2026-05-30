@@ -1,22 +1,24 @@
 /**
- * Server function — generazione concept gioiello via Fal.ai GPT Image 2.
+ * Server functions — generazione concept gioiello via Fal.ai GPT Image 2.
  *
  * PROVIDER: Fal.ai — modello `fal-ai/gpt-image-2`.
+ *
+ * Per evitare timeout del worker (GPT Image 2 in "high" quality può superare
+ * il limite sincrono), il flusso è asincrono via queue:
+ *   - submitJewelConceptJob: costruisce il prompt, carica eventuale
+ *     ispirazione su Fal storage e sottomette il job → ritorna requestId.
+ *   - pollJewelConceptJob: controlla lo stato e, se completato, ritorna
+ *     l'URL dell'immagine generata.
  *
  * SICUREZZA:
  * - FAL_KEY letta SOLO dentro .handler() (mai bundled lato client).
  * - Validazione input con Zod.
- *
- * MODE:
- * - text-to-image: nessuna reference → input senza image_urls
- * - image-to-image: se l'utente carica un'ispirazione → image_urls
- *
- * RISPOSTA: Fal restituisce direttamente un URL pubblico (https://...),
- * usato sia come preview UI sia come input diretto per Trellis 2.
  */
 import { createServerFn } from "@tanstack/react-start";
 import { fal } from "@fal-ai/client";
 import { z } from "zod";
+
+const ENDPOINT = "fal-ai/gpt-image-2";
 
 const JewelInputSchema = z.object({
   type: z.enum(["anello", "collana", "bracciale", "orecchini"]),
@@ -36,15 +38,29 @@ const JewelInputSchema = z.object({
     .optional(),
 });
 
+const PollInputSchema = z.object({
+  requestId: z.string().min(1).max(256),
+});
+
 export type JewelConceptInput = z.infer<typeof JewelInputSchema>;
 
-export type JewelConceptResult = {
-  imageUrl: string;
-  trellisImageUrl: string;
+export type SubmitJewelConceptResult = {
+  requestId: string;
   prompt: string;
   endpoint: string;
   mode: "text-to-image" | "image-to-image";
 };
+
+export type PollJewelConceptResult =
+  | { status: "IN_QUEUE" | "IN_PROGRESS"; requestId: string }
+  | {
+      status: "COMPLETED";
+      requestId: string;
+      imageUrl: string;
+      trellisImageUrl: string;
+      endpoint: string;
+    }
+  | { status: "FAILED"; requestId: string; error: string };
 
 const TYPE_EN: Record<JewelConceptInput["type"], string> = {
   anello: "ring",
@@ -123,23 +139,27 @@ function dataUrlToFile(dataUrl: string, filename: string): File {
   return new File([bytes as unknown as BlobPart], filename, { type: mime });
 }
 
-export const generateJewelConcept = createServerFn({ method: "POST" })
+function ensureKey(): string {
+  const apiKey = process.env.FAL_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "Servizio temporaneamente non disponibile. La chiave Fal.ai non è configurata.",
+    );
+  }
+  return apiKey;
+}
+
+// ─── 1) Submit ──────────────────────────────────────────────────
+export const submitJewelConceptJob = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => JewelInputSchema.parse(input))
-  .handler(async ({ data }): Promise<JewelConceptResult> => {
-    const falKey = process.env.FAL_KEY;
-    if (!falKey) {
-      throw new Error(
-        "Servizio temporaneamente non disponibile. La chiave Fal.ai non è configurata.",
-      );
-    }
-    fal.config({ credentials: falKey });
+  .handler(async ({ data }): Promise<SubmitJewelConceptResult> => {
+    fal.config({ credentials: ensureKey() });
 
     const prompt = buildPrompt(data);
     const hasReference = Boolean(data.inspirationDataUrl);
     const mode: "text-to-image" | "image-to-image" = hasReference
       ? "image-to-image"
       : "text-to-image";
-    const endpoint = "fal-ai/gpt-image-2";
 
     // Se presente un'ispirazione, caricala su Fal storage per ottenere un URL pubblico.
     let inspirationUrl: string | undefined;
@@ -163,32 +183,97 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
       quality: "high",
       n: 1,
     };
-
     if (inspirationUrl) {
       input.image_urls = [inspirationUrl];
     }
 
-    let result: { data?: { images?: Array<{ url?: string }> } };
     try {
-      result = (await fal.subscribe(endpoint, { input })) as typeof result;
+      const submitted = await fal.queue.submit(ENDPOINT, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: input as any,
+      });
+      console.log("[jewel-concept] submitted, request_id:", submitted.request_id);
+      return {
+        requestId: submitted.request_id,
+        prompt,
+        endpoint: ENDPOINT,
+        mode,
+      };
     } catch (err) {
-      console.error(`[jewel-concept] Fal GPT Image 2 error:`, err);
+      console.error("[jewel-concept] Fal GPT Image 2 submit error:", err);
       throw new Error(
-        `Generazione immagine fallita. ${
+        `Sottomissione immagine fallita. ${
           err instanceof Error ? err.message : String(err)
         }`,
       );
     }
+  });
 
-    const imageUrl = result.data?.images?.[0]?.url;
-    if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
-      console.error("[jewel-concept] Fal GPT Image 2 risposta inattesa:", result);
-      throw new Error("Fal.ai non ha restituito un URL immagine valido.");
+// ─── 2) Poll ────────────────────────────────────────────────────
+export const pollJewelConceptJob = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => PollInputSchema.parse(input))
+  .handler(async ({ data }): Promise<PollJewelConceptResult> => {
+    fal.config({ credentials: ensureKey() });
+
+    let status: { status: string };
+    try {
+      status = (await fal.queue.status(ENDPOINT, {
+        requestId: data.requestId,
+        logs: false,
+      })) as { status: string };
+    } catch (err) {
+      console.error("[jewel-concept] status error:", err);
+      return {
+        status: "FAILED",
+        requestId: data.requestId,
+        error: "Errore nel controllo dello stato immagine.",
+      };
     }
 
-    // GPT Image 2 restituisce già un URL pubblico Fal: usalo direttamente per Trellis 2.
-    const trellisImageUrl = imageUrl;
-    console.log("[jewel-concept] Fal GPT Image 2 OK:", imageUrl);
+    if (status.status === "COMPLETED") {
+      let result: { data?: { images?: Array<{ url?: string }> } };
+      try {
+        result = (await fal.queue.result(ENDPOINT, {
+          requestId: data.requestId,
+        })) as typeof result;
+      } catch (err) {
+        console.error("[jewel-concept] result error:", err);
+        return {
+          status: "FAILED",
+          requestId: data.requestId,
+          error: "Errore nel recupero del risultato immagine.",
+        };
+      }
+      const imageUrl = result.data?.images?.[0]?.url;
+      if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
+        console.error("[jewel-concept] risposta inattesa:", result);
+        return {
+          status: "FAILED",
+          requestId: data.requestId,
+          error: "Fal.ai non ha restituito un URL immagine valido.",
+        };
+      }
+      console.log("[jewel-concept] COMPLETED, imageUrl:", imageUrl);
+      return {
+        status: "COMPLETED",
+        requestId: data.requestId,
+        imageUrl,
+        trellisImageUrl: imageUrl,
+        endpoint: ENDPOINT,
+      };
+    }
 
-    return { imageUrl, trellisImageUrl, prompt, endpoint, mode };
+    if (status.status === "FAILED") {
+      console.error("[jewel-concept] job FAILED:", status);
+      return {
+        status: "FAILED",
+        requestId: data.requestId,
+        error: "Generazione immagine fallita.",
+      };
+    }
+
+    return {
+      status: status.status === "IN_PROGRESS" ? "IN_PROGRESS" : "IN_QUEUE",
+      requestId: data.requestId,
+    };
   });
