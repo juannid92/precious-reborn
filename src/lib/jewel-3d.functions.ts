@@ -78,24 +78,57 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
 
     // Step 2: sottometti Trellis 2 con l'immagine senza sfondo.
     try {
+      const resolution = Number(1024);
+      const textureSize = Number(2048);
+      const meshSimplify = Number(0.95);
+      const foregroundRatio = Number(0.92);
+
+      const allowedResolution = [512, 1024, 1536] as const;
+      const allowedTextureSize = [1024, 2048, 4096] as const;
+
+      if (!allowedResolution.includes(resolution as (typeof allowedResolution)[number])) {
+        console.error("[jewel-3d] resolution non valida:", resolution);
+        throw new Error("Parametro Trellis 2 'resolution' non valido (atteso 512, 1024 o 1536).");
+      }
+      if (!allowedTextureSize.includes(textureSize as (typeof allowedTextureSize)[number])) {
+        console.error("[jewel-3d] texture_size non valida:", textureSize);
+        throw new Error("Parametro Trellis 2 'texture_size' non valido (atteso 1024, 2048 o 4096).");
+      }
+      if (!Number.isFinite(meshSimplify) || !Number.isFinite(foregroundRatio)) {
+        console.error("[jewel-3d] mesh_simplify/foreground_ratio non numerici:", {
+          meshSimplify,
+          foregroundRatio,
+        });
+        throw new Error("Parametri numerici Trellis 2 non validi.");
+      }
+
       const trellisInput = {
         image_url: cleanImageUrl,
-        resolution: "1024",
-        texture_size: "2048",
-        mesh_simplify: 0.95,
+        resolution,
+        texture_size: textureSize,
+        mesh_simplify: meshSimplify,
         remesh: true,
-        foreground_ratio: 0.92,
+        foreground_ratio: foregroundRatio,
       };
+
+      console.log(
+        "[jewel-3d] Trellis 2 payload:",
+        JSON.stringify(trellisInput, null, 2),
+      );
+
       const submitted = await fal.queue.submit(ENDPOINT, {
+        // I tipi TS di @fal-ai/client per trellis-2 indicano stringhe,
+        // ma il server valida come literal numerici (resolution: 512|1024|1536,
+        // texture_size: 1024|2048|4096). Cast per allinearci al runtime.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         input: trellisInput as any,
       });
 
 
 
-
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
       return { requestId: submitted.request_id };
+
     } catch (error) {
       console.error("Fal.ai submit error details:", JSON.stringify(error, null, 2));
       throw new Error(`Fal.ai trellis-2 submit failed: ${JSON.stringify(error)}`);
