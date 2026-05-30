@@ -82,6 +82,7 @@ export function SiteFooter() {
             <p>CARA S.R.L · Via Beatillo, 14 — 70121 Bari</p>
             <p>P.I. — C.F.: 08895310723</p>
           </div>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link to="/privacy-policy" className="text-bone/60 hover:text-gold transition-colors">
               Privacy Policy
             </Link>
