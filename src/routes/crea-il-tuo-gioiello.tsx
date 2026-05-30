@@ -744,11 +744,12 @@ function AtelierCreatePage() {
                                   </button>
                                   <button
                                     type="button"
-                                    onClick={downloadOBJ}
+                                    onClick={downloadSTL}
+                                    disabled={!modelUrl}
                                     className="btn-primary"
                                   >
                                     <Download className="h-4 w-4" />
-                                    Scarica modello 3D (.obj)
+                                    Scarica modello 3D (.stl)
                                   </button>
                                   <button
                                     type="button"
