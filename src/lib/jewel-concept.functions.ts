@@ -17,6 +17,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { fal } from "@fal-ai/client";
 import { z } from "zod";
+import { assertTrustedOrigin } from "./ai-guard";
 
 const ENDPOINT = "fal-ai/gpt-image-2";
 
@@ -153,6 +154,7 @@ function ensureKey(): string {
 export const submitJewelConceptJob = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => JewelInputSchema.parse(input))
   .handler(async ({ data }): Promise<SubmitJewelConceptResult> => {
+    assertTrustedOrigin();
     fal.config({ credentials: ensureKey() });
 
     const prompt = buildPrompt(data);
@@ -169,11 +171,7 @@ export const submitJewelConceptJob = createServerFn({ method: "POST" })
         inspirationUrl = await fal.storage.upload(refFile);
       } catch (err) {
         console.error("[jewel-concept] inspiration upload failed:", err);
-        throw new Error(
-          `Upload ispirazione su Fal storage fallito. ${
-            err instanceof Error ? err.message : String(err)
-          }`,
-        );
+        throw new Error("Upload dell'immagine di ispirazione non riuscito. Riprova.");
       }
     }
 
@@ -201,11 +199,7 @@ export const submitJewelConceptJob = createServerFn({ method: "POST" })
       };
     } catch (err) {
       console.error("[jewel-concept] Fal GPT Image 2 submit error:", err);
-      throw new Error(
-        `Sottomissione immagine fallita. ${
-          err instanceof Error ? err.message : String(err)
-        }`,
-      );
+      throw new Error("Generazione del concept non riuscita. Riprova più tardi.");
     }
   });
 

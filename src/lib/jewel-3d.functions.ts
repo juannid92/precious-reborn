@@ -16,6 +16,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { fal } from "@fal-ai/client";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/integrations/supabase/client.server";
+import { assertTrustedOrigin } from "./ai-guard";
 
 const ENDPOINT = "fal-ai/trellis-2";
 
@@ -74,6 +75,7 @@ function publicWebhookUrl(): string {
 export const submitTrellis3DJob = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => SubmitInputSchema.parse(input))
   .handler(async ({ data }): Promise<SubmitTrellis3DResult> => {
+    assertTrustedOrigin();
     fal.config({ credentials: ensureFalKey() });
     const supabase = getSupabaseAdmin();
 
@@ -123,7 +125,7 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
       console.log("[jewel-3d] birefnet OK, clean image:", cleanImageUrl);
     } catch (error) {
       console.error("[jewel-3d] birefnet error:", JSON.stringify(error, null, 2));
-      throw new Error(`Fal.ai birefnet failed: ${JSON.stringify(error)}`);
+      throw new Error("Preparazione immagine 3D non riuscita. Riprova più tardi.");
     }
 
     // ─── Step 2: submit Trellis 2 con webhook ───
@@ -161,7 +163,7 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", requestId);
     } catch (error) {
       console.error("[jewel-3d] Fal.ai submit error:", JSON.stringify(error, null, 2));
-      throw new Error(`Fal.ai trellis-2 submit failed: ${JSON.stringify(error)}`);
+      throw new Error("Generazione 3D non riuscita. Riprova più tardi.");
     }
 
     // ─── Step 3: persist nel DB ───
