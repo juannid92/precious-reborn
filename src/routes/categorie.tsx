@@ -120,7 +120,7 @@ function CategoriePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {rings.slice(0, 4).map((r, i) => (
               <Reveal key={i} delay={i * 0.05}>
-                <Link to="/anelli" className="block group">
+                <Link to="/contatti" className="block group">
                   <div className="aspect-square overflow-hidden bg-bone">
                     <img src={r.image} alt={r.name} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
                   </div>
