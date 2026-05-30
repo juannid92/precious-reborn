@@ -937,7 +937,7 @@ function AtelierCreatePage() {
                             )}
 
                             {/* Errore generazione 3D */}
-                            {model3dStage === "error" && model3dError && (
+                            {(model3dStage === "error" || model3dStage === "timeout_pending") && model3dError && (
                               <p className="text-sm text-red-600 leading-relaxed">
                                 {model3dError}
                               </p>
