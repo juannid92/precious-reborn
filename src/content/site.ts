@@ -110,7 +110,7 @@ export const categories: Category[] = [
     slug: "anelli",
     name: "Anelli",
     shortName: "Anelli",
-    to: "/anelli",
+    to: "/categorie#anelli",
     image: catAnelli,
     description:
       "Dal solitario all'anello di fidanzamento, ogni modello racconta un istante prezioso.",
