@@ -161,6 +161,8 @@ function AtelierCreatePage() {
       clearInterval(poll3DTimerRef.current);
       poll3DTimerRef.current = null;
     }
+    trellisRequestIdRef.current = null;
+    trellisSourceUrlRef.current = null;
     setInspiration(null);
     setType(null);
     setStyle(null);
