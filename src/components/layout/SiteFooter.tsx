@@ -90,7 +90,7 @@ export function SiteFooter() {
               Cookie Policy
             </Link>
             <CookiePreferencesLink className="text-bone/60 hover:text-gold transition-colors" />
-            <span>Made with care · P.IVA in atelier</span>
+            <span>Made with care</span>
           </div>
         </div>
       </div>
