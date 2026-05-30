@@ -62,9 +62,9 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
         input: {
           image_url: imageUrl,
           model: "General Use (Light)",
-          output_type: "rgba",
         },
       })) as { data?: { image?: { url?: string } } };
+
       const url = bgResult.data?.image?.url;
       if (!url || !/^https?:\/\//i.test(url)) {
         throw new Error("birefnet: URL immagine pulita mancante o non valido.");
