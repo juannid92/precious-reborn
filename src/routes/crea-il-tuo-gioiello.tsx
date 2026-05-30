@@ -187,10 +187,14 @@ function AtelierCreatePage() {
       }
       return;
     }
-    if (!generatedUrl || !generatedUrl.startsWith("data:image/")) {
+    if (!generatedUrl || !/^(data:image\/|https?:\/\/)/i.test(generatedUrl)) {
       setModel3dError("Genera prima il concept immagine.");
       setModel3dStage("error");
       return;
+    }
+    if (import.meta.env.DEV) {
+      console.log("[atelier-3d] GPT image URL:", generatedUrl);
+      console.log("[atelier-3d] 3D source image URL:", trellisImageUrl);
     }
     if (!trellisImageUrl) {
       setModel3dError("URL immagine 3D mancante. Rigenera il concept.");
