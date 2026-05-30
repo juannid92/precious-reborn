@@ -86,8 +86,9 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
           mesh_simplify: 0.95,
           remesh: true,
           foreground_ratio: 0.92,
-        },
+        } as unknown as Parameters<typeof fal.queue.submit>[1]["input"],
       });
+
 
 
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
