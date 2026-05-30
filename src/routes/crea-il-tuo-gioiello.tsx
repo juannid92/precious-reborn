@@ -141,9 +141,18 @@ function AtelierCreatePage() {
   const req3dIdRef = useRef(0);
   const router = useRouter();
 
+  const stopConceptPolling = useCallback(() => {
+    if (pollConceptTimerRef.current) {
+      clearInterval(pollConceptTimerRef.current);
+      pollConceptTimerRef.current = null;
+    }
+  }, []);
+
   const resetFlow = useCallback(() => {
     reqIdRef.current++;
     req3dIdRef.current++;
+    stopConceptPolling();
+    conceptRequestIdRef.current = null;
     if (poll3DTimerRef.current) {
       clearInterval(poll3DTimerRef.current);
       poll3DTimerRef.current = null;
@@ -164,7 +173,7 @@ function AtelierCreatePage() {
     setModel3dError(null);
     setStep(0);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [stopConceptPolling]);
 
   const goBack = useCallback(() => {
     if (typeof window !== "undefined" && window.history.length > 1) {
