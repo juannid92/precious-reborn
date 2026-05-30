@@ -302,15 +302,32 @@ function AtelierCreatePage() {
   const downloadSTL = useCallback(async () => {
     if (!modelUrl) return;
     try {
-      const [{ GLTFLoader }, { STLExporter }] = await Promise.all([
+      const [{ GLTFLoader }, { STLExporter }, THREE] = await Promise.all([
         import("three/examples/jsm/loaders/GLTFLoader.js"),
         import("three/examples/jsm/exporters/STLExporter.js"),
+        import("three"),
       ]);
       const loader = new GLTFLoader();
       const gltf = await loader.loadAsync(modelUrl);
+      const scene = gltf.scene;
+
+      const TARGET_SIZE_MM = 30;
+      const box = new THREE.Box3().setFromObject(scene);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const maxDim = Math.max(size.x, size.y, size.z) || 1;
+      const scaleFactor = TARGET_SIZE_MM / maxDim;
+      scene.scale.setScalar(scaleFactor);
+      scene.updateMatrixWorld(true);
+
       const exporter = new STLExporter();
-      const stlBinary = exporter.parse(gltf.scene, { binary: true }) as DataView;
+      const stlBinary = exporter.parse(scene, { binary: true }) as DataView;
+
+      scene.scale.setScalar(1 / scaleFactor);
+      scene.updateMatrixWorld(true);
+
       const ab = stlBinary.buffer.slice(stlBinary.byteOffset, stlBinary.byteOffset + stlBinary.byteLength) as ArrayBuffer;
+
       const blob = new Blob([ab], { type: "application/octet-stream" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
