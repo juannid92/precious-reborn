@@ -18,7 +18,7 @@ const Jewel3DViewer = lazy(() =>
 import { submitJewelConceptJob, pollJewelConceptJob } from "@/lib/jewel-concept.functions";
 import { submitTrellis3DJob, pollTrellis3DJob } from "@/lib/jewel-3d.functions";
 
-type Model3DStage = "idle" | "generating" | "ready" | "error";
+type Model3DStage = "idle" | "generating" | "ready" | "error" | "timeout_pending";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
