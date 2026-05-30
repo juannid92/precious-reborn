@@ -159,10 +159,11 @@ export const generateJewelConcept = createServerFn({ method: "POST" })
 
     const input: Record<string, unknown> = {
       prompt,
-      image_size: "square_hd",
+      image_size: { width: 1536, height: 1536 },
       quality: "high",
       n: 1,
     };
+
     if (inspirationUrl) {
       input.image_urls = [inspirationUrl];
     }
