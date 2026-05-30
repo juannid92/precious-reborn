@@ -299,29 +299,29 @@ function AtelierCreatePage() {
     document.body.removeChild(a);
   }, [modelUrl, safeFilename]);
 
-  const downloadOBJ = useCallback(async () => {
+  const downloadSTL = useCallback(async () => {
     if (!modelUrl) return;
     try {
-      const [{ GLTFLoader }, { OBJExporter }] = await Promise.all([
+      const [{ GLTFLoader }, { STLExporter }] = await Promise.all([
         import("three/examples/jsm/loaders/GLTFLoader.js"),
-        import("three/examples/jsm/exporters/OBJExporter.js"),
+        import("three/examples/jsm/exporters/STLExporter.js"),
       ]);
       const loader = new GLTFLoader();
       const gltf = await loader.loadAsync(modelUrl);
-      const exporter = new OBJExporter();
-      const objString = exporter.parse(gltf.scene);
-      const blob = new Blob([objString], { type: "text/plain" });
+      const exporter = new STLExporter();
+      const stlBinary = exporter.parse(gltf.scene, { binary: true }) as DataView;
+      const blob = new Blob([stlBinary], { type: "application/octet-stream" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = safeFilename("obj");
+      a.download = safeFilename("stl");
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("[atelier-3d] OBJ export failed:", err);
-      setModel3dError("Conversione OBJ fallita. Riprova.");
+      console.error("[atelier-3d] STL export failed:", err);
+      setModel3dError("Esportazione STL fallita. Riprova.");
     }
   }, [modelUrl, safeFilename]);
 
