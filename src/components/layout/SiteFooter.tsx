@@ -77,7 +77,11 @@ export function SiteFooter() {
         </div>
 
         <div className="border-t border-bone/10 mt-16 pt-8 flex flex-col md:flex-row justify-between gap-3 text-xs text-bone/40">
-          <p>© {new Date().getFullYear()} {brand.name} · Laboratorio orafo · Bari, Italia</p>
+          <div className="space-y-1">
+            <p>© {new Date().getFullYear()} {brand.name} · Laboratorio orafo · Bari, Italia</p>
+            <p>CARA S.R.L · Via Beatillo, 14 — 70121 Bari</p>
+            <p>P.I. — C.F.: 08895310723</p>
+          </div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link to="/privacy-policy" className="text-bone/60 hover:text-gold transition-colors">
               Privacy Policy
@@ -86,7 +90,7 @@ export function SiteFooter() {
               Cookie Policy
             </Link>
             <CookiePreferencesLink className="text-bone/60 hover:text-gold transition-colors" />
-            <span>Made with care · P.IVA in atelier</span>
+            <span>Made with care</span>
           </div>
         </div>
       </div>
