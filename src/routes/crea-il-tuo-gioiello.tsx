@@ -137,6 +137,10 @@ function AtelierCreatePage() {
   const pollConceptTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const conceptRequestIdRef = useRef<string | null>(null);
   const poll3DTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // requestId Trellis 2 attivo (persistente attraverso timeout del polling)
+  const trellisRequestIdRef = useRef<string | null>(null);
+  // URL immagine 2D usata per il job 3D corrente (per capire se è cambiata)
+  const trellisSourceUrlRef = useRef<string | null>(null);
   const reqIdRef = useRef(0);
   const req3dIdRef = useRef(0);
   const router = useRouter();
