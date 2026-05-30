@@ -51,7 +51,6 @@ export const contacts = {
 export const navigation = [
   { to: "/", label: "Home" },
   { to: "/categorie", label: "Collezioni" },
-  { to: "/anelli", label: "Anelli" },
   { to: "/servizi", label: "Servizi" },
   { to: "/crea-il-tuo-gioiello", label: "Crea il tuo gioiello" },
   { to: "/storia", label: "Il Laboratorio" },
@@ -111,7 +110,7 @@ export const categories: Category[] = [
     slug: "anelli",
     name: "Anelli",
     shortName: "Anelli",
-    to: "/anelli",
+    to: "/categorie#anelli",
     image: catAnelli,
     description:
       "Dal solitario all'anello di fidanzamento, ogni modello racconta un istante prezioso.",

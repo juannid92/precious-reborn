@@ -16,7 +16,6 @@ import { Route as CreaIlTuoGioielloRouteImport } from './routes/crea-il-tuo-gioi
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as CategorieRouteImport } from './routes/categorie'
-import { Route as AnelliRouteImport } from './routes/anelli'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
@@ -55,11 +54,6 @@ const CategorieRoute = CategorieRouteImport.update({
   path: '/categorie',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnelliRoute = AnelliRouteImport.update({
-  id: '/anelli',
-  path: '/anelli',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -74,7 +68,6 @@ const ApiPublicFalTrellisWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/anelli': typeof AnelliRoute
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -86,7 +79,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/anelli': typeof AnelliRoute
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -99,7 +91,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/anelli': typeof AnelliRoute
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -113,7 +104,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/anelli'
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
@@ -125,7 +115,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/anelli'
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
@@ -137,7 +126,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/anelli'
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
@@ -150,7 +138,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnelliRoute: typeof AnelliRoute
   CategorieRoute: typeof CategorieRoute
   ContattiRoute: typeof ContattiRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
@@ -212,13 +199,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorieRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/anelli': {
-      id: '/anelli'
-      path: '/anelli'
-      fullPath: '/anelli'
-      preLoaderRoute: typeof AnelliRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -238,7 +218,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnelliRoute: AnelliRoute,
   CategorieRoute: CategorieRoute,
   ContattiRoute: ContattiRoute,
   CookiePolicyRoute: CookiePolicyRoute,

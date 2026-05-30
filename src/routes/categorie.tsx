@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+
 import { brand, categories, rings } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { Marquee } from "@/components/motion/Marquee";
@@ -80,16 +80,9 @@ function CategoriePage() {
                   <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
                     {cat.description}
                   </p>
-                  {cat.slug === "anelli" ? (
-                    <Link to="/anelli" className="btn-primary group">
-                      Esplora gli anelli
-                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                    </Link>
-                  ) : (
-                    <Link to="/contatti" className="underline-gold text-sm uppercase tracking-[0.28em]">
-                      Richiedi in atelier
-                    </Link>
-                  )}
+                  <Link to="/contatti" className="underline-gold text-sm uppercase tracking-[0.28em]">
+                    Richiedi in atelier
+                  </Link>
                 </Reveal>
               </div>
             </article>
@@ -127,7 +120,7 @@ function CategoriePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {rings.slice(0, 4).map((r, i) => (
               <Reveal key={i} delay={i * 0.05}>
-                <Link to="/anelli" className="block group">
+                <Link to="/contatti" className="block group">
                   <div className="aspect-square overflow-hidden bg-bone">
                     <img src={r.image} alt={r.name} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
                   </div>
