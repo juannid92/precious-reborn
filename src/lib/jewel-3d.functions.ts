@@ -81,13 +81,14 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
       const submitted = await fal.queue.submit(ENDPOINT, {
         input: {
           image_url: cleanImageUrl,
-          resolution: 1024,
-          texture_size: 2048,
+          resolution: "1024",
+          texture_size: "2048",
           mesh_simplify: 0.95,
           remesh: true,
           foreground_ratio: 0.92,
         },
       });
+
 
       console.log("[jewel-3d] Trellis 2 submitted, request_id:", submitted.request_id);
       return { requestId: submitted.request_id };
