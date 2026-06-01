@@ -29,6 +29,7 @@ import microfusioneAsset from "@/assets/microfusione.jpeg.asset.json";
 import incastonaturaAsset from "@/assets/incastonatura.jpeg.asset.json";
 import consegnaAsset from "@/assets/consegna.jpeg.asset.json";
 import disegnoCadAsset from "@/assets/disegno-cad.jpeg.asset.json";
+import ispirazioneAsset from "@/assets/ispirazione.png.asset.json";
 
 export const brand = {
   name: "Cara Preziosi",
