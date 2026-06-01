@@ -27,6 +27,7 @@ import servizioLucidatura from "@/assets/cara/servizio-lucidatura.jpg";
 import servizioRestauro from "@/assets/cara/servizio-restauro.jpg";
 import microfusioneAsset from "@/assets/microfusione.jpeg.asset.json";
 import incastonaturaAsset from "@/assets/incastonatura.jpeg.asset.json";
+import consegnaAsset from "@/assets/consegna.jpeg.asset.json";
 
 export const brand = {
   name: "Cara Preziosi",
@@ -304,7 +305,7 @@ export const processSteps = [
     number: "V",
     title: "La consegna",
     body: "Lucidatura finale, rodiatura, certificato internazionale. Il gioiello viene consegnato in atelier, su appuntamento. Un rito, non una transazione.",
-    image: storiaVetrina,
+    image: consegnaAsset.url,
   },
 ];
 
