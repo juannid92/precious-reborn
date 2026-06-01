@@ -305,7 +305,7 @@ export const processSteps = [
     number: "V",
     title: "La consegna",
     body: "Lucidatura finale, rodiatura, certificato internazionale. Il gioiello viene consegnato in atelier, su appuntamento. Un rito, non una transazione.",
-    image: storiaVetrina,
+    image: consegnaAsset.url,
   },
 ];
 
