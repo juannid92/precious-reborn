@@ -283,7 +283,7 @@ export const processSteps = [
     number: "I",
     title: "L'ispirazione",
     body: "Ogni gioiello nasce da un incontro. Una storia, un'emozione, un dettaglio personale che il maestro orafo trasforma in primo schizzo a matita.",
-    image: storiaMani,
+    image: ispirazioneAsset.url,
   },
   {
     number: "II",
