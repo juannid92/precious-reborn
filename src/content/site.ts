@@ -298,7 +298,7 @@ export const processSteps = [
     number: "IV",
     title: "L'incastonatura",
     body: "Pietre selezionate una a una. Mano ferma, lente d'ingrandimento, ore di lavoro per fissare ogni diamante esattamente dove la luce lo accenderà.",
-    image: ringSchiuma,
+    image: incastonaturaAsset.url,
   },
   {
     number: "V",
