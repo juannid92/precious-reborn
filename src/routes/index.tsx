@@ -146,7 +146,7 @@ function HomePage() {
           <div className="hidden lg:flex absolute bottom-8 right-10 text-bone text-[11px] tracking-[0.28em] uppercase mix-blend-difference">
             <span className="text-gold">№ 01</span>
             <span className="mx-3 opacity-50">·</span>
-            Orecchino Charlotte con perla e diamanti · oro 18kt
+            Anello con diamante · oro 18kt
           </div>
         </div>
 
