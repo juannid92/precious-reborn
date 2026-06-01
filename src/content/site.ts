@@ -291,7 +291,7 @@ export const processSteps = [
     number: "III",
     title: "La microfusione",
     body: "Oro fuso a cera persa, colato in stampi unici. Tecnica antica eseguita con precisione moderna: la materia prende la forma del progetto.",
-    image: servizioLucidatura,
+    image: microfusioneAsset.url,
   },
   {
     number: "IV",
