@@ -28,6 +28,7 @@ import servizioRestauro from "@/assets/cara/servizio-restauro.jpg";
 import microfusioneAsset from "@/assets/microfusione.jpeg.asset.json";
 import incastonaturaAsset from "@/assets/incastonatura.jpeg.asset.json";
 import consegnaAsset from "@/assets/consegna.jpeg.asset.json";
+import disegnoCadAsset from "@/assets/disegno-cad.jpeg.asset.json";
 
 export const brand = {
   name: "Cara Preziosi",
@@ -287,7 +288,7 @@ export const processSteps = [
     number: "II",
     title: "Il disegno",
     body: "Dallo schizzo al rendering 3D: progettazione CAD per ogni geometria, modello in cera per studiare volumi e proporzioni prima di toccare il metallo.",
-    image: servizioCreazione,
+    image: disegnoCadAsset.url,
   },
   {
     number: "III",
