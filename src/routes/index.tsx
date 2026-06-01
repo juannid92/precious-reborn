@@ -132,8 +132,19 @@ function HomePage() {
               muted
               loop
               playsInline
-              preload="metadata"
+              disablePictureInPicture
+              controls={false}
+              preload="auto"
               poster={home.heroImage}
+              onEnded={(e) => {
+                const v = e.currentTarget;
+                v.currentTime = 0;
+                void v.play().catch(() => {});
+              }}
+              onPause={(e) => {
+                const v = e.currentTarget;
+                if (!v.ended) void v.play().catch(() => {});
+              }}
             />
 
             {/* MOBILE: warm bone gradient bottom→top */}
