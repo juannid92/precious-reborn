@@ -288,7 +288,7 @@ export const processSteps = [
     number: "II",
     title: "Il disegno",
     body: "Dallo schizzo al rendering 3D: progettazione CAD per ogni geometria, modello in cera per studiare volumi e proporzioni prima di toccare il metallo.",
-    image: servizioCreazione,
+    image: disegnoCadAsset.url,
   },
   {
     number: "III",
