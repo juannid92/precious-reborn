@@ -25,6 +25,7 @@ import ringLuce from "@/assets/cara/ring-luce.jpg";
 import servizioCreazione from "@/assets/cara/servizio-creazione.jpg";
 import servizioLucidatura from "@/assets/cara/servizio-lucidatura.jpg";
 import servizioRestauro from "@/assets/cara/servizio-restauro.jpg";
+import microfusioneAsset from "@/assets/microfusione.jpeg.asset.json";
 
 export const brand = {
   name: "Cara Preziosi",
