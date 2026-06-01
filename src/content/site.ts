@@ -26,6 +26,7 @@ import servizioCreazione from "@/assets/cara/servizio-creazione.jpg";
 import servizioLucidatura from "@/assets/cara/servizio-lucidatura.jpg";
 import servizioRestauro from "@/assets/cara/servizio-restauro.jpg";
 import microfusioneAsset from "@/assets/microfusione.jpeg.asset.json";
+import incastonaturaAsset from "@/assets/incastonatura.jpeg.asset.json";
 
 export const brand = {
   name: "Cara Preziosi",
@@ -297,7 +298,7 @@ export const processSteps = [
     number: "IV",
     title: "L'incastonatura",
     body: "Pietre selezionate una a una. Mano ferma, lente d'ingrandimento, ore di lavoro per fissare ogni diamante esattamente dove la luce lo accenderà.",
-    image: ringSchiuma,
+    image: incastonaturaAsset.url,
   },
   {
     number: "V",
