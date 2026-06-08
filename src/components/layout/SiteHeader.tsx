@@ -155,8 +155,8 @@ export function SiteHeader() {
                 </div>
 
                 <div className="flex gap-6 pt-1 text-[10px] text-gold tracking-[0.25em] uppercase">
-                  <a href={contacts.instagramHref} target="_blank" rel="noreferrer" className="hover:text-bone transition-colors">Instagram</a>
-                  <a href={contacts.facebookHref} target="_blank" rel="noreferrer" className="hover:text-bone transition-colors">Facebook</a>
+                  <a href={contacts.instagramHref} target="_blank" rel="me noreferrer" className="hover:text-bone transition-colors">Instagram</a>
+                  <a href={contacts.facebookHref} target="_blank" rel="me noreferrer" className="hover:text-bone transition-colors">Facebook</a>
                 </div>
               </div>
             </div>
