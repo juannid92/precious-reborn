@@ -95,8 +95,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
+      { charSet: "UTF-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { httpEquiv: "content-language", content: "it-IT" },
       { title: `${brand.name} — Laboratorio orafo a Bari` },
       { name: "description", content: brand.shortDescription },
       { name: "author", content: brand.name },
