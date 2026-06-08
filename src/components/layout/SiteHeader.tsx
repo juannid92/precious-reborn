@@ -38,7 +38,7 @@ export function SiteHeader() {
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${headerBg}`}>
       <div className="container-cara flex items-center justify-between py-4 lg:py-6">
         <Link to="/" onClick={() => setOpen(false)} aria-label="Cara Preziosi" className="group flex items-center gap-2.5">
-          <img src={logoCara} alt="Cara" className="h-8 md:h-10 w-auto select-none" draggable={false} width="146" height="56" />
+          <img src={logoCara} alt="Cara Preziosi" className="h-8 md:h-10 w-auto select-none" draggable={false} width="146" height="56" />
           <div className="flex flex-col gap-0.5">
             <span className="font-display text-xl md:text-2xl tracking-tight leading-none italic text-gold-deep hidden sm:inline">
               Preziosi
