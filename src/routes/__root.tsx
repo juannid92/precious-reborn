@@ -100,7 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { httpEquiv: "content-language", content: "it-IT" },
       { title: `${brand.name} — Laboratorio orafo a Bari` },
       { name: "description", content: brand.shortDescription },
-      { name: "author", content: brand.name },
+      { name: "author", content: "Nicola Caradonna — Cara Preziosi" },
+      { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
+      { name: "googlebot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
+      { name: "theme-color", content: "#c9a84c" },
       { property: "og:site_name", content: brand.name },
       { property: "og:type", content: "website" },
       { property: "og:title", content: `${brand.name} — Laboratorio orafo a Bari` },
@@ -165,7 +168,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <meta name="apple-mobile-web-app-title" content="Cara Preziosi" />
-        <meta name="theme-color" content="#f5f3ee" />
+        
       </head>
       <body className="antialiased selection:bg-gold selection:text-ink">
         {children}
