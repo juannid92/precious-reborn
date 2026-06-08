@@ -1,0 +1,27 @@
+{
+  "name": "Cara Preziosi — Atelier Orafo Bari",
+  "short_name": "Cara Preziosi",
+  "description": "Gioielli artigianali su misura. Atelier orafo di Nicola Caradonna a Bari, Puglia.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1009",
+  "theme_color": "#c9a84c",
+  "lang": "it-IT",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "screenshots": [],
+  "related_applications": []
+}

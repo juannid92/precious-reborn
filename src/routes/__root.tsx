@@ -117,6 +117,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Reimagines and rebuilds the Cara Preziosi website with modern design and improved content management." },
     ],
     links: [
+      { rel: "manifest", href: "/manifest.webmanifest" },
       {
         rel: "preload",
         as: "image",
