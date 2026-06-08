@@ -35,7 +35,7 @@ export const brand = {
   name: "Cara Preziosi",
   tagline: "L'eccellenza dell'artigianato orafo made in Italy",
   shortDescription:
-    "Laboratorio orafo specializzato nella creazione di gioielli unici e personalizzati. Tradizione, innovazione e passione si uniscono per dare vita a opere d'arte esclusive, fatte a mano.",
+    "Atelier orafo artigianale a Bari, in Via Antonio Beatillo 14. Il maestro Nicola Caradonna crea, restaura e custodisce gioielli unici fatti a mano, dal progetto su misura alla manutenzione professionale.",
 };
 
 export const contacts = {
@@ -67,7 +67,7 @@ export const home = {
   heroEyebrow: "Cara Preziosi · Bari",
   heroTitle: "L'arte orafa\ndelle collezioni\nCara Preziosi",
   heroLead:
-    "Gioielli artigianali fatti a mano, su misura, che custodiscono storie e tradizioni della migliore tradizione orafa italiana.",
+    "Atelier orafo artigianale a Bari. Gioielli fatti a mano su misura nel laboratorio di Nicola Caradonna, dove ogni pezzo custodisce una storia e la migliore tradizione orafa italiana.",
   heroCta: { label: "Scopri le collezioni", to: "/categorie" },
   heroCtaSecondary: { label: "Richiedi un preventivo", to: "/contatti" },
 
@@ -80,7 +80,7 @@ export const home = {
   servicesPreview: {
     eyebrow: "I nostri servizi",
     title: "Creazione su misura e restauro",
-    body: "Nel nostro laboratorio progettiamo pezzi unici, restauriamo gioielli di famiglia e ci prendiamo cura dei tuoi tesori con la massima precisione.",
+    body: "Nel nostro atelier orafo di Bari progettiamo pezzi unici su misura, restauriamo gioielli di famiglia ed eseguiamo la manutenzione professionale dei tuoi preziosi.",
     image: homeSecondary,
     cta: { label: "Scopri i servizi", to: "/servizi" },
   },
@@ -210,7 +210,7 @@ export const services = {
     image: anelliHero,
     eyebrow: "Servizi del laboratorio",
     title: "Creiamo, restauriamo,\ncustodiamo i tuoi gioielli",
-    lead: "Dal pezzo unico su misura alla manutenzione di un gioiello di famiglia: ogni intervento è seguito con la cura del laboratorio orafo.",
+    lead: "Dal pezzo unico su misura alla manutenzione di un gioiello di famiglia: ogni intervento è seguito a mano nel nostro atelier orafo di Bari, in Via Antonio Beatillo 14.",
   },
   items: [
     {
@@ -240,7 +240,7 @@ export const storia = {
   },
   intro: {
     title: "Custodi dell'eccellenza orafa",
-    body: "Custodendo le tradizioni della lavorazione dei metalli preziosi, il laboratorio ha saputo evolversi integrando innovazione e tecnologie moderne senza perdere l'autenticità del fatto a mano. Ogni gioiello che esce dalla bottega porta con sé questa doppia anima — radici profonde e sguardo contemporaneo.",
+    body: "Da oltre quarant'anni, nel cuore di Bari, il laboratorio Cara Preziosi custodisce le tradizioni della lavorazione dei metalli preziosi e le evolve integrando innovazione e tecnologie moderne, senza perdere l'autenticità del fatto a mano. Ogni gioiello che esce dalla bottega porta con sé questa doppia anima — radici profonde e sguardo contemporaneo.",
     image: storiaLaboratorio,
   },
   processo: {
