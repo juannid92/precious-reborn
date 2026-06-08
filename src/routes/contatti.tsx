@@ -230,7 +230,59 @@ function ContattiPage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="bg-bone text-ink py-24 md:py-32">
+        <div className="container-cara">
+          <div className="grid gap-10 md:grid-cols-12 mb-12">
+            <div className="md:col-span-2">
+              <p className="eyebrow text-gold-deep">§ FAQ</p>
+            </div>
+            <Reveal as="h2" className="display-md md:col-span-9">
+              Domande <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>frequenti</em>
+            </Reveal>
+          </div>
+          <div className="grid md:grid-cols-12 gap-8">
+            <div className="md:col-span-10 md:col-start-2">
+              <Accordion type="single" collapsible className="w-full">
+                {[
+                  {
+                    q: "Dove si trova l'atelier Cara Preziosi?",
+                    a: "L'atelier si trova in Via Antonio Beatillo 14, 70121 Bari (BA), nel centro storico di Bari, a piedi dal Lungomare.",
+                  },
+                  {
+                    q: "Come si prenota un appuntamento?",
+                    a: "Puoi prenotare scrivendo dal modulo di contatto del sito (che apre WhatsApp con i tuoi dati precompilati), scrivendo a info@carapreziosi.it, oppure chiamando il +39 393 953 6607. Risponderemo per fissare la tua visita in atelier.",
+                  },
+                  {
+                    q: "Quali sono gli orari dell'atelier?",
+                    a: "L'atelier è aperto dal lunedì al sabato, dalle 08:30 alle 19:00. La visita è consigliata su appuntamento.",
+                  },
+                  {
+                    q: "Quali contatti posso usare per scrivere all'atelier?",
+                    a: "Puoi contattarci via telefono al +39 393 953 6607, via email a info@carapreziosi.it, su WhatsApp, oppure tramite i profili Instagram e Facebook di Cara Preziosi.",
+                  },
+                  {
+                    q: "Cosa devo portare al primo incontro in atelier?",
+                    a: "Puoi portare un'idea anche vaga (una foto, uno schizzo, un ricordo), un riferimento personale come un gioiello di famiglia o una pietra ereditata, e un po' di tempo: l'appuntamento dura circa 45 minuti, senza fretta e senza obbligo di scelta.",
+                  },
+                ].map((item, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`} className="border-ink/15">
+                    <AccordionTrigger className="font-display text-lg md:text-xl py-6">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground text-base leading-relaxed pb-6">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* MAP */}
+
       <section className="bg-obsidian">
         <div className="relative w-full h-[60vh] min-h-[400px]">
           <iframe
