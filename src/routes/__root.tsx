@@ -123,15 +123,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", type: "image/png", href: "/favicon-192.png", sizes: "192x192" },
       { rel: "icon", type: "image/png", href: "/favicon-512.png", sizes: "512x512" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-      { rel: "preconnect", href: "https://pub-2e9ea74026da4293930491866385f096.r2.dev", crossOrigin: "anonymous" },
-      { rel: "dns-prefetch", href: "https://pub-2e9ea74026da4293930491866385f096.r2.dev" },
       { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
-      {
-        rel: "preload",
-        as: "image",
-        href: "https://pub-2e9ea74026da4293930491866385f096.r2.dev/home-hero.jpg",
-        fetchPriority: "high",
-      },
       {
         rel: "preload",
         as: "font",
