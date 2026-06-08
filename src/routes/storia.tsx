@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { brand, storia, atelierManifesto } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 
 export const Route = createFileRoute("/storia")({
   head: () => ({
@@ -63,6 +64,7 @@ function StoriaPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-obsidian/30 via-obsidian/40 to-obsidian/90" />
         <div className="relative container-cara h-full flex flex-col justify-end pb-20 md:pb-32">
+          <PageBreadcrumb current="Storia" tone="dark" className="mb-8" />
           <p className="eyebrow text-gold mb-8">{storia.hero.eyebrow}</p>
           <Reveal as="h1" className="display-xl">
             L'elegante tradizione<br />
