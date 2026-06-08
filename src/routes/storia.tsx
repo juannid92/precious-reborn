@@ -21,7 +21,7 @@ export const Route = createFileRoute("/storia")({
       { property: "og:url", content: "https://www.carapreziosi.it/storia" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
-      { property: "og:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
+      { property: "og:image", content: `https://www.carapreziosi.it${storia.hero.image}` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Il Laboratorio — Nicola Caradonna, Maestro Orafo a Bari · Cara Preziosi" },
       {
@@ -29,6 +29,7 @@ export const Route = createFileRoute("/storia")({
         content:
           "Scopri la storia del laboratorio Cara Preziosi e del maestro orafo Nicola Caradonna, da oltre 40 anni punto di riferimento per la gioielleria artigianale a Bari.",
       },
+      { name: "twitter:image", content: `https://www.carapreziosi.it${storia.hero.image}` },
     ],
     links: [{ rel: "canonical", href: "https://www.carapreziosi.it/storia" }],
     scripts: [
