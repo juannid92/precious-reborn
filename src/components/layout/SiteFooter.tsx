@@ -80,7 +80,7 @@ export function SiteFooter() {
         <div className="border-t border-bone/10 mt-16 pt-8 flex flex-col md:flex-row justify-between gap-3 text-xs text-bone/40">
           <div className="space-y-1">
             <p>© {new Date().getFullYear()} {brand.name} · Laboratorio orafo · Bari, Italia</p>
-            <p>CARA S.R.L · Via Beatillo, 14 — 70121 Bari</p>
+            <p>CARA S.R.L · Via Antonio Beatillo 14 — 70121 Bari (BA), Italia</p>
             <p>P.I. — C.F.: 08895310723</p>
           </div>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
