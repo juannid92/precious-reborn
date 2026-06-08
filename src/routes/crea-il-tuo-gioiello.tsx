@@ -79,7 +79,69 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
           url: "https://www.carapreziosi.it/crea-il-tuo-gioiello",
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          name: "Come creare il tuo gioiello personalizzato con Cara Preziosi",
+          description:
+            "Percorso guidato in otto passaggi per progettare un gioiello su misura nell'atelier di Cara Preziosi a Bari, dall'ispirazione iniziale all'invio della richiesta al maestro orafo Nicola Caradonna.",
+          url: "https://www.carapreziosi.it/crea-il-tuo-gioiello",
+          step: [
+            {
+              "@type": "HowToStep",
+              position: 1,
+              name: "Ispirazione",
+              text: "Carica un'immagine che racconta lo spirito di ciò che cerchi: un dettaglio, un riferimento, un gioiello visto altrove. È solo il punto di partenza e puoi anche saltare questo passaggio.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 2,
+              name: "Tipologia",
+              text: "Scegli la categoria del gioiello (anello, collana, bracciale, orecchini). Ogni tipologia segue un percorso di lavorazione diverso nel laboratorio.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 3,
+              name: "Stile",
+              text: "Definisci il mood generale del pezzo tra minimal, classico, moderno, statement, romantico o bespoke. Un'indicazione di stile, non una gabbia: l'atelier la interpreterà.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 4,
+              name: "Materia",
+              text: "Scegli il metallo dominante tra oro giallo, oro bianco, oro rosa o platino e seleziona eventualmente una o più pietre (diamante, zaffiro, rubino, smeraldo, perla) oppure nessuna pietra.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 5,
+              name: "Budget",
+              text: "Indica una fascia di budget di riferimento. Serve a calibrare proporzioni, materia e pietre; non è un prezzo finale, che verrà confermato dal maestro orafo dopo la prima lettura.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 6,
+              name: "Note personali",
+              text: "Aggiungi note libere: una persona da celebrare, una data, un riferimento a un gioiello di famiglia. Le tue note arriveranno al maestro orafo insieme alla richiesta.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 7,
+              name: "Concept",
+              text: "L'atelier elabora una prima lettura visiva del tuo gioiello a partire dalle scelte fatte, con la possibilità di visualizzare una bozza in 3D del pezzo.",
+            },
+            {
+              "@type": "HowToStep",
+              position: 8,
+              name: "Richiesta",
+              text: "Invia la richiesta all'atelier. Riceverai una risposta personale dal maestro orafo Nicola Caradonna, di solito entro 24-48 ore. Nessun pagamento, nessun automatismo.",
+            },
+          ],
+        }),
+      },
     ],
+
   }),
   component: AtelierCreatePage,
 });
