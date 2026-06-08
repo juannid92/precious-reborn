@@ -5,11 +5,11 @@ import { Reveal } from "@/components/motion/Reveal";
 export const Route = createFileRoute("/storia")({
   head: () => ({
     meta: [
-      { title: `Il laboratorio — ${brand.name} · Nicola Caradonna, maestro orafo` },
+      { title: "Il Laboratorio — Nicola Caradonna, Maestro Orafo a Bari · Cara Preziosi" },
       {
         name: "description",
         content:
-          "L'atelier Cara Preziosi a Bari. Quarant'anni di mestiere orafo, tradizione italiana e tecnologie CAD/3D. La storia del maestro Nicola Caradonna.",
+          "Scopri la storia del laboratorio Cara Preziosi e del maestro orafo Nicola Caradonna, da oltre 40 anni punto di riferimento per la gioielleria artigianale a Bari.",
       },
       { property: "og:title", content: `Il laboratorio — ${brand.name}` },
       { property: "og:description", content: "Quattro decenni di mestiere orafo. La storia dell'atelier." },

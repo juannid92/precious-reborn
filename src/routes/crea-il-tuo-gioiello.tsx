@@ -27,11 +27,11 @@ if (typeof window !== "undefined") {
 export const Route = createFileRoute("/crea-il-tuo-gioiello")({
   head: () => ({
     meta: [
-      { title: `Crea il tuo gioiello — ${brand.name}` },
+      { title: "Crea il tuo gioiello — Gioiello Personalizzato con Configuratore 3D · Cara Preziosi" },
       {
         name: "description",
         content:
-          "Trasforma un'ispirazione in una creazione su misura. Carica un'immagine, definisci stile e materiali, scopri la prima interpretazione del tuo gioiello.",
+          "Progetta il tuo gioiello personalizzato con il configuratore 3D di Cara Preziosi. Un percorso su misura con il maestro orafo Nicola Caradonna.",
       },
       { property: "og:title", content: `Crea il tuo gioiello — ${brand.name}` },
       {

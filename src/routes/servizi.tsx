@@ -6,11 +6,11 @@ import { Reveal } from "@/components/motion/Reveal";
 export const Route = createFileRoute("/servizi")({
   head: () => ({
     meta: [
-      { title: `Servizi — ${brand.name} · Creazione, restauro, manutenzione` },
+      { title: "Servizi — Creazione, Restauro e Manutenzione Gioielli · Cara Preziosi" },
       {
         name: "description",
         content:
-          "Servizi del laboratorio Cara Preziosi: creazione di gioielli su misura, restauro di pezzi di famiglia, lucidatura e messa a misura. Bari.",
+          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
       },
       { property: "og:title", content: `Servizi — ${brand.name}` },
       { property: "og:description", content: "Su misura, restauro, manutenzione. Nel laboratorio di Bari." },

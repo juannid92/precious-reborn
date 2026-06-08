@@ -20,11 +20,11 @@ if (typeof window !== "undefined") {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${brand.name} — Atelier orafo a Bari · Gioielli su appuntamento` },
+      { title: "Cara Preziosi — Gioielli Artigianali su Misura · Atelier Orafo Bari" },
       {
         name: "description",
         content:
-          "Atelier orafo Cara Preziosi, Bari. Gioielli artigianali su misura, disegnati e fusi a mano dal maestro Nicola Caradonna. Visite su appuntamento.",
+          "Atelier orafo artigianale di Nicola Caradonna a Bari. Gioielli unici su misura con configuratore 3D, restauro e manutenzione professionale.",
       },
       { property: "og:title", content: `${brand.name} — Atelier orafo a Bari` },
       { property: "og:description", content: "Gioielli artigianali, su misura, fatti a mano." },
