@@ -14,6 +14,7 @@ import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as GioielliSuMisuraBariRouteImport } from './routes/gioielli-su-misura-bari'
 import { Route as CreaIlTuoGioielloRouteImport } from './routes/crea-il-tuo-gioiello'
+import { Route as CreaAnelloPersonalizzatoBariRouteImport } from './routes/crea-anello-personalizzato-bari'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as CategorieRouteImport } from './routes/categorie'
@@ -45,6 +46,12 @@ const CreaIlTuoGioielloRoute = CreaIlTuoGioielloRouteImport.update({
   path: '/crea-il-tuo-gioiello',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreaAnelloPersonalizzatoBariRoute =
+  CreaAnelloPersonalizzatoBariRouteImport.update({
+    id: '/crea-anello-personalizzato-bari',
+    path: '/crea-anello-personalizzato-bari',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CookiePolicyRoute = CookiePolicyRouteImport.update({
   id: '/cookie-policy',
   path: '/cookie-policy',
@@ -77,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/crea-anello-personalizzato-bari': typeof CreaAnelloPersonalizzatoBariRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
   '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -89,6 +97,7 @@ export interface FileRoutesByTo {
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/crea-anello-personalizzato-bari': typeof CreaAnelloPersonalizzatoBariRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
   '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -102,6 +111,7 @@ export interface FileRoutesById {
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
+  '/crea-anello-personalizzato-bari': typeof CreaAnelloPersonalizzatoBariRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
   '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
+    | '/crea-anello-personalizzato-bari'
     | '/crea-il-tuo-gioiello'
     | '/gioielli-su-misura-bari'
     | '/privacy-policy'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
+    | '/crea-anello-personalizzato-bari'
     | '/crea-il-tuo-gioiello'
     | '/gioielli-su-misura-bari'
     | '/privacy-policy'
@@ -140,6 +152,7 @@ export interface FileRouteTypes {
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
+    | '/crea-anello-personalizzato-bari'
     | '/crea-il-tuo-gioiello'
     | '/gioielli-su-misura-bari'
     | '/privacy-policy'
@@ -153,6 +166,7 @@ export interface RootRouteChildren {
   CategorieRoute: typeof CategorieRoute
   ContattiRoute: typeof ContattiRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
+  CreaAnelloPersonalizzatoBariRoute: typeof CreaAnelloPersonalizzatoBariRoute
   CreaIlTuoGioielloRoute: typeof CreaIlTuoGioielloRoute
   GioielliSuMisuraBariRoute: typeof GioielliSuMisuraBariRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
@@ -198,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreaIlTuoGioielloRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crea-anello-personalizzato-bari': {
+      id: '/crea-anello-personalizzato-bari'
+      path: '/crea-anello-personalizzato-bari'
+      fullPath: '/crea-anello-personalizzato-bari'
+      preLoaderRoute: typeof CreaAnelloPersonalizzatoBariRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cookie-policy': {
       id: '/cookie-policy'
       path: '/cookie-policy'
@@ -241,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategorieRoute: CategorieRoute,
   ContattiRoute: ContattiRoute,
   CookiePolicyRoute: CookiePolicyRoute,
+  CreaAnelloPersonalizzatoBariRoute: CreaAnelloPersonalizzatoBariRoute,
   CreaIlTuoGioielloRoute: CreaIlTuoGioielloRoute,
   GioielliSuMisuraBariRoute: GioielliSuMisuraBariRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
