@@ -178,7 +178,7 @@ function ContattiPage() {
               <a
                 href={contacts.facebookHref}
                 target="_blank"
-                rel="noreferrer"
+                rel="me noreferrer"
                 aria-label="Facebook"
                 className="p-3 border border-ink/15 hover:border-gold-deep hover:text-gold-deep transition-colors"
               >
