@@ -22,7 +22,7 @@ export const Route = createFileRoute("/servizi")({
       { property: "og:url", content: "https://www.carapreziosi.it/servizi" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
-      { property: "og:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
+      { property: "og:image", content: `https://www.carapreziosi.it${services.hero.image}` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Servizi — Creazione, Restauro e Manutenzione Gioielli · Cara Preziosi" },
       {
@@ -30,6 +30,7 @@ export const Route = createFileRoute("/servizi")({
         content:
           "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
       },
+      { name: "twitter:image", content: `https://www.carapreziosi.it${services.hero.image}` },
     ],
     links: [{ rel: "canonical", href: "https://www.carapreziosi.it/servizi" }],
     scripts: [
