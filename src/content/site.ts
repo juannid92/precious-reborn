@@ -39,10 +39,10 @@ export const brand = {
 };
 
 export const contacts = {
-  address: "Via Antonio Beatillo, 14",
-  city: "70121 Bari (BA)",
+  address: "Via Antonio Beatillo 14",
+  city: "70121 Bari (BA), Italia",
   hours: "08:30 – 19:00",
-  phone: "393 953 6607",
+  phone: "+39 393 953 6607",
   phoneHref: "tel:+393939536607",
   email: "info@carapreziosi.it",
   emailHref: "mailto:info@carapreziosi.it",
