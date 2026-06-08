@@ -61,11 +61,30 @@ function CategoriePage() {
             <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>una sola firma</em>.
           </Reveal>
           <Reveal delay={0.15} className="mt-10 grid gap-8 md:grid-cols-12">
-            <p className="md:col-span-5 md:col-start-3 text-lg text-muted-foreground leading-relaxed">
-              Anelli, orecchini, collane e bracciali. Ogni famiglia ha la sua
-              voce, ma tutte parlano la stessa lingua: artigianato italiano,
-              mano del maestro, materia preziosa scelta a una a una.
-            </p>
+            <div className="md:col-span-7 md:col-start-3 space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                Anelli, orecchini, collane e bracciali. Ogni famiglia ha la sua
+                voce, ma tutte parlano la stessa lingua: artigianato italiano,
+                mano del maestro, materia preziosa scelta a una a una.
+              </p>
+              <p>
+                Le collezioni di Cara Preziosi nascono nel nostro atelier orafo
+                di Bari, in Via Antonio Beatillo, dove ogni gioiello viene
+                disegnato, fuso, cesellato e rifinito a mano. Gli anelli
+                raccontano i momenti importanti — fedi, solitari, pezzi
+                d'autore con pietre selezionate; gli orecchini giocano con
+                la luce, dal lobo al pendente; le collane e i bracciali
+                accompagnano ogni giorno, tra catene lavorate, ciondoli e
+                rivisitazioni della tradizione orafa pugliese.
+              </p>
+              <p>
+                Ogni pezzo a catalogo può diventare un gioiello su misura:
+                cambiamo metallo, pietra, misura o proporzione, oppure
+                partiamo da un'idea tutta tua. È il modo in cui lavoriamo
+                da oltre quarant'anni — una bottega, un maestro orafo,
+                clienti che tornano per le occasioni di una vita.
+              </p>
+            </div>
           </Reveal>
         </div>
       </section>
