@@ -12,10 +12,25 @@ export const Route = createFileRoute("/servizi")({
         content:
           "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
       },
-      { property: "og:title", content: `Servizi — ${brand.name}` },
-      { property: "og:description", content: "Su misura, restauro, manutenzione. Nel laboratorio di Bari." },
+      { property: "og:title", content: "Servizi — Creazione, Restauro e Manutenzione Gioielli · Cara Preziosi" },
+      {
+        property: "og:description",
+        content:
+          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
+      },
+      { property: "og:url", content: "https://www.carapreziosi.it/servizi" },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "it_IT" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Servizi — Creazione, Restauro e Manutenzione Gioielli · Cara Preziosi" },
+      {
+        name: "twitter:description",
+        content:
+          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
+      },
     ],
-    links: [{ rel: "canonical", href: "/servizi" }],
+    links: [{ rel: "canonical", href: "https://www.carapreziosi.it/servizi" }],
   }),
   component: ServiziPage,
 });

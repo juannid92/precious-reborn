@@ -13,10 +13,25 @@ export const Route = createFileRoute("/categorie")({
         content:
           "Scopri le collezioni di gioielli artigianali Cara Preziosi: anelli, orecchini, collane e bracciali realizzati a mano nel laboratorio orafo di Bari.",
       },
-      { property: "og:title", content: `Collezioni — ${brand.name}` },
-      { property: "og:description", content: "Anelli, orecchini, collane e bracciali artigianali." },
+      { property: "og:title", content: "Collezioni — Gioielli Artigianali, Anelli, Collane e Bracciali · Cara Preziosi Bari" },
+      {
+        property: "og:description",
+        content:
+          "Scopri le collezioni di gioielli artigianali Cara Preziosi: anelli, orecchini, collane e bracciali realizzati a mano nel laboratorio orafo di Bari.",
+      },
+      { property: "og:url", content: "https://www.carapreziosi.it/categorie" },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "it_IT" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Collezioni — Gioielli Artigianali, Anelli, Collane e Bracciali · Cara Preziosi Bari" },
+      {
+        name: "twitter:description",
+        content:
+          "Scopri le collezioni di gioielli artigianali Cara Preziosi: anelli, orecchini, collane e bracciali realizzati a mano nel laboratorio orafo di Bari.",
+      },
     ],
-    links: [{ rel: "canonical", href: "/categorie" }],
+    links: [{ rel: "canonical", href: "https://www.carapreziosi.it/categorie" }],
   }),
   component: CategoriePage,
 });
