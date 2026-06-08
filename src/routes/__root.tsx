@@ -189,6 +189,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 addressRegion: "BA",
                 addressCountry: "IT",
               },
+              vatID: "IT08895310723",
               areaServed: ["Bari", "Puglia", "Italia"],
               openingHours: "Mo-Sa 08:30-19:00",
               founder: { "@id": "https://www.carapreziosi.it/#nicola-caradonna" },
