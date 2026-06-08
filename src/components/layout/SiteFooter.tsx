@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { brand, contacts, navigation, atelierManifesto } from "@/content/site";
-import logoCara from "@/assets/logo-cara.png";
 import { CookiePreferencesLink } from "@/components/cookie/CookiePreferencesLink";
+
+const logoCara = "/brand/cara-preziosi-logo.png";
 
 export function SiteFooter() {
   return (
