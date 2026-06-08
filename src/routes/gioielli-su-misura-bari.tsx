@@ -20,10 +20,11 @@ export const Route = createFileRoute("/gioielli-su-misura-bari")({
       { property: "og:url", content: URL },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
-      { property: "og:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
+      { property: "og:image", content: `https://www.carapreziosi.it${storiaLaboratorio}` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: `https://www.carapreziosi.it${storiaLaboratorio}` },
     ],
     links: [{ rel: "canonical", href: URL }],
     scripts: [
