@@ -27,7 +27,7 @@ export function SiteFooter() {
             <div className="flex items-center gap-3">
               <img
                 src={logoCara}
-                alt="Cara"
+                alt="Cara Preziosi"
                 className="h-12 md:h-14 w-auto select-none brightness-0 invert"
                 draggable={false}
                 loading="lazy"
