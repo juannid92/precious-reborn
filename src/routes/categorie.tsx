@@ -7,11 +7,11 @@ import { Marquee } from "@/components/motion/Marquee";
 export const Route = createFileRoute("/categorie")({
   head: () => ({
     meta: [
-      { title: `Collezioni — ${brand.name}` },
+      { title: "Collezioni — Gioielli Artigianali, Anelli, Collane e Bracciali · Cara Preziosi Bari" },
       {
         name: "description",
         content:
-          "Tre famiglie di gioielli artigianali Cara Preziosi: anelli, orecchini, collane e bracciali. Pezzi unici fatti a mano nel laboratorio di Bari.",
+          "Scopri le collezioni di gioielli artigianali Cara Preziosi: anelli, orecchini, collane e bracciali realizzati a mano nel laboratorio orafo di Bari.",
       },
       { property: "og:title", content: `Collezioni — ${brand.name}` },
       { property: "og:description", content: "Anelli, orecchini, collane e bracciali artigianali." },

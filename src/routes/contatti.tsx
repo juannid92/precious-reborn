@@ -7,11 +7,11 @@ import { Reveal } from "@/components/motion/Reveal";
 export const Route = createFileRoute("/contatti")({
   head: () => ({
     meta: [
-      { title: `Contatti — ${brand.name} · Su appuntamento in atelier` },
+      { title: "Contatti — Prenota un Appuntamento in Atelier · Cara Preziosi Bari" },
       {
         name: "description",
         content:
-          "Atelier Cara Preziosi, Via Antonio Beatillo 14, Bari. Visite su appuntamento, consulenza personalizzata, preventivi gioielli su misura.",
+          "Contatta Cara Preziosi e prenota il tuo appuntamento in atelier a Bari. Via Antonio Beatillo 14, consulenza su misura per gioielli artigianali unici.",
       },
       { property: "og:title", content: `Contatti — ${brand.name}` },
       { property: "og:description", content: "Su appuntamento in atelier a Bari." },
