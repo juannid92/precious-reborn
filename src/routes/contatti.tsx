@@ -45,10 +45,60 @@ export const Route = createFileRoute("/contatti")({
           ],
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Dove si trova l'atelier Cara Preziosi?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "L'atelier si trova in Via Antonio Beatillo 14, 70121 Bari (BA), nel centro storico di Bari, a piedi dal Lungomare.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Come si prenota un appuntamento?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Puoi prenotare scrivendo dal modulo di contatto del sito (che apre WhatsApp con i tuoi dati precompilati), scrivendo a info@carapreziosi.it, oppure chiamando il +39 393 953 6607. Risponderemo per fissare la tua visita in atelier.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Quali sono gli orari dell'atelier?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "L'atelier è aperto dal lunedì al sabato, dalle 08:30 alle 19:00. La visita è consigliata su appuntamento.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Quali contatti posso usare per scrivere all'atelier?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Puoi contattarci via telefono al +39 393 953 6607, via email a info@carapreziosi.it, su WhatsApp, oppure tramite i profili Instagram e Facebook di Cara Preziosi.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Cosa devo portare al primo incontro in atelier?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Puoi portare un'idea anche vaga (una foto, uno schizzo, un ricordo), un riferimento personale come un gioiello di famiglia o una pietra ereditata, e un po' di tempo: l'appuntamento dura circa 45 minuti, senza fretta e senza obbligo di scelta.",
+              },
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: ContattiPage,
 });
+
 
 function ContattiPage() {
   return (
