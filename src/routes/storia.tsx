@@ -11,11 +11,25 @@ export const Route = createFileRoute("/storia")({
         content:
           "Scopri la storia del laboratorio Cara Preziosi e del maestro orafo Nicola Caradonna, da oltre 40 anni punto di riferimento per la gioielleria artigianale a Bari.",
       },
-      { property: "og:title", content: `Il laboratorio — ${brand.name}` },
-      { property: "og:description", content: "Quattro decenni di mestiere orafo. La storia dell'atelier." },
-      { property: "og:image", content: storia.hero.image },
+      { property: "og:title", content: "Il Laboratorio — Nicola Caradonna, Maestro Orafo a Bari · Cara Preziosi" },
+      {
+        property: "og:description",
+        content:
+          "Scopri la storia del laboratorio Cara Preziosi e del maestro orafo Nicola Caradonna, da oltre 40 anni punto di riferimento per la gioielleria artigianale a Bari.",
+      },
+      { property: "og:url", content: "https://www.carapreziosi.it/storia" },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "it_IT" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Il Laboratorio — Nicola Caradonna, Maestro Orafo a Bari · Cara Preziosi" },
+      {
+        name: "twitter:description",
+        content:
+          "Scopri la storia del laboratorio Cara Preziosi e del maestro orafo Nicola Caradonna, da oltre 40 anni punto di riferimento per la gioielleria artigianale a Bari.",
+      },
     ],
-    links: [{ rel: "canonical", href: "/storia" }],
+    links: [{ rel: "canonical", href: "https://www.carapreziosi.it/storia" }],
   }),
   component: StoriaPage,
 });
