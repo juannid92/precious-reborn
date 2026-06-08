@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { Mail, Phone, MapPin, Clock, Instagram, Facebook } from "lucide-react";
 import { brand, contacts } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 
 export const Route = createFileRoute("/contatti")({
   head: () => ({
@@ -55,6 +56,7 @@ function ContattiPage() {
       {/* HERO */}
       <section className="bg-bone text-ink pt-40 md:pt-56 pb-16 md:pb-24">
         <div className="container-cara">
+          <PageBreadcrumb current="Contatti" className="mb-8" />
           <p className="eyebrow text-gold-deep mb-8">L'incontro</p>
           <Reveal as="h1" className="display-xl max-w-6xl">
             Su <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>appuntamento</em>,<br />

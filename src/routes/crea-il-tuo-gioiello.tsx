@@ -12,6 +12,7 @@ import { SelectableCard } from "@/components/atelier/SelectableCard";
 import { CreationStepper } from "@/components/atelier/CreationStepper";
 import { ConceptPreviewPanel, type PreviewStage } from "@/components/atelier/ConceptPreviewPanel";
 import { RequestSummaryCard } from "@/components/atelier/RequestSummaryCard";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 const Jewel3DViewer = lazy(() =>
   import("@/components/atelier/Jewel3DViewer").then((m) => ({ default: m.Jewel3DViewer })),
 );
@@ -717,11 +718,12 @@ function AtelierCreatePage() {
           <Link
             to="/"
             data-atelier-hero-eyebrow
-            className="inline-flex items-center gap-2 text-[10.5px] uppercase tracking-[0.32em] text-ink/60 hover:text-gold-deep transition-colors mb-10 group"
+            className="inline-flex items-center gap-2 text-[10.5px] uppercase tracking-[0.32em] text-ink/60 hover:text-gold-deep transition-colors mb-6 group"
           >
             <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
             Torna al sito
           </Link>
+          <PageBreadcrumb current="Crea il tuo gioiello" className="mb-8" />
           <p className="eyebrow text-gold-deep mb-8">
             Atelier · Creazione personalizzata
           </p>

@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { brand, categories, rings } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { Marquee } from "@/components/motion/Marquee";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 
 export const Route = createFileRoute("/categorie")({
   head: () => ({
@@ -55,6 +56,7 @@ function CategoriePage() {
       {/* HERO */}
       <section className="bg-bone text-ink pt-40 md:pt-56 pb-20 md:pb-32">
         <div className="container-cara">
+          <PageBreadcrumb current="Categorie" className="mb-8" />
           <p className="eyebrow text-gold-deep mb-8">Le collezioni</p>
           <Reveal as="h1" className="display-xl max-w-6xl">
             Tre famiglie,<br />
