@@ -210,7 +210,7 @@ export const services = {
     image: anelliHero,
     eyebrow: "Servizi del laboratorio",
     title: "Creiamo, restauriamo,\ncustodiamo i tuoi gioielli",
-    lead: "Dal pezzo unico su misura alla manutenzione di un gioiello di famiglia: ogni intervento è seguito con la cura del laboratorio orafo.",
+    lead: "Dal pezzo unico su misura alla manutenzione di un gioiello di famiglia: ogni intervento è seguito a mano nel nostro atelier orafo di Bari, in Via Antonio Beatillo 14.",
   },
   items: [
     {
