@@ -43,7 +43,7 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
       { property: "og:url", content: "https://www.carapreziosi.it/crea-il-tuo-gioiello" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
-      { property: "og:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
+      { property: "og:image", content: `https://www.carapreziosi.it${home.heroImage}` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Crea il tuo gioiello — Gioiello Personalizzato con Configuratore 3D · Cara Preziosi" },
       {
@@ -51,6 +51,7 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
         content:
           "Progetta il tuo gioiello personalizzato con il configuratore 3D di Cara Preziosi. Un percorso su misura con il maestro orafo Nicola Caradonna.",
       },
+      { name: "twitter:image", content: `https://www.carapreziosi.it${home.heroImage}` },
     ],
     links: [{ rel: "canonical", href: "https://www.carapreziosi.it/crea-il-tuo-gioiello" }],
     scripts: [
