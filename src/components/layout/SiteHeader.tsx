@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 import { navigation, contacts } from "@/content/site";
-import logoCara from "@/assets/logo-cara.png";
+
+const logoCara = "/brand/cara-preziosi-logo.png";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
