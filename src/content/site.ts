@@ -67,7 +67,7 @@ export const home = {
   heroEyebrow: "Cara Preziosi · Bari",
   heroTitle: "L'arte orafa\ndelle collezioni\nCara Preziosi",
   heroLead:
-    "Gioielli artigianali fatti a mano, su misura, che custodiscono storie e tradizioni della migliore tradizione orafa italiana.",
+    "Atelier orafo artigianale a Bari. Gioielli fatti a mano su misura nel laboratorio di Nicola Caradonna, dove ogni pezzo custodisce una storia e la migliore tradizione orafa italiana.",
   heroCta: { label: "Scopri le collezioni", to: "/categorie" },
   heroCtaSecondary: { label: "Richiedi un preventivo", to: "/contatti" },
 
