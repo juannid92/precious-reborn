@@ -240,7 +240,7 @@ export const storia = {
   },
   intro: {
     title: "Custodi dell'eccellenza orafa",
-    body: "Custodendo le tradizioni della lavorazione dei metalli preziosi, il laboratorio ha saputo evolversi integrando innovazione e tecnologie moderne senza perdere l'autenticità del fatto a mano. Ogni gioiello che esce dalla bottega porta con sé questa doppia anima — radici profonde e sguardo contemporaneo.",
+    body: "Da oltre quarant'anni, nel cuore di Bari, il laboratorio Cara Preziosi custodisce le tradizioni della lavorazione dei metalli preziosi e le evolve integrando innovazione e tecnologie moderne, senza perdere l'autenticità del fatto a mano. Ogni gioiello che esce dalla bottega porta con sé questa doppia anima — radici profonde e sguardo contemporaneo.",
     image: storiaLaboratorio,
   },
   processo: {
