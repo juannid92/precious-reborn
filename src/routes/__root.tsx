@@ -155,6 +155,69 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": "https://www.carapreziosi.it/#website",
+              name: "Cara Preziosi",
+              url: "https://www.carapreziosi.it/",
+              inLanguage: "it-IT",
+              publisher: { "@id": "https://www.carapreziosi.it/#business" },
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://www.carapreziosi.it/cerca?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            },
+            {
+              "@type": "JewelryStore",
+              "@id": "https://www.carapreziosi.it/#business",
+              additionalType: "https://schema.org/LocalBusiness",
+              name: "Cara Preziosi",
+              description:
+                "Cara Preziosi è un atelier orafo artigianale a Bari specializzato in gioielli su misura, restauro e manutenzione professionale.",
+              url: "https://www.carapreziosi.it/",
+              image:
+                "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png",
+              telephone: "+39 393 953 6607",
+              email: "info@carapreziosi.it",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Via Antonio Beatillo 14",
+                addressLocality: "Bari",
+                postalCode: "70121",
+                addressRegion: "BA",
+                addressCountry: "IT",
+              },
+              areaServed: ["Bari", "Puglia", "Italia"],
+              openingHours: "Mo-Sa 08:30-19:00",
+              founder: { "@id": "https://www.carapreziosi.it/#nicola-caradonna" },
+              priceRange: "€€€",
+              currenciesAccepted: "EUR",
+              paymentAccepted: "Cash, Credit Card, Bank Transfer",
+              sameAs: [
+                "https://www.instagram.com/carapreziosi",
+                "https://www.facebook.com/carapreziosi",
+              ],
+            },
+            {
+              "@type": "Person",
+              "@id": "https://www.carapreziosi.it/#nicola-caradonna",
+              name: "Nicola Caradonna",
+              jobTitle: "Maestro orafo",
+              description:
+                "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione artigianale di gioielli unici su misura.",
+              worksFor: { "@id": "https://www.carapreziosi.it/#business" },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

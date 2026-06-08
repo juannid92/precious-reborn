@@ -31,6 +31,57 @@ export const Route = createFileRoute("/servizi")({
       },
     ],
     links: [{ rel: "canonical", href: "https://www.carapreziosi.it/servizi" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.carapreziosi.it/" },
+            { "@type": "ListItem", position: 2, name: "Servizi", item: "https://www.carapreziosi.it/servizi" },
+          ],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Service",
+              name: "Creazione gioielli su misura",
+              serviceType: "Creazione gioielli su misura",
+              description:
+                "Progettazione e realizzazione artigianale di gioielli unici su misura nel laboratorio orafo Cara Preziosi a Bari.",
+              provider: { "@id": "https://www.carapreziosi.it/#business" },
+              areaServed: ["Bari", "Puglia", "Italia"],
+              url: "https://www.carapreziosi.it/servizi",
+            },
+            {
+              "@type": "Service",
+              name: "Restauro gioielli",
+              serviceType: "Restauro gioielli",
+              description:
+                "Restauro professionale di gioielli antichi e di famiglia, eseguito a mano nel laboratorio orafo di Bari.",
+              provider: { "@id": "https://www.carapreziosi.it/#business" },
+              areaServed: ["Bari", "Puglia", "Italia"],
+              url: "https://www.carapreziosi.it/servizi",
+            },
+            {
+              "@type": "Service",
+              name: "Manutenzione gioielli",
+              serviceType: "Manutenzione gioielli",
+              description:
+                "Lucidatura, rodiatura, riparazione e manutenzione professionale dei tuoi preziosi presso l'atelier Cara Preziosi.",
+              provider: { "@id": "https://www.carapreziosi.it/#business" },
+              areaServed: ["Bari", "Puglia", "Italia"],
+              url: "https://www.carapreziosi.it/servizi",
+            },
+          ],
+        }),
+      },
+    ],
   }),
   component: ServiziPage,
 });

@@ -37,18 +37,11 @@ export const Route = createFileRoute("/contatti")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "JewelryStore",
-          name: brand.name,
-          image: "https://carapreziosi.it/og-home.jpg",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: contacts.address,
-            addressLocality: "Bari",
-            postalCode: "70121",
-            addressCountry: "IT",
-          },
-          telephone: contacts.phone,
-          openingHours: "Mo-Sa 08:30-19:00",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.carapreziosi.it/" },
+            { "@type": "ListItem", position: 2, name: "Contatti", item: "https://www.carapreziosi.it/contatti" },
+          ],
         }),
       },
     ],
