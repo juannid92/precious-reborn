@@ -121,7 +121,8 @@ function ServiziPage() {
                     src={s.image}
                     alt={s.title}
                     className="absolute inset-0 h-full w-full object-cover"
-                    loading="lazy"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    fetchPriority={i === 0 ? "high" : undefined}
                     decoding="async"
                   />
                 </div>
