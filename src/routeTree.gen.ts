@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StoriaRouteImport } from './routes/storia'
 import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as GioielliSuMisuraBariRouteImport } from './routes/gioielli-su-misura-bari'
 import { Route as CreaIlTuoGioielloRouteImport } from './routes/crea-il-tuo-gioiello'
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContattiRouteImport } from './routes/contatti'
@@ -32,6 +33,11 @@ const ServiziRoute = ServiziRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GioielliSuMisuraBariRoute = GioielliSuMisuraBariRouteImport.update({
+  id: '/gioielli-su-misura-bari',
+  path: '/gioielli-su-misura-bari',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreaIlTuoGioielloRoute = CreaIlTuoGioielloRouteImport.update({
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
+  '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
+  '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
+  '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/cookie-policy'
     | '/crea-il-tuo-gioiello'
+    | '/gioielli-su-misura-bari'
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/cookie-policy'
     | '/crea-il-tuo-gioiello'
+    | '/gioielli-su-misura-bari'
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/cookie-policy'
     | '/crea-il-tuo-gioiello'
+    | '/gioielli-su-misura-bari'
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   ContattiRoute: typeof ContattiRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
   CreaIlTuoGioielloRoute: typeof CreaIlTuoGioielloRoute
+  GioielliSuMisuraBariRoute: typeof GioielliSuMisuraBariRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ServiziRoute: typeof ServiziRoute
   StoriaRoute: typeof StoriaRoute
@@ -169,6 +182,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gioielli-su-misura-bari': {
+      id: '/gioielli-su-misura-bari'
+      path: '/gioielli-su-misura-bari'
+      fullPath: '/gioielli-su-misura-bari'
+      preLoaderRoute: typeof GioielliSuMisuraBariRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/crea-il-tuo-gioiello': {
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContattiRoute: ContattiRoute,
   CookiePolicyRoute: CookiePolicyRoute,
   CreaIlTuoGioielloRoute: CreaIlTuoGioielloRoute,
+  GioielliSuMisuraBariRoute: GioielliSuMisuraBariRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ServiziRoute: ServiziRoute,
   StoriaRoute: StoriaRoute,
@@ -230,13 +251,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
