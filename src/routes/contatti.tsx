@@ -24,7 +24,7 @@ export const Route = createFileRoute("/contatti")({
       { property: "og:url", content: "https://www.carapreziosi.it/contatti" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
-      { property: "og:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
+      { property: "og:image", content: `https://www.carapreziosi.it${home.heroImage}` },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Contatti — Prenota un Appuntamento in Atelier · Cara Preziosi Bari" },
       {
@@ -32,6 +32,7 @@ export const Route = createFileRoute("/contatti")({
         content:
           "Contatta Cara Preziosi e prenota il tuo appuntamento in atelier a Bari. Via Antonio Beatillo 14, consulenza su misura per gioielli artigianali unici.",
       },
+      { name: "twitter:image", content: `https://www.carapreziosi.it${home.heroImage}` },
     ],
     links: [{ rel: "canonical", href: "https://www.carapreziosi.it/contatti" }],
     scripts: [
