@@ -80,7 +80,7 @@ export const home = {
   servicesPreview: {
     eyebrow: "I nostri servizi",
     title: "Creazione su misura e restauro",
-    body: "Nel nostro laboratorio progettiamo pezzi unici, restauriamo gioielli di famiglia e ci prendiamo cura dei tuoi tesori con la massima precisione.",
+    body: "Nel nostro atelier orafo di Bari progettiamo pezzi unici su misura, restauriamo gioielli di famiglia ed eseguiamo la manutenzione professionale dei tuoi preziosi.",
     image: homeSecondary,
     cta: { label: "Scopri i servizi", to: "/servizi" },
   },
