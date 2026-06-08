@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Clock, Instagram, Facebook } from "lucide-react";
 import { brand, contacts } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/contatti")({
   head: () => ({
