@@ -426,7 +426,13 @@ function CollectionCard({
     >
       <img
         src={cat.image}
-        alt={cat.name}
+        alt={
+          cat.slug === "anelli"
+            ? "Anelli Cara Preziosi"
+            : cat.slug === "orecchini"
+            ? "Orecchini Cara Preziosi"
+            : "Collane e bracciali Cara Preziosi"
+        }
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
         loading="lazy"
         decoding="async"
