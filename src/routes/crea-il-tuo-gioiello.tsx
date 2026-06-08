@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, ArrowLeft, Sparkles, Circle, Gem, Heart, Star, Crown, Feather, CircleDot, Box, RotateCcw, Download, Loader2 } from "lucide-react";
 
-import { brand } from "@/content/site";
+import { brand, home } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { ImageUploadDropzone } from "@/components/atelier/ImageUploadDropzone";
 import { SelectableCard } from "@/components/atelier/SelectableCard";
