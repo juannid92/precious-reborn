@@ -200,6 +200,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 "https://www.instagram.com/carapreziosi",
                 "https://www.facebook.com/carapreziosi",
               ],
+              knowsAbout: [
+                "Gioielli su misura",
+                "Restauro di gioielli",
+                "Lucidatura e messa a misura",
+                "Lavorazione artigianale orafa",
+                "Microfusione a cera persa",
+                "Incastonatura di pietre preziose",
+                "Progettazione e disegno del gioiello",
+                "Atelier orafo a Bari",
+              ],
             },
             {
               "@type": "Person",
@@ -209,7 +219,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               description:
                 "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione artigianale di gioielli unici su misura.",
               worksFor: { "@id": "https://www.carapreziosi.it/#business" },
+              knowsAbout: [
+                "Creazione di gioielli su misura",
+                "Restauro di gioielli",
+                "Microfusione a cera persa",
+                "Incastonatura di pietre preziose",
+                "Lucidatura e messa a misura di anelli",
+                "Progettazione del gioiello e disegno CAD",
+                "Lavorazione artigianale orafa italiana",
+              ],
             },
+
           ],
         }),
       },
