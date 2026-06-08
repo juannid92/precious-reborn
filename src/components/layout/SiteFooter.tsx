@@ -67,10 +67,10 @@ export function SiteFooter() {
               {contacts.email}
             </a>
             <div className="flex gap-5 pt-3 text-sm">
-              <a href={contacts.instagramHref} target="_blank" rel="noreferrer" className="text-bone/70 hover:text-gold transition-colors">
+              <a href={contacts.instagramHref} target="_blank" rel="me noreferrer" className="text-bone/70 hover:text-gold transition-colors">
                 Instagram
               </a>
-              <a href={contacts.facebookHref} target="_blank" rel="noreferrer" className="text-bone/70 hover:text-gold transition-colors">
+              <a href={contacts.facebookHref} target="_blank" rel="me noreferrer" className="text-bone/70 hover:text-gold transition-colors">
                 Facebook
               </a>
             </div>
