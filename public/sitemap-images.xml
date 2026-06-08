@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://www.carapreziosi.it/categorie</loc>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/anelli-artigianali-bari.jpg</image:loc>
+      <image:title>Anelli artigianali su misura — Cara Preziosi Bari</image:title>
+      <image:caption>Anelli iconici realizzati a mano dal maestro orafo Nicola Caradonna nel laboratorio di Bari</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/orecchini-artigianali.jpg</image:loc>
+      <image:title>Orecchini artigianali — Cara Preziosi</image:title>
+      <image:caption>Orecchini in oro e pietre preziose, creati a mano in atelier</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/collane-su-misura.jpg</image:loc>
+      <image:title>Collane su misura — Atelier Orafo Bari</image:title>
+      <image:caption>Collane personalizzate in oro giallo, oro bianco e argento</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/bracciali-artigianali.jpg</image:loc>
+      <image:title>Bracciali artigianali — Cara Preziosi</image:title>
+      <image:caption>Bracciali su misura in oro e argento realizzati nel laboratorio di Bari</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.carapreziosi.it/storia</loc>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/nicola-caradonna-maestro-orafo.jpg</image:loc>
+      <image:title>Nicola Caradonna — Maestro Orafo Bari</image:title>
+      <image:caption>Il maestro Nicola Caradonna al lavoro nel laboratorio orafo di Via Antonio Beatillo 14, Bari</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/laboratorio-orafo-bari.jpg</image:loc>
+      <image:title>Laboratorio orafo artigianale — Cara Preziosi Bari</image:title>
+      <image:caption>Il laboratorio artigianale di Via Antonio Beatillo 14, Bari: dove nascono i gioielli Cara Preziosi</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.carapreziosi.it/crea-il-tuo-gioiello</loc>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/gioiello-su-misura-3d.jpg</image:loc>
+      <image:title>Configuratore gioiello 3D — Cara Preziosi</image:title>
+      <image:caption>Crea il tuo gioiello personalizzato con il configuratore 3D online di Cara Preziosi, atelier orafo di Bari</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.carapreziosi.it/</loc>
+    <image:image>
+      <image:loc>https://www.carapreziosi.it/images/cara-preziosi-atelier-bari.jpg</image:loc>
+      <image:title>Cara Preziosi — Atelier Orafo Bari</image:title>
+      <image:caption>Cara Preziosi, atelier orafo artigianale fondato dal maestro Nicola Caradonna a Bari, Puglia</image:caption>
+    </image:image>
+  </url>
+
+</urlset>
