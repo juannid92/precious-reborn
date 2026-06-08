@@ -30,6 +30,19 @@ export const Route = createFileRoute("/storia")({
       },
     ],
     links: [{ rel: "canonical", href: "https://www.carapreziosi.it/storia" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.carapreziosi.it/" },
+            { "@type": "ListItem", position: 2, name: "Il Laboratorio", item: "https://www.carapreziosi.it/storia" },
+          ],
+        }),
+      },
+    ],
   }),
   component: StoriaPage,
 });
