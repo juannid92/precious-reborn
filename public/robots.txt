@@ -6,7 +6,6 @@ Disallow: /checkout/
 Disallow: /grazie/
 
 Sitemap: https://www.carapreziosi.it/sitemap.xml
-Sitemap: https://www.carapreziosi.it/sitemap-images.xml
 
 User-agent: GPTBot
 Allow: /
