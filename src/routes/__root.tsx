@@ -111,11 +111,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:title", content: `${brand.name} — Laboratorio orafo a Bari` },
       { property: "og:description", content: brand.shortDescription },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png" },
+      { property: "og:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: `${brand.name} — Laboratorio orafo a Bari` },
       { name: "twitter:description", content: brand.shortDescription },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png" },
+      { name: "twitter:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
     ],
     links: [
       { rel: "manifest", href: "/manifest.webmanifest" },
