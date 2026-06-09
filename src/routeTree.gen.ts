@@ -23,6 +23,7 @@ import { Route as AtelierOrafoPugliaRouteImport } from './routes/atelier-orafo-p
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GioielliOroGialloRouteImport } from './routes/gioielli.oro-giallo'
 import { Route as GioielliOroBiancoRouteImport } from './routes/gioielli.oro-bianco'
+import { Route as GioielliArgentoRouteImport } from './routes/gioielli.argento'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
 const StoriaRoute = StoriaRouteImport.update({
@@ -96,6 +97,11 @@ const GioielliOroBiancoRoute = GioielliOroBiancoRouteImport.update({
   path: '/gioielli/oro-bianco',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GioielliArgentoRoute = GioielliArgentoRouteImport.update({
+  id: '/gioielli/argento',
+  path: '/gioielli/argento',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicFalTrellisWebhookRoute =
   ApiPublicFalTrellisWebhookRouteImport.update({
     id: '/api/public/fal-trellis-webhook',
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
@@ -133,6 +140,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
@@ -170,6 +179,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/argento'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
     | '/api/public/fal-trellis-webhook'
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/argento'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
     | '/api/public/fal-trellis-webhook'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/argento'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
     | '/api/public/fal-trellis-webhook'
@@ -222,6 +234,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ServiziRoute: typeof ServiziRoute
   StoriaRoute: typeof StoriaRoute
+  GioielliArgentoRoute: typeof GioielliArgentoRoute
   GioielliOroBiancoRoute: typeof GioielliOroBiancoRoute
   GioielliOroGialloRoute: typeof GioielliOroGialloRoute
   ApiPublicFalTrellisWebhookRoute: typeof ApiPublicFalTrellisWebhookRoute
@@ -327,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GioielliOroBiancoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gioielli/argento': {
+      id: '/gioielli/argento'
+      path: '/gioielli/argento'
+      fullPath: '/gioielli/argento'
+      preLoaderRoute: typeof GioielliArgentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/fal-trellis-webhook': {
       id: '/api/public/fal-trellis-webhook'
       path: '/api/public/fal-trellis-webhook'
@@ -350,6 +370,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ServiziRoute: ServiziRoute,
   StoriaRoute: StoriaRoute,
+  GioielliArgentoRoute: GioielliArgentoRoute,
   GioielliOroBiancoRoute: GioielliOroBiancoRoute,
   GioielliOroGialloRoute: GioielliOroGialloRoute,
   ApiPublicFalTrellisWebhookRoute: ApiPublicFalTrellisWebhookRoute,
