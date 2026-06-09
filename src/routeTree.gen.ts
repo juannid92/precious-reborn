@@ -24,6 +24,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as GioielliRegaloRouteImport } from './routes/gioielli.regalo'
 import { Route as GioielliOroGialloRouteImport } from './routes/gioielli.oro-giallo'
 import { Route as GioielliOroBiancoRouteImport } from './routes/gioielli.oro-bianco'
+import { Route as GioielliOrecchiniRouteImport } from './routes/gioielli.orecchini'
 import { Route as GioielliMatrimonioRouteImport } from './routes/gioielli.matrimonio'
 import { Route as GioielliArgentoRouteImport } from './routes/gioielli.argento'
 import { Route as GioielliAnniversarioRouteImport } from './routes/gioielli.anniversario'
@@ -106,6 +107,11 @@ const GioielliOroBiancoRoute = GioielliOroBiancoRouteImport.update({
   path: '/gioielli/oro-bianco',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GioielliOrecchiniRoute = GioielliOrecchiniRouteImport.update({
+  id: '/gioielli/orecchini',
+  path: '/gioielli/orecchini',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GioielliMatrimonioRoute = GioielliMatrimonioRouteImport.update({
   id: '/gioielli/matrimonio',
   path: '/gioielli/matrimonio',
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
+  '/gioielli/orecchini': typeof GioielliOrecchiniRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
+  '/gioielli/orecchini': typeof GioielliOrecchiniRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
+  '/gioielli/orecchini': typeof GioielliOrecchiniRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/gioielli/anniversario'
     | '/gioielli/argento'
     | '/gioielli/matrimonio'
+    | '/gioielli/orecchini'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/gioielli/anniversario'
     | '/gioielli/argento'
     | '/gioielli/matrimonio'
+    | '/gioielli/orecchini'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
@@ -263,6 +274,7 @@ export interface FileRouteTypes {
     | '/gioielli/anniversario'
     | '/gioielli/argento'
     | '/gioielli/matrimonio'
+    | '/gioielli/orecchini'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
@@ -286,6 +298,7 @@ export interface RootRouteChildren {
   GioielliAnniversarioRoute: typeof GioielliAnniversarioRoute
   GioielliArgentoRoute: typeof GioielliArgentoRoute
   GioielliMatrimonioRoute: typeof GioielliMatrimonioRoute
+  GioielliOrecchiniRoute: typeof GioielliOrecchiniRoute
   GioielliOroBiancoRoute: typeof GioielliOroBiancoRoute
   GioielliOroGialloRoute: typeof GioielliOroGialloRoute
   GioielliRegaloRoute: typeof GioielliRegaloRoute
@@ -399,6 +412,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GioielliOroBiancoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gioielli/orecchini': {
+      id: '/gioielli/orecchini'
+      path: '/gioielli/orecchini'
+      fullPath: '/gioielli/orecchini'
+      preLoaderRoute: typeof GioielliOrecchiniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gioielli/matrimonio': {
       id: '/gioielli/matrimonio'
       path: '/gioielli/matrimonio'
@@ -454,6 +474,7 @@ const rootRouteChildren: RootRouteChildren = {
   GioielliAnniversarioRoute: GioielliAnniversarioRoute,
   GioielliArgentoRoute: GioielliArgentoRoute,
   GioielliMatrimonioRoute: GioielliMatrimonioRoute,
+  GioielliOrecchiniRoute: GioielliOrecchiniRoute,
   GioielliOroBiancoRoute: GioielliOroBiancoRoute,
   GioielliOroGialloRoute: GioielliOroGialloRoute,
   GioielliRegaloRoute: GioielliRegaloRoute,
@@ -462,3 +483,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
