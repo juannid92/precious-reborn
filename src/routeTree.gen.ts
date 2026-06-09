@@ -21,6 +21,7 @@ import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as CategorieRouteImport } from './routes/categorie'
 import { Route as AtelierOrafoPugliaRouteImport } from './routes/atelier-orafo-puglia'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GioielliRegaloRouteImport } from './routes/gioielli.regalo'
 import { Route as GioielliOroGialloRouteImport } from './routes/gioielli.oro-giallo'
 import { Route as GioielliOroBiancoRouteImport } from './routes/gioielli.oro-bianco'
 import { Route as GioielliMatrimonioRouteImport } from './routes/gioielli.matrimonio'
@@ -89,6 +90,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GioielliRegaloRoute = GioielliRegaloRouteImport.update({
+  id: '/gioielli/regalo',
+  path: '/gioielli/regalo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GioielliOroGialloRoute = GioielliOroGialloRouteImport.update({
   id: '/gioielli/oro-giallo',
   path: '/gioielli/oro-giallo',
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
+  '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
+  '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
 }
 export interface FileRoutesById {
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
+  '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
 }
 export interface FileRouteTypes {
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/gioielli/matrimonio'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
+    | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/gioielli/matrimonio'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
+    | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
   id:
     | '__root__'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/gioielli/matrimonio'
     | '/gioielli/oro-bianco'
     | '/gioielli/oro-giallo'
+    | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
   fileRoutesById: FileRoutesById
 }
@@ -263,6 +275,7 @@ export interface RootRouteChildren {
   GioielliMatrimonioRoute: typeof GioielliMatrimonioRoute
   GioielliOroBiancoRoute: typeof GioielliOroBiancoRoute
   GioielliOroGialloRoute: typeof GioielliOroGialloRoute
+  GioielliRegaloRoute: typeof GioielliRegaloRoute
   ApiPublicFalTrellisWebhookRoute: typeof ApiPublicFalTrellisWebhookRoute
 }
 
@@ -352,6 +365,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gioielli/regalo': {
+      id: '/gioielli/regalo'
+      path: '/gioielli/regalo'
+      fullPath: '/gioielli/regalo'
+      preLoaderRoute: typeof GioielliRegaloRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gioielli/oro-giallo': {
       id: '/gioielli/oro-giallo'
       path: '/gioielli/oro-giallo'
@@ -415,8 +435,19 @@ const rootRouteChildren: RootRouteChildren = {
   GioielliMatrimonioRoute: GioielliMatrimonioRoute,
   GioielliOroBiancoRoute: GioielliOroBiancoRoute,
   GioielliOroGialloRoute: GioielliOroGialloRoute,
+  GioielliRegaloRoute: GioielliRegaloRoute,
   ApiPublicFalTrellisWebhookRoute: ApiPublicFalTrellisWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
