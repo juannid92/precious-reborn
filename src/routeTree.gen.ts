@@ -21,6 +21,7 @@ import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as CategorieRouteImport } from './routes/categorie'
 import { Route as AtelierOrafoPugliaRouteImport } from './routes/atelier-orafo-puglia'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GioielliOroGialloRouteImport } from './routes/gioielli.oro-giallo'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
 const StoriaRoute = StoriaRouteImport.update({
@@ -84,6 +85,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GioielliOroGialloRoute = GioielliOroGialloRouteImport.update({
+  id: '/gioielli/oro-giallo',
+  path: '/gioielli/oro-giallo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicFalTrellisWebhookRoute =
   ApiPublicFalTrellisWebhookRouteImport.update({
     id: '/api/public/fal-trellis-webhook',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
 }
 export interface FileRoutesById {
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
 }
 export interface FileRouteTypes {
@@ -152,6 +161,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/oro-giallo'
     | '/api/public/fal-trellis-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/oro-giallo'
     | '/api/public/fal-trellis-webhook'
   id:
     | '__root__'
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/oro-giallo'
     | '/api/public/fal-trellis-webhook'
   fileRoutesById: FileRoutesById
 }
@@ -198,6 +210,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ServiziRoute: typeof ServiziRoute
   StoriaRoute: typeof StoriaRoute
+  GioielliOroGialloRoute: typeof GioielliOroGialloRoute
   ApiPublicFalTrellisWebhookRoute: typeof ApiPublicFalTrellisWebhookRoute
 }
 
@@ -287,6 +300,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gioielli/oro-giallo': {
+      id: '/gioielli/oro-giallo'
+      path: '/gioielli/oro-giallo'
+      fullPath: '/gioielli/oro-giallo'
+      preLoaderRoute: typeof GioielliOroGialloRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/fal-trellis-webhook': {
       id: '/api/public/fal-trellis-webhook'
       path: '/api/public/fal-trellis-webhook'
@@ -310,6 +330,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ServiziRoute: ServiziRoute,
   StoriaRoute: StoriaRoute,
+  GioielliOroGialloRoute: GioielliOroGialloRoute,
   ApiPublicFalTrellisWebhookRoute: ApiPublicFalTrellisWebhookRoute,
 }
 export const routeTree = rootRouteImport
