@@ -25,6 +25,7 @@ import { Route as GioielliOroGialloRouteImport } from './routes/gioielli.oro-gia
 import { Route as GioielliOroBiancoRouteImport } from './routes/gioielli.oro-bianco'
 import { Route as GioielliMatrimonioRouteImport } from './routes/gioielli.matrimonio'
 import { Route as GioielliArgentoRouteImport } from './routes/gioielli.argento'
+import { Route as GioielliAnniversarioRouteImport } from './routes/gioielli.anniversario'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
 const StoriaRoute = StoriaRouteImport.update({
@@ -108,6 +109,11 @@ const GioielliArgentoRoute = GioielliArgentoRouteImport.update({
   path: '/gioielli/argento',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GioielliAnniversarioRoute = GioielliAnniversarioRouteImport.update({
+  id: '/gioielli/anniversario',
+  path: '/gioielli/anniversario',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicFalTrellisWebhookRoute =
   ApiPublicFalTrellisWebhookRouteImport.update({
     id: '/api/public/fal-trellis-webhook',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
+  '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
   '/gioielli/matrimonio': typeof GioielliMatrimonioRoute
   '/gioielli/oro-bianco': typeof GioielliOroBiancoRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/anniversario'
     | '/gioielli/argento'
     | '/gioielli/matrimonio'
     | '/gioielli/oro-bianco'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/anniversario'
     | '/gioielli/argento'
     | '/gioielli/matrimonio'
     | '/gioielli/oro-bianco'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
+    | '/gioielli/anniversario'
     | '/gioielli/argento'
     | '/gioielli/matrimonio'
     | '/gioielli/oro-bianco'
@@ -246,6 +258,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ServiziRoute: typeof ServiziRoute
   StoriaRoute: typeof StoriaRoute
+  GioielliAnniversarioRoute: typeof GioielliAnniversarioRoute
   GioielliArgentoRoute: typeof GioielliArgentoRoute
   GioielliMatrimonioRoute: typeof GioielliMatrimonioRoute
   GioielliOroBiancoRoute: typeof GioielliOroBiancoRoute
@@ -367,6 +380,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GioielliArgentoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gioielli/anniversario': {
+      id: '/gioielli/anniversario'
+      path: '/gioielli/anniversario'
+      fullPath: '/gioielli/anniversario'
+      preLoaderRoute: typeof GioielliAnniversarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/fal-trellis-webhook': {
       id: '/api/public/fal-trellis-webhook'
       path: '/api/public/fal-trellis-webhook'
@@ -390,6 +410,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ServiziRoute: ServiziRoute,
   StoriaRoute: StoriaRoute,
+  GioielliAnniversarioRoute: GioielliAnniversarioRoute,
   GioielliArgentoRoute: GioielliArgentoRoute,
   GioielliMatrimonioRoute: GioielliMatrimonioRoute,
   GioielliOroBiancoRoute: GioielliOroBiancoRoute,
