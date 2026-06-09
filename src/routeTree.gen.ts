@@ -19,6 +19,7 @@ import { Route as CreaAnelloPersonalizzatoBariRouteImport } from './routes/crea-
 import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as CategorieRouteImport } from './routes/categorie'
+import { Route as AtelierOrafoPugliaRouteImport } from './routes/atelier-orafo-puglia'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
@@ -73,6 +74,11 @@ const CategorieRoute = CategorieRouteImport.update({
   path: '/categorie',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AtelierOrafoPugliaRoute = AtelierOrafoPugliaRouteImport.update({
+  id: '/atelier-orafo-puglia',
+  path: '/atelier-orafo-puglia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -87,6 +93,7 @@ const ApiPublicFalTrellisWebhookRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/atelier-orafo-puglia': typeof AtelierOrafoPugliaRoute
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/atelier-orafo-puglia': typeof AtelierOrafoPugliaRoute
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -116,6 +124,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/atelier-orafo-puglia': typeof AtelierOrafoPugliaRoute
   '/categorie': typeof CategorieRoute
   '/contatti': typeof ContattiRoute
   '/cookie-policy': typeof CookiePolicyRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/atelier-orafo-puglia'
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/atelier-orafo-puglia'
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/atelier-orafo-puglia'
     | '/categorie'
     | '/contatti'
     | '/cookie-policy'
@@ -175,6 +187,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AtelierOrafoPugliaRoute: typeof AtelierOrafoPugliaRoute
   CategorieRoute: typeof CategorieRoute
   ContattiRoute: typeof ContattiRoute
   CookiePolicyRoute: typeof CookiePolicyRoute
@@ -260,6 +273,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorieRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/atelier-orafo-puglia': {
+      id: '/atelier-orafo-puglia'
+      path: '/atelier-orafo-puglia'
+      fullPath: '/atelier-orafo-puglia'
+      preLoaderRoute: typeof AtelierOrafoPugliaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -279,6 +299,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AtelierOrafoPugliaRoute: AtelierOrafoPugliaRoute,
   CategorieRoute: CategorieRoute,
   ContattiRoute: ContattiRoute,
   CookiePolicyRoute: CookiePolicyRoute,
