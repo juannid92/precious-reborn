@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StoriaRouteImport } from './routes/storia'
 import { Route as ServiziRouteImport } from './routes/servizi'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as GioielliereBariRouteImport } from './routes/gioielliere-bari'
 import { Route as GioielliSuMisuraBariRouteImport } from './routes/gioielli-su-misura-bari'
 import { Route as CreaIlTuoGioielloRouteImport } from './routes/crea-il-tuo-gioiello'
 import { Route as CreaAnelloPersonalizzatoBariRouteImport } from './routes/crea-anello-personalizzato-bari'
@@ -34,6 +35,11 @@ const ServiziRoute = ServiziRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GioielliereBariRoute = GioielliereBariRouteImport.update({
+  id: '/gioielliere-bari',
+  path: '/gioielliere-bari',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GioielliSuMisuraBariRoute = GioielliSuMisuraBariRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/crea-anello-personalizzato-bari': typeof CreaAnelloPersonalizzatoBariRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
   '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
+  '/gioielliere-bari': typeof GioielliereBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/crea-anello-personalizzato-bari': typeof CreaAnelloPersonalizzatoBariRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
   '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
+  '/gioielliere-bari': typeof GioielliereBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/crea-anello-personalizzato-bari': typeof CreaAnelloPersonalizzatoBariRoute
   '/crea-il-tuo-gioiello': typeof CreaIlTuoGioielloRoute
   '/gioielli-su-misura-bari': typeof GioielliSuMisuraBariRoute
+  '/gioielliere-bari': typeof GioielliereBariRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/crea-anello-personalizzato-bari'
     | '/crea-il-tuo-gioiello'
     | '/gioielli-su-misura-bari'
+    | '/gioielliere-bari'
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/crea-anello-personalizzato-bari'
     | '/crea-il-tuo-gioiello'
     | '/gioielli-su-misura-bari'
+    | '/gioielliere-bari'
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/crea-anello-personalizzato-bari'
     | '/crea-il-tuo-gioiello'
     | '/gioielli-su-misura-bari'
+    | '/gioielliere-bari'
     | '/privacy-policy'
     | '/servizi'
     | '/storia'
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   CreaAnelloPersonalizzatoBariRoute: typeof CreaAnelloPersonalizzatoBariRoute
   CreaIlTuoGioielloRoute: typeof CreaIlTuoGioielloRoute
   GioielliSuMisuraBariRoute: typeof GioielliSuMisuraBariRoute
+  GioielliereBariRoute: typeof GioielliereBariRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ServiziRoute: typeof ServiziRoute
   StoriaRoute: typeof StoriaRoute
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gioielliere-bari': {
+      id: '/gioielliere-bari'
+      path: '/gioielliere-bari'
+      fullPath: '/gioielliere-bari'
+      preLoaderRoute: typeof GioielliereBariRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gioielli-su-misura-bari': {
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreaAnelloPersonalizzatoBariRoute: CreaAnelloPersonalizzatoBariRoute,
   CreaIlTuoGioielloRoute: CreaIlTuoGioielloRoute,
   GioielliSuMisuraBariRoute: GioielliSuMisuraBariRoute,
+  GioielliereBariRoute: GioielliereBariRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ServiziRoute: ServiziRoute,
   StoriaRoute: StoriaRoute,
