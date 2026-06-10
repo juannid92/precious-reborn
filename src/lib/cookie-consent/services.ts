@@ -31,6 +31,7 @@ export const SERVICES: ServiceConfig[] = [
  * Va impostato come variabile d'ambiente VITE_GA_MEASUREMENT_ID.
  * Se mancante, il Gate non carica nulla.
  */
-export const GA_MEASUREMENT_ID: string | undefined = (
-  import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined
-)?.trim() || undefined;
+export const GA_MEASUREMENT_ID: string = (
+  (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim() ||
+  "G-RLXD2KNB2S"
+);
