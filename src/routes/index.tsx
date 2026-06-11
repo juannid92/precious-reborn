@@ -146,6 +146,8 @@ function HomePage() {
               src="/media/hero.mp4"
               aria-label="Gioiello Cara Preziosi — atelier orafo Bari"
               className="absolute inset-0 h-full w-full object-cover"
+              width={1728}
+              height={1351}
               autoPlay
               muted
               loop
