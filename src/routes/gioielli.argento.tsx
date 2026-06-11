@@ -15,7 +15,7 @@ import ringBouquet from "@/assets/cara/ring-bouquet.jpg";
 
 const TITLE = "Gioielli in argento a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Gioielli in argento disegnati e rifiniti a mano nell'atelier orafo Cara Preziosi a Bari: anelli, orecchini, collane e bracciali su misura, personalizzazione e restyling su appuntamento in Via Antonio Beatillo 14.";
+  "Gioielli in argento rifiniti a mano nell'atelier Cara Preziosi a Bari: anelli, orecchini, collane e bracciali su misura. Su appuntamento, Via Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/argento";
 const IMAGE = `https://www.carapreziosi.it${ringSchiuma}`;
 
