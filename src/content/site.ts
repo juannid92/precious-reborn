@@ -35,7 +35,7 @@ export const brand = {
   name: "Cara Preziosi",
   tagline: "L'eccellenza dell'artigianato orafo made in Italy",
   shortDescription:
-    "Atelier orafo artigianale a Bari, in Via Antonio Beatillo 14. Il maestro Nicola Caradonna crea, restaura e custodisce gioielli unici fatti a mano, dal progetto su misura alla manutenzione professionale.",
+    "Atelier orafo artigianale a Bari, Via Antonio Beatillo 14. Il maestro Nicola Caradonna crea, restaura e custodisce gioielli unici fatti a mano.",
 };
 
 export const contacts = {
