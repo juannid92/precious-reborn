@@ -4,7 +4,8 @@ import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 import { navigation, contacts } from "@/content/site";
 
-const logoCara = "/brand/cara-preziosi-logo.png";
+import logoAsset from "@/assets/cara-logo.png.asset.json";
+const logoCara = logoAsset.url;
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
