@@ -15,7 +15,7 @@ import ringCharlotteCuore from "@/assets/cara/ring-charlotte-cuore.jpg";
 
 const TITLE = "Gioielli per anniversario a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Gioielli per l'anniversario pensati e realizzati a mano nell'atelier orafo Cara Preziosi a Bari: anelli, collane, bracciali e orecchini su misura, restyling di pezzi cari e regali con significato, su appuntamento in Via Antonio Beatillo 14.";
+  "Gioielli per l'anniversario fatti a mano da Cara Preziosi a Bari: anelli, collane, bracciali e regali con significato. Su appuntamento, Via Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/anniversario";
 const IMAGE = `https://www.carapreziosi.it${ringAurora}`;
 

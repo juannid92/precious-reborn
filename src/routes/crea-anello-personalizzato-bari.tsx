@@ -7,7 +7,7 @@ import ringCharlotte from "@/assets/cara/ring-charlotte.jpg";
 
 const TITLE = "Crea un anello personalizzato a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Crea un anello personalizzato a Bari nell'atelier orafo Cara Preziosi: dal primo schizzo alla scelta della pietra e della misura, ogni anello è disegnato e lavorato a mano su appuntamento in Via Antonio Beatillo 14.";
+  "Crea un anello personalizzato a Bari con l'atelier Cara Preziosi: schizzo, scelta della pietra e lavorazione a mano in Via Antonio Beatillo 14, su appuntamento.";
 const URL = "https://www.carapreziosi.it/crea-anello-personalizzato-bari";
 const IMAGE = `https://www.carapreziosi.it${ringCharlotte}`;
 

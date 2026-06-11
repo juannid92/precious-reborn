@@ -20,13 +20,13 @@ if (typeof window !== "undefined") {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cara Preziosi — Gioielli Artigianali su Misura · Atelier Orafo Bari" },
+      { title: "Cara Preziosi — Atelier Orafo Artigianale a Bari" },
       {
         name: "description",
         content:
           "Atelier orafo artigianale di Nicola Caradonna a Bari. Gioielli unici su misura con configuratore 3D, restauro e manutenzione professionale.",
       },
-      { property: "og:title", content: "Cara Preziosi — Gioielli Artigianali su Misura · Atelier Orafo Bari" },
+      { property: "og:title", content: "Cara Preziosi — Atelier Orafo Artigianale a Bari" },
       {
         property: "og:description",
         content:
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/")({
       { property: "og:locale", content: "it_IT" },
       { property: "og:image", content: `https://www.carapreziosi.it${home.heroImage}` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Cara Preziosi — Gioielli Artigianali su Misura · Atelier Orafo Bari" },
+      { name: "twitter:title", content: "Cara Preziosi — Atelier Orafo Artigianale a Bari" },
       {
         name: "twitter:description",
         content:

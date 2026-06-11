@@ -7,7 +7,7 @@ import storiaLaboratorio from "@/assets/cara/storia-laboratorio.jpg";
 
 const TITLE = "Gioielliere a Bari — Atelier orafo artigianale Cara Preziosi";
 const DESCRIPTION =
-  "Gioielliere a Bari: Cara Preziosi è l'atelier orafo artigianale del maestro Nicola Caradonna in Via Antonio Beatillo 14. Creazioni su misura, restauro e manutenzione dei tuoi gioielli, su appuntamento.";
+  "Cara Preziosi è l'atelier orafo artigianale di Nicola Caradonna a Bari, Via Beatillo 14. Creazioni su misura, restauro e manutenzione su appuntamento.";
 const URL = "https://www.carapreziosi.it/gioielliere-bari";
 const IMAGE = `https://www.carapreziosi.it${storiaLaboratorio}`;
 

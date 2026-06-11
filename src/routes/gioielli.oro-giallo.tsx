@@ -15,7 +15,7 @@ import ringAurora from "@/assets/cara/ring-aurora.jpg";
 
 const TITLE = "Gioielli in oro giallo a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Gioielli in oro giallo pensati e realizzati a mano nell'atelier orafo Cara Preziosi a Bari: anelli, collane, bracciali e orecchini disegnati su misura, restyling e personalizzazione su appuntamento in Via Antonio Beatillo 14.";
+  "Gioielli in oro giallo fatti a mano nell'atelier Cara Preziosi a Bari: anelli, collane, bracciali e orecchini su misura. Su appuntamento, Via Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/oro-giallo";
 const IMAGE = `https://www.carapreziosi.it${ringCharlotte}`;
 

@@ -15,7 +15,7 @@ import ringLuce from "@/assets/cara/ring-luce.jpg";
 
 const TITLE = "Gioielli da regalare a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Gioielli pensati come regalo e realizzati a mano nell'atelier orafo Cara Preziosi a Bari: anelli, collane, bracciali e orecchini scelti o disegnati insieme al maestro orafo, su appuntamento in Via Antonio Beatillo 14.";
+  "Gioielli da regalo fatti a mano nell'atelier Cara Preziosi a Bari: anelli, collane, bracciali e orecchini scelti col maestro orafo. Su appuntamento in Bari.";
 const URL = "https://www.carapreziosi.it/gioielli/regalo";
 const IMAGE = `https://www.carapreziosi.it${ringBouquet}`;
 

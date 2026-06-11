@@ -9,13 +9,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export const Route = createFileRoute("/contatti")({
   head: () => ({
     meta: [
-      { title: "Contatti — Prenota un Appuntamento in Atelier · Cara Preziosi Bari" },
+      { title: "Contatti e Appuntamento in Atelier · Cara Preziosi Bari" },
       {
         name: "description",
         content:
           "Contatta Cara Preziosi e prenota il tuo appuntamento in atelier a Bari. Via Antonio Beatillo 14, consulenza su misura per gioielli artigianali unici.",
       },
-      { property: "og:title", content: "Contatti — Prenota un Appuntamento in Atelier · Cara Preziosi Bari" },
+      { property: "og:title", content: "Contatti e Appuntamento in Atelier · Cara Preziosi Bari" },
       {
         property: "og:description",
         content:
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/contatti")({
       { property: "og:locale", content: "it_IT" },
       { property: "og:image", content: `https://www.carapreziosi.it${home.heroImage}` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Contatti — Prenota un Appuntamento in Atelier · Cara Preziosi Bari" },
+      { name: "twitter:title", content: "Contatti e Appuntamento in Atelier · Cara Preziosi Bari" },
       {
         name: "twitter:description",
         content:
