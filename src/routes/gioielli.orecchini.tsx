@@ -15,7 +15,7 @@ import storiaMani from "@/assets/cara/storia-mani.jpg";
 
 const TITLE = "Orecchini artigianali a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Orecchini artigianali pensati e realizzati a mano nell'atelier orafo Cara Preziosi a Bari: pezzi quotidiani, da cerimonia, da regalo e su misura, su appuntamento in Via Antonio Beatillo 14.";
+  "Orecchini artigianali fatti a mano nell'atelier Cara Preziosi a Bari: pezzi quotidiani, da cerimonia, da regalo e su misura. Su appuntamento, Via Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/orecchini";
 const IMAGE = `https://www.carapreziosi.it${catOrecchini}`;
 const IMAGE_ALT = `https://www.carapreziosi.it${storiaMani}`;
