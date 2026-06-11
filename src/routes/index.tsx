@@ -45,7 +45,10 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: `https://www.carapreziosi.it${home.heroImage}` },
     ],
-    links: [{ rel: "canonical", href: "https://www.carapreziosi.it/" }],
+    links: [
+      { rel: "canonical", href: "https://www.carapreziosi.it/" },
+      { rel: "preload", as: "image", href: home.heroImage, fetchpriority: "high" },
+    ],
   }),
   component: HomePage,
 });
@@ -143,6 +146,8 @@ function HomePage() {
               src="/media/hero.mp4"
               aria-label="Gioiello Cara Preziosi — atelier orafo Bari"
               className="absolute inset-0 h-full w-full object-cover"
+              width={1728}
+              height={1351}
               autoPlay
               muted
               loop
