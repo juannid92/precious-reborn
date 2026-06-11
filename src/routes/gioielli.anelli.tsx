@@ -15,7 +15,7 @@ import ringCharlotte from "@/assets/cara/ring-charlotte.jpg";
 
 const TITLE = "Anelli artigianali a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Anelli artigianali pensati e realizzati a mano nell'atelier orafo Cara Preziosi a Bari: anelli di stile personale, di impegno, da regalo e da indossare ogni giorno, su appuntamento in Via Antonio Beatillo 14.";
+  "Anelli artigianali fatti a mano nell'atelier Cara Preziosi a Bari: stile personale, impegno e regalo, su appuntamento in Via Antonio Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/anelli";
 const IMAGE = `https://www.carapreziosi.it${ringSchiuma}`;
 const IMAGE_ALT = `https://www.carapreziosi.it${ringCharlotte}`;
