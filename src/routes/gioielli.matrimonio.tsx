@@ -15,7 +15,7 @@ import ringBorbone from "@/assets/cara/ring-borbone.jpg";
 
 const TITLE = "Gioielli per matrimonio a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Gioielli per il matrimonio pensati e realizzati a mano nell'atelier orafo Cara Preziosi a Bari: fedi, anelli, orecchini, collane e regali per il giorno più importante, su appuntamento in Via Antonio Beatillo 14.";
+  "Gioielli per il matrimonio fatti a mano nell'atelier Cara Preziosi a Bari: fedi, anelli, orecchini e regali. Su appuntamento in Via Antonio Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/matrimonio";
 const IMAGE = `https://www.carapreziosi.it${ringIlaria}`;
 
