@@ -304,20 +304,79 @@ function HomePage() {
       </section>
 
 
-      {/* ───── MARQUEE — anelli iconici ───── */}
-      <section className="bg-bone-deep text-ink py-20 md:py-28 border-y border-ink/8 overflow-hidden section-cv">
-        <p className="eyebrow text-gold-deep text-center mb-10">Le creazioni · Atelier Caradonna</p>
-        <Suspense fallback={<div className="h-12 md:h-16" />}>
-          <Marquee speed={50}>
-            {rings.slice(0, 6).map((r, i) => (
-              <span key={i} className="font-display text-5xl md:text-7xl italic whitespace-nowrap">
-                {r.name}
-                <span className="not-italic text-gold-deep mx-8">✦</span>
-              </span>
-            ))}
-          </Marquee>
-        </Suspense>
-        <div className="text-center mt-10">
+      {/* ───── MARQUEE — creazioni atelier (baroque rail) ───── */}
+      <section className="bg-bone-deep text-ink py-16 md:py-20 overflow-hidden section-cv">
+        <p className="eyebrow text-gold-deep text-center mb-6">Le creazioni · Atelier Caradonna</p>
+        <div className="relative mx-auto max-w-[1400px] px-4 md:px-8">
+          {/* Baroque frame */}
+          <div
+            className="relative rounded-[2px] p-[2px]"
+            style={{
+              background:
+                "linear-gradient(90deg, oklch(0.215 0.130 265) 0%, oklch(0.72 0.082 75) 50%, oklch(0.215 0.130 265) 100%)",
+              boxShadow:
+                "0 10px 40px -20px oklch(0.215 0.130 265 / 0.45), inset 0 0 0 1px oklch(0.72 0.082 75 / 0.35)",
+            }}
+          >
+            {/* Inner bar */}
+            <div
+              className="relative overflow-hidden rounded-[2px] py-3 md:py-4"
+              style={{
+                background:
+                  "linear-gradient(90deg, oklch(0.20 0.135 265) 0%, oklch(0.27 0.130 265) 50%, oklch(0.20 0.135 265) 100%)",
+              }}
+            >
+              {/* Baroque corner flourishes */}
+              <span aria-hidden className="pointer-events-none absolute top-1 left-2 text-gold/70 text-sm select-none">❦</span>
+              <span aria-hidden className="pointer-events-none absolute top-1 right-2 text-gold/70 text-sm select-none">❦</span>
+              <span aria-hidden className="pointer-events-none absolute bottom-1 left-2 text-gold/70 text-sm select-none">❦</span>
+              <span aria-hidden className="pointer-events-none absolute bottom-1 right-2 text-gold/70 text-sm select-none">❦</span>
+
+              {/* Edge fades */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10" style={{ background: "linear-gradient(90deg, oklch(0.20 0.135 265) 0%, transparent 100%)" }} />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10" style={{ background: "linear-gradient(270deg, oklch(0.20 0.135 265) 0%, transparent 100%)" }} />
+
+              <Suspense fallback={<div className="h-8 md:h-10" />}>
+                <Marquee speed={55}>
+                  {[
+                    "Anelli di fidanzamento",
+                    "Fedi nuziali",
+                    "Solitari",
+                    "Trilogy",
+                    "Orecchini a lobo",
+                    "Pendenti",
+                    "Collane in oro",
+                    "Bracciali tennis",
+                    "Girocollo",
+                    "Ciondoli",
+                    "Anelli eternity",
+                    "Orecchini chandelier",
+                    "Bracciali rigidi",
+                    "Pezzi unici",
+                    "Su misura",
+                    "Rimontaggi",
+                  ].map((w, i) => (
+                    <span
+                      key={i}
+                      className="font-display italic whitespace-nowrap text-2xl md:text-3xl tracking-wide"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(90deg, oklch(0.72 0.082 75) 0%, oklch(0.92 0.06 85) 50%, oklch(0.72 0.082 75) 100%)",
+                        WebkitBackgroundClip: "text",
+                        backgroundClip: "text",
+                        color: "transparent",
+                      }}
+                    >
+                      {w}
+                      <span aria-hidden className="not-italic mx-6 text-gold/70">✦</span>
+                    </span>
+                  ))}
+                </Marquee>
+              </Suspense>
+            </div>
+          </div>
+        </div>
+        <div className="text-center mt-8">
           <Link to="/categorie" className="underline-gold text-sm uppercase tracking-[0.28em]">
             Vedi la collezione
           </Link>
