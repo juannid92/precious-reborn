@@ -8,7 +8,7 @@ import storiaMani from "@/assets/cara/storia-mani.jpg";
 
 const TITLE = "Atelier orafo in Puglia — Cara Preziosi a Bari";
 const DESCRIPTION =
-  "Atelier orafo in Puglia: Cara Preziosi è la bottega artigiana del maestro Nicola Caradonna a Bari, in Via Antonio Beatillo 14. Gioielli pensati, fusi e incastonati a mano per chi cerca un orafo di riferimento sul territorio pugliese.";
+  "Atelier orafo in Puglia: Cara Preziosi è la bottega di Nicola Caradonna a Bari. Gioielli fusi e incastonati a mano, su appuntamento in Via Antonio Beatillo 14.";
 const URL = "https://www.carapreziosi.it/atelier-orafo-puglia";
 const IMAGE = `https://www.carapreziosi.it${storiaHero}`;
 
