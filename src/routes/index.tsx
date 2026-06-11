@@ -45,7 +45,10 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: `https://www.carapreziosi.it${home.heroImage}` },
     ],
-    links: [{ rel: "canonical", href: "https://www.carapreziosi.it/" }],
+    links: [
+      { rel: "canonical", href: "https://www.carapreziosi.it/" },
+      { rel: "preload", as: "image", href: home.heroImage, fetchpriority: "high" },
+    ],
   }),
   component: HomePage,
 });
