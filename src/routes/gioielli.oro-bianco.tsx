@@ -15,7 +15,7 @@ import ringSchiuma from "@/assets/cara/ring-schiuma.jpg";
 
 const TITLE = "Gioielli in oro bianco a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Gioielli in oro bianco disegnati e lavorati a mano nell'atelier orafo Cara Preziosi a Bari: anelli, orecchini, collane e bracciali su misura, personalizzazione e restyling su appuntamento in Via Antonio Beatillo 14.";
+  "Gioielli in oro bianco lavorati a mano nell'atelier Cara Preziosi a Bari: anelli, orecchini, collane e bracciali su misura. Su appuntamento, Via Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/oro-bianco";
 const IMAGE = `https://www.carapreziosi.it${ringLuce}`;
 
