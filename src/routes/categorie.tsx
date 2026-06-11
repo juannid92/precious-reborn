@@ -8,13 +8,13 @@ import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 export const Route = createFileRoute("/categorie")({
   head: () => ({
     meta: [
-      { title: "Collezioni — Gioielli Artigianali, Anelli, Collane e Bracciali · Cara Preziosi Bari" },
+      { title: "Collezioni di Gioielli Artigianali · Cara Preziosi Bari" },
       {
         name: "description",
         content:
           "Scopri le collezioni di gioielli artigianali Cara Preziosi: anelli, orecchini, collane e bracciali realizzati a mano nel laboratorio orafo di Bari.",
       },
-      { property: "og:title", content: "Collezioni — Gioielli Artigianali, Anelli, Collane e Bracciali · Cara Preziosi Bari" },
+      { property: "og:title", content: "Collezioni di Gioielli Artigianali · Cara Preziosi Bari" },
       {
         property: "og:description",
         content:
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/categorie")({
       { property: "og:locale", content: "it_IT" },
       { property: "og:image", content: `https://www.carapreziosi.it${categories[0].image}` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Collezioni — Gioielli Artigianali, Anelli, Collane e Bracciali · Cara Preziosi Bari" },
+      { name: "twitter:title", content: "Collezioni di Gioielli Artigianali · Cara Preziosi Bari" },
       {
         name: "twitter:description",
         content:
