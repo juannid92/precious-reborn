@@ -113,7 +113,7 @@ function CategoriePage() {
               className={`grid md:grid-cols-12 md:items-center min-h-[90vh] ${reverse ? "" : ""}`}
             >
               <div className={`md:col-span-7 ${reverse ? "md:order-2" : ""} relative aspect-[4/3] md:aspect-auto md:h-[90vh]`}>
-                <Reveal y={0} className="absolute inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden">
                   <img
                     src={cat.image}
                     alt={cat.name}
@@ -122,7 +122,7 @@ function CategoriePage() {
                     fetchPriority={i === 0 ? "high" : undefined}
                     decoding="async"
                   />
-                </Reveal>
+                </div>
               </div>
               <div className={`md:col-span-4 ${reverse ? "md:col-start-2 md:order-1" : "md:col-start-9"} p-10 md:p-16`}>
                 <Reveal>
