@@ -98,8 +98,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "UTF-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { httpEquiv: "content-language", content: "it-IT" },
-      { title: `${brand.name} — Laboratorio orafo a Bari` },
-      { name: "description", content: brand.shortDescription },
       { name: "author", content: "Nicola Caradonna — Cara Preziosi" },
       { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
       { name: "googlebot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },

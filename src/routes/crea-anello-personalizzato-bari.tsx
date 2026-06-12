@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { contacts } from "@/content/site";
 import ringCharlotte from "@/assets/cara/ring-charlotte.jpg";
 
-const TITLE = "Crea un anello personalizzato a Bari — Atelier Cara Preziosi";
+const TITLE = "Anello personalizzato a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
   "Crea un anello personalizzato a Bari con l'atelier Cara Preziosi: schizzo, scelta della pietra e lavorazione a mano in Via Antonio Beatillo 14, su appuntamento.";
 const URL = "https://www.carapreziosi.it/crea-anello-personalizzato-bari";
