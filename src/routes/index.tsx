@@ -295,15 +295,15 @@ function HomePage() {
           {/* Asymmetric magazine */}
           <div className="grid gap-6 md:grid-cols-12 md:gap-8">
             {/* Anelli — large vertical */}
-            <Reveal className="md:col-span-7 md:row-span-2">
+            <div className="md:col-span-7 md:row-span-2">
               <CollectionCard cat={categories[0]} ratio="aspect-[4/5] md:aspect-[3/4]" big />
-            </Reveal>
-            <Reveal className="md:col-span-5" delay={0.1}>
+            </div>
+            <div className="md:col-span-5">
               <CollectionCard cat={categories[1]} ratio="aspect-[4/3]" />
-            </Reveal>
-            <Reveal className="md:col-span-5" delay={0.2}>
+            </div>
+            <div className="md:col-span-5">
               <CollectionCard cat={categories[2]} ratio="aspect-[4/3]" />
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
