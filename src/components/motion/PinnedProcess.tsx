@@ -116,30 +116,30 @@ export function PinnedProcess({ eyebrow, title, steps }: Props) {
           </div>
 
           {/* Image Area: Full width on mobile top, 7 cols on desktop */}
-          <div className="relative h-[40vh] md:h-full md:col-span-7 overflow-hidden">
+          <div className="relative h-[48vh] mt-16 md:mt-0 md:h-full md:col-span-7 overflow-hidden">
             {steps.map((s, i) => (
               <div key={i} data-image className="absolute inset-0">
-                <img src={s.image} alt={s.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                <img src={s.image} alt={s.title} className="h-full w-full object-cover object-center" loading="lazy" decoding="async" />
                 <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-obsidian/40 via-transparent to-obsidian/30" />
               </div>
             ))}
           </div>
 
           {/* Text Area: Flexible on mobile, 4 cols on desktop */}
-          <div className="relative flex-1 flex flex-col justify-center px-6 py-12 md:px-12 xl:px-16 md:col-span-4 bg-obsidian/95 backdrop-blur-md">
-            <p className="eyebrow text-gold mb-4 md:mb-6 text-[10px] md:text-[11px]">{title}</p>
+          <div className="relative flex-1 flex flex-col justify-center px-6 py-6 md:py-12 md:px-12 xl:px-16 md:col-span-4 bg-obsidian/95 backdrop-blur-md">
+            <p className="eyebrow text-gold mb-2 md:mb-6 text-[10px] md:text-[11px]">{title}</p>
             
-            <div className="relative h-[40vh] md:h-[60vh]">
+            <div className="relative h-[28vh] md:h-[60vh]">
               {steps.map((s, i) => (
                 <div key={i} data-title className="absolute inset-0 flex flex-col justify-center">
-                  <p className="font-display italic text-gold mb-2 md:mb-6 text-base md:text-2xl">— {s.number}</p>
-                  <h3 className="font-display leading-[1.05] text-bone mb-3 md:mb-6 text-[clamp(1.5rem,5vw,2.5rem)]">{s.title}</h3>
-                  <p className="text-bone/70 leading-relaxed max-w-md text-[clamp(0.85rem,2vw,1rem)]">{s.body}</p>
+                  <p className="font-display italic text-gold mb-1 md:mb-6 text-sm md:text-2xl">— {s.number}</p>
+                  <h3 className="font-display leading-[1.05] text-bone mb-2 md:mb-6 text-[clamp(1.25rem,4.5vw,2.5rem)]">{s.title}</h3>
+                  <p className="text-bone/70 leading-snug md:leading-relaxed max-w-md text-[clamp(0.8rem,1.9vw,1rem)]">{s.body}</p>
                 </div>
               ))}
             </div>
             
-            <div className="absolute bottom-8 right-8 md:bottom-10 md:right-12 text-bone/40 text-[9px] md:text-xs tracking-[0.3em]">SCROLL ↓</div>
+            <div className="absolute bottom-3 right-6 md:bottom-10 md:right-12 text-bone/40 text-[9px] md:text-xs tracking-[0.3em]">SCROLL ↓</div>
           </div>
 
           {/* Mobile Progress (Alternative for narrow screens) */}
