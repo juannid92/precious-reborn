@@ -10,7 +10,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { contacts } from "@/content/site";
-import catOrecchini from "@/assets/cara/cat-orecchini.png";
+import catOrecchiniAsset from "@/assets/cara/cat-orecchini.jpg.asset.json";
+const catOrecchini = catOrecchiniAsset.url;
 import storiaMani from "@/assets/cara/storia-mani.jpg";
 
 const TITLE = "Orecchini artigianali a Bari — Atelier Cara Preziosi";
