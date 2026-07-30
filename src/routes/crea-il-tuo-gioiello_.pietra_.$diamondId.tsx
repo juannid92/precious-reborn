@@ -23,7 +23,43 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello_/pietra_/$diamondId"
   component: DettaglioPietraPage,
 });
 
+const GLOSSARY: Array<{ term: string; text: string }> = [
+  {
+    term: "Carati",
+    text: "Indicano il peso della pietra: più alto è il valore, più grande appare il diamante.",
+  },
+  {
+    term: "Colore",
+    text: "Misura quanto la pietra è incolore. Si va dalla D (totalmente incolore) verso lettere successive, con sfumature sempre più calde.",
+  },
+  {
+    term: "Purezza",
+    text: "Indica quante piccole inclusioni naturali sono presenti. IF è la più pura, poi seguono VVS, VS e SI.",
+  },
+  {
+    term: "Taglio",
+    text: "Valuta la lavorazione delle faccette: è ciò che determina quanto la pietra brilla.",
+  },
+  {
+    term: "Tavola",
+    text: "È la faccetta piana in cima al diamante, espressa in percentuale rispetto alla larghezza della pietra.",
+  },
+  {
+    term: "Profondità",
+    text: "L'altezza della pietra in rapporto alla sua larghezza: influenza brillantezza e proporzioni.",
+  },
+  {
+    term: "Fluorescenza",
+    text: "Reazione della pietra alla luce ultravioletta. Nella maggior parte dei casi non è visibile alla luce normale.",
+  },
+  {
+    term: "Pulita a occhio nudo",
+    text: "Significa che le inclusioni non si vedono senza lente d'ingrandimento, guardando la pietra a distanza naturale.",
+  },
+];
+
 function DettaglioPietraPage() {
+
   const { diamondId } = Route.useParams();
   const navigate = useNavigate();
   const fetchDiamond = useServerFn(getNivodaDiamond);
