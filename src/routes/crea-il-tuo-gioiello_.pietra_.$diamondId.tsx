@@ -226,16 +226,41 @@ function DettaglioPietraPage() {
                   </p>
                 )}
 
-                {specs.length > 0 && (
-                  <dl className="grid grid-cols-2 gap-x-8 gap-y-5 border-t border-ink/10 pt-8">
-                    {specs.map((s) => (
-                      <div key={s.label}>
-                        <dt className="eyebrow text-ink/45">{s.label}</dt>
-                        <dd className="mt-1.5 text-base text-ink">{s.value}</dd>
+                {groups.length > 0 && (
+                  <div className="grid gap-10 border-t border-ink/10 pt-8 md:grid-cols-2">
+                    {groups.map((g) => (
+                      <section key={g.title}>
+                        <p className="eyebrow text-gold-deep mb-4">{g.title}</p>
+                        <dl>
+                          {g.rows.map((r) => (
+                            <div
+                              key={r.label}
+                              className="flex items-baseline justify-between gap-4 border-b border-ink/8 py-2.5"
+                            >
+                              <dt className="text-sm text-ink/50">{r.label}</dt>
+                              <dd className="text-sm text-ink text-right">{r.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </section>
+                    ))}
+                  </div>
+                )}
+
+                <details className="mt-10 rounded-2xl border border-ink/12 bg-bone/60 px-6 py-4">
+                  <summary className="cursor-pointer list-none text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors">
+                    Cosa significano questi valori
+                  </summary>
+                  <dl className="mt-5 space-y-4 text-sm leading-relaxed">
+                    {GLOSSARY.map((g) => (
+                      <div key={g.term}>
+                        <dt className="text-ink">{g.term}</dt>
+                        <dd className="text-muted-foreground">{g.text}</dd>
                       </div>
                     ))}
                   </dl>
-                )}
+                </details>
+
 
                 {item.certPdf && (
                   <a
