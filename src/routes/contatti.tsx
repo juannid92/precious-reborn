@@ -345,7 +345,7 @@ function ContactForm() {
         <Field name="phone" label="Telefono" type="tel" />
       </div>
       <Field name="email" label="Email" type="email" required />
-      <FieldTextarea name="message" label="Cosa hai in mente?" required />
+      <FieldTextarea name="message" label="Cosa hai in mente?" required defaultValue={richiesta} />
       <button
         type="submit"
         disabled={sending}
