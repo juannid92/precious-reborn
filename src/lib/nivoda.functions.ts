@@ -1,5 +1,5 @@
 /**
- * Server functions — catalogo diamanti Nivoda.
+ * Server functions — catalogo pietre Nivoda.
  * Thin wrapper: la logica vive in ./nivoda.server.ts.
  */
 import { createServerFn } from "@tanstack/react-start";
@@ -11,13 +11,9 @@ const SearchSchema = z.object({
   shapes: z.array(z.string().max(24)).max(20).optional(),
   color: z.array(z.string().max(4)).max(12).optional(),
   clarity: z.array(z.string().max(6)).max(12).optional(),
-  cut: z.array(z.string().max(4)).max(8).optional(),
-  labs: z.array(z.string().max(6)).max(8).optional(),
   caratFrom: z.number().min(0).max(50).optional(),
   caratTo: z.number().min(0).max(50).optional(),
-  priceFrom: z.number().min(0).max(1_000_000).optional(),
-  priceTo: z.number().min(0).max(1_000_000).optional(),
-  sort: z.enum(["price_asc", "price_desc", "carat_desc"]).optional(),
+  sort: z.enum(["carat_asc", "carat_desc"]).optional(),
   page: z.number().int().min(0).max(200).optional(),
   pageSize: z.number().int().min(1).max(50).optional(),
 });

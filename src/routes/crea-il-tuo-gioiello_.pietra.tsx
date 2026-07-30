@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Check, Loader2, RotateCcw, Search } from "lucide-react";
 
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
-import { Slider } from "@/components/ui/slider";
 import {
   Select,
   SelectContent,
@@ -18,15 +17,9 @@ import {
   CARAT_MIN,
   CLARITIES,
   COLORS,
-  CUTS,
-  LABS,
   PAGE_SIZE,
-  PRICE_MAX,
-  PRICE_MIN,
-  SHAPES,
-  SHAPE_LABELS,
-  formatCarats,
-  formatEur,
+  SEARCH_COOLDOWN_SECONDS,
+  SHAPE_OPTIONS,
   type NivodaDiamond,
   type NivodaSort,
 } from "@/lib/nivoda-types";
@@ -34,18 +27,18 @@ import {
 export const Route = createFileRoute("/crea-il-tuo-gioiello_/pietra")({
   head: () => ({
     meta: [
-      { title: "Scegli la pietra · Cara Preziosi" },
+      { title: "Scegli la tua pietra · Cara Preziosi" },
       {
         name: "description",
         content:
-          "Seleziona il diamante certificato del tuo gioiello su misura: forma, carati, colore e purezza. Pietre disponibili su richiesta nell'atelier di Bari.",
+          "Seleziona la pietra certificata del tuo gioiello su misura: forma, carati, colore e purezza. Selezione dell'atelier Cara Preziosi a Bari.",
       },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Scegli la pietra · Cara Preziosi" },
+      { property: "og:title", content: "Scegli la tua pietra · Cara Preziosi" },
       {
         property: "og:description",
         content:
-          "Diamanti certificati selezionati, disponibili su richiesta presso l'atelier Cara Preziosi di Bari.",
+          "Pietre certificate selezionate singolarmente, disponibili presso l'atelier Cara Preziosi di Bari.",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "it_IT" },
@@ -59,10 +52,8 @@ type Filters = {
   shapes: string[];
   color: string[];
   clarity: string[];
-  cut: string[];
-  labs: string[];
-  carat: [number, number];
-  price: [number, number];
+  caratFrom: number;
+  caratTo: number;
   sort: NivodaSort;
 };
 
@@ -70,11 +61,9 @@ const DEFAULT_FILTERS: Filters = {
   shapes: [],
   color: [],
   clarity: [],
-  cut: [],
-  labs: [],
-  carat: [CARAT_MIN, CARAT_MAX],
-  price: [PRICE_MIN, PRICE_MAX],
-  sort: "price_asc",
+  caratFrom: CARAT_MIN,
+  caratTo: CARAT_MAX,
+  sort: "carat_asc",
 };
 
 function toggle(list: string[], value: string): string[] {
@@ -83,10 +72,8 @@ function toggle(list: string[], value: string): string[] {
 
 function buildBody(f: Filters, page: number) {
   const body: Record<string, unknown> = {
-    caratFrom: f.carat[0],
-    caratTo: f.carat[1],
-    priceFrom: f.price[0],
-    priceTo: f.price[1],
+    caratFrom: f.caratFrom,
+    caratTo: f.caratTo,
     sort: f.sort,
     page,
     pageSize: PAGE_SIZE,
@@ -94,8 +81,6 @@ function buildBody(f: Filters, page: number) {
   if (f.shapes.length) body.shapes = f.shapes;
   if (f.color.length) body.color = f.color;
   if (f.clarity.length) body.clarity = f.clarity;
-  if (f.cut.length) body.cut = f.cut;
-  if (f.labs.length) body.labs = f.labs;
   return body;
 }
 
@@ -107,14 +92,23 @@ function PietraPage() {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "loadingMore" | "error">("loading");
+  const [cooldown, setCooldown] = useState(0);
 
   // filtri effettivamente applicati all'ultima ricerca
   const appliedRef = useRef<Filters>(DEFAULT_FILTERS);
   const firstLoad = useRef(true);
 
+  // Conto alla rovescia fra due richieste consecutive al fornitore.
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = window.setTimeout(() => setCooldown((c) => c - 1), 1000);
+    return () => window.clearTimeout(timer);
+  }, [cooldown]);
+
   const run = useCallback(
     async (f: Filters, nextPage: number, append: boolean) => {
       setStatus(append ? "loadingMore" : "loading");
+      setCooldown(SEARCH_COOLDOWN_SECONDS);
       try {
         const res = await search({ data: buildBody(f, nextPage) });
         setItems((prev) => (append ? [...prev, ...res.items] : res.items));
@@ -135,7 +129,10 @@ function PietraPage() {
     void run(DEFAULT_FILTERS, 0, false);
   }, [run]);
 
-  const busy = status === "loading";
+  const loading = status === "loading";
+  const blocked = loading || status === "loadingMore" || cooldown > 0;
+
+  const searchLabel = loading ? "Ricerca…" : cooldown > 0 ? `Attendi ${cooldown}s` : "Cerca";
 
   return (
     <main className="bg-bone text-ink">
@@ -152,19 +149,18 @@ function PietraPage() {
             <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
             Torna al configuratore
           </Link>
-          <PageBreadcrumb current="Scegli la pietra" className="mb-8" />
-          <p className="eyebrow text-gold-deep mb-6">Passo 01 · La pietra</p>
+          <PageBreadcrumb current="Scegli la tua pietra" className="mb-8" />
+          <p className="eyebrow text-gold-deep mb-6">Primo passo · La pietra</p>
           <h1
             className="font-display leading-[1] text-ink max-w-[16ch]"
             style={{ fontSize: "clamp(2.3rem, 5vw, 4.5rem)" }}
           >
-            Scegli la pietra<span className="italic text-gold-deep"> del tuo gioiello.</span>
+            Scegli la tua<span className="italic text-gold-deep"> pietra.</span>
           </h1>
           <p className="mt-8 text-lg text-muted-foreground leading-relaxed max-w-2xl">
-            Una selezione di diamanti certificati dai principali laboratori internazionali
-            (GIA, IGI, HRD), disponibili su richiesta. Ogni pietra viene verificata dal maestro
-            orafo prima della conferma: qui scegli il punto di partenza, il resto del gioiello
-            nasce con te in atelier.
+            Ogni pietra è selezionata singolarmente e certificata. Il prezzo viene definito
+            insieme a te in base alla creazione che sceglierai: contattaci per un preventivo
+            dedicato.
           </p>
         </div>
       </section>
@@ -176,31 +172,53 @@ function PietraPage() {
             <div className="grid gap-8 lg:grid-cols-2">
               <FilterBlock label="Forma">
                 <div className="flex flex-wrap gap-2">
-                  {SHAPES.map((s) => (
+                  {SHAPE_OPTIONS.map((s) => (
                     <Chip
-                      key={s}
-                      active={filters.shapes.includes(s)}
+                      key={s.value}
+                      active={filters.shapes.includes(s.value)}
                       onClick={() =>
-                        setFilters((f) => ({ ...f, shapes: toggle(f.shapes, s) }))
+                        setFilters((f) => ({ ...f, shapes: toggle(f.shapes, s.value) }))
                       }
                     >
-                      {SHAPE_LABELS[s] ?? s}
+                      {s.label}
                     </Chip>
                   ))}
                 </div>
               </FilterBlock>
 
-              <FilterBlock label={`Carati · ${filters.carat[0].toFixed(2)} – ${filters.carat[1].toFixed(2)}`}>
-                <Slider
-                  value={filters.carat}
-                  min={CARAT_MIN}
-                  max={CARAT_MAX}
-                  step={0.1}
-                  onValueChange={(v) =>
-                    setFilters((f) => ({ ...f, carat: [v[0], v[1]] as [number, number] }))
-                  }
-                  className="mt-4"
-                />
+              <FilterBlock label="Carati">
+                <div className="flex flex-wrap items-end gap-4">
+                  <label className="flex flex-col gap-2">
+                    <span className="text-xs text-ink/55">Da</span>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      min={0}
+                      max={50}
+                      step={0.1}
+                      value={filters.caratFrom}
+                      onChange={(e) =>
+                        setFilters((f) => ({ ...f, caratFrom: Number(e.target.value) }))
+                      }
+                      className="w-28 rounded-full border border-ink/15 bg-bone px-4 py-2 text-sm text-ink outline-none focus:border-gold-deep"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-xs text-ink/55">A</span>
+                    <input
+                      type="number"
+                      inputMode="decimal"
+                      min={0}
+                      max={50}
+                      step={0.1}
+                      value={filters.caratTo}
+                      onChange={(e) =>
+                        setFilters((f) => ({ ...f, caratTo: Number(e.target.value) }))
+                      }
+                      className="w-28 rounded-full border border-ink/15 bg-bone px-4 py-2 text-sm text-ink outline-none focus:border-gold-deep"
+                    />
+                  </label>
+                </div>
               </FilterBlock>
 
               <FilterBlock label="Colore">
@@ -231,50 +249,7 @@ function PietraPage() {
                 </div>
               </FilterBlock>
 
-              <FilterBlock label="Taglio">
-                <div className="flex flex-wrap gap-2">
-                  {CUTS.map((c) => (
-                    <Chip
-                      key={c.value}
-                      active={filters.cut.includes(c.value)}
-                      onClick={() => setFilters((f) => ({ ...f, cut: toggle(f.cut, c.value) }))}
-                    >
-                      {c.label}
-                    </Chip>
-                  ))}
-                </div>
-              </FilterBlock>
-
-              <FilterBlock label="Certificato">
-                <div className="flex flex-wrap gap-2">
-                  {LABS.map((l) => (
-                    <Chip
-                      key={l}
-                      active={filters.labs.includes(l)}
-                      onClick={() => setFilters((f) => ({ ...f, labs: toggle(f.labs, l) }))}
-                    >
-                      {l}
-                    </Chip>
-                  ))}
-                </div>
-              </FilterBlock>
-
-              <FilterBlock
-                label={`Prezzo · ${formatEur(filters.price[0])} – ${formatEur(filters.price[1])}`}
-              >
-                <Slider
-                  value={filters.price}
-                  min={PRICE_MIN}
-                  max={PRICE_MAX}
-                  step={500}
-                  onValueChange={(v) =>
-                    setFilters((f) => ({ ...f, price: [v[0], v[1]] as [number, number] }))
-                  }
-                  className="mt-4"
-                />
-              </FilterBlock>
-
-              <FilterBlock label="Ordinamento">
+              <FilterBlock label="Ordina per">
                 <Select
                   value={filters.sort}
                   onValueChange={(v) => setFilters((f) => ({ ...f, sort: v as NivodaSort }))}
@@ -283,8 +258,7 @@ function PietraPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="price_asc">Prezzo crescente</SelectItem>
-                    <SelectItem value="price_desc">Prezzo decrescente</SelectItem>
+                    <SelectItem value="carat_asc">Carati crescenti</SelectItem>
                     <SelectItem value="carat_desc">Carati decrescenti</SelectItem>
                   </SelectContent>
                 </Select>
@@ -295,11 +269,15 @@ function PietraPage() {
               <button
                 type="button"
                 onClick={() => void run(filters, 0, false)}
-                disabled={busy}
+                disabled={blocked}
                 className="btn-primary group inline-flex items-center gap-2 disabled:opacity-60"
               >
-                {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-                Cerca
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Search className="h-4 w-4" />
+                )}
+                {searchLabel}
               </button>
               <button
                 type="button"
@@ -320,24 +298,22 @@ function PietraPage() {
             {status === "error" && (
               <div className="rounded-2xl border border-ink/12 bg-bone/60 p-10 text-center">
                 <p className="font-display text-2xl text-ink">
-                  Non siamo riusciti a caricare le pietre.
-                </p>
-                <p className="mt-3 text-muted-foreground">
-                  Può capitare quando il catalogo del fornitore è momentaneamente occupato.
+                  Catalogo pietre momentaneamente non disponibile. Riprova tra qualche istante.
                 </p>
                 <button
                   type="button"
                   onClick={() => void run(appliedRef.current, 0, false)}
-                  className="btn-primary mt-8"
+                  disabled={cooldown > 0}
+                  className="btn-primary mt-8 disabled:opacity-60"
                 >
-                  Riprova
+                  {cooldown > 0 ? `Attendi ${cooldown}s` : "Riprova"}
                 </button>
               </div>
             )}
 
-            {status === "loading" && (
+            {loading && (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                {Array.from({ length: 8 }).map((_, i) => (
+                {Array.from({ length: PAGE_SIZE }).map((_, i) => (
                   <div key={i} className="rounded-2xl border border-ink/10 overflow-hidden">
                     <div className="aspect-square animate-pulse bg-ink/5" />
                     <div className="p-5 space-y-3">
@@ -350,14 +326,10 @@ function PietraPage() {
               </div>
             )}
 
-            {status !== "loading" && status !== "error" && items.length === 0 && (
+            {!loading && status !== "error" && items.length === 0 && (
               <div className="rounded-2xl border border-ink/12 bg-bone/60 p-10 text-center">
                 <p className="font-display text-2xl text-ink">
-                  Nessuna pietra corrisponde ai filtri selezionati
-                </p>
-                <p className="mt-3 text-muted-foreground">
-                  Prova ad allargare la ricerca: più forme, un intervallo di carati più ampio o
-                  una fascia di prezzo più estesa.
+                  Nessuna pietra corrisponde ai criteri scelti. Prova ad ampliare la ricerca.
                 </p>
                 <button
                   type="button"
@@ -365,14 +337,15 @@ function PietraPage() {
                     setFilters(DEFAULT_FILTERS);
                     void run(DEFAULT_FILTERS, 0, false);
                   }}
-                  className="btn-primary mt-8"
+                  disabled={cooldown > 0}
+                  className="btn-primary mt-8 disabled:opacity-60"
                 >
-                  Azzera filtri
+                  {cooldown > 0 ? `Attendi ${cooldown}s` : "Azzera filtri"}
                 </button>
               </div>
             )}
 
-            {status !== "loading" && status !== "error" && items.length > 0 && (
+            {!loading && status !== "error" && items.length > 0 && (
               <>
                 <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                   {items.map((d, i) => (
@@ -385,11 +358,15 @@ function PietraPage() {
                     <button
                       type="button"
                       onClick={() => void run(appliedRef.current, page + 1, true)}
-                      disabled={status === "loadingMore"}
+                      disabled={blocked}
                       className="btn-primary inline-flex items-center gap-2 disabled:opacity-60"
                     >
                       {status === "loadingMore" && <Loader2 className="h-4 w-4 animate-spin" />}
-                      Carica altri
+                      {status === "loadingMore"
+                        ? "Caricamento…"
+                        : cooldown > 0
+                          ? `Attendi ${cooldown}s`
+                          : "Carica altre pietre"}
                     </button>
                   </div>
                 )}
@@ -441,6 +418,8 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
 
+  const title = diamond.title ?? diamond.shapeLabel ?? "Pietra certificata";
+
   const go = () => {
     if (!diamond.diamondId) return;
     void navigate({
@@ -450,44 +429,43 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
   };
 
   return (
-    <button
-      type="button"
-      onClick={go}
+    <article
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="group text-left rounded-2xl border border-ink/12 bg-bone/50 overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:border-gold-deep/60 hover:shadow-[0_18px_50px_-28px_oklch(0.58_0.085_60/0.6)]"
+      className="group flex flex-col rounded-2xl border border-ink/12 bg-bone/50 overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:border-gold-deep/60 hover:shadow-[0_18px_50px_-28px_oklch(0.58_0.085_60/0.6)]"
     >
       <div className="relative aspect-square bg-bone-deep/40 overflow-hidden">
         {diamond.image && (
           <img
             src={diamond.image}
-            alt={`Diamante ${SHAPE_LABELS[diamond.shape ?? ""] ?? diamond.shape ?? ""} ${formatCarats(diamond.carats)}`}
+            alt={title}
             loading="lazy"
             decoding="async"
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           />
         )}
         {hover && diamond.video && (
-          <iframe
+          <video
             src={diamond.video}
-            title="Video 360"
-            className="absolute inset-0 h-full w-full border-0"
-            allow="autoplay"
+            className="absolute inset-0 hidden h-full w-full object-cover md:block"
+            autoPlay
+            loop
+            muted
+            playsInline
           />
         )}
       </div>
-      <div className="p-5">
-        <p className="font-display text-lg leading-tight text-ink">
-          {SHAPE_LABELS[diamond.shape ?? ""] ?? diamond.shape ?? "—"} · {formatCarats(diamond.carats)}
-        </p>
-        <p className="mt-1 text-sm text-ink/70">
-          Colore {diamond.color ?? "—"} · Purezza {diamond.clarity ?? "—"}
-        </p>
-        <p className="mt-3 text-xs uppercase tracking-[0.2em] text-ink/45">
-          Taglio {diamond.cutLabel ?? "—"} · {diamond.lab ?? "—"}
-        </p>
-        <p className="mt-4 font-display text-xl text-gold-deep">{formatEur(diamond.priceEur)}</p>
+      <div className="flex flex-1 flex-col p-5">
+        <p className="font-display text-lg font-semibold leading-tight text-ink">{title}</p>
+        {diamond.lab && diamond.certNumber && (
+          <p className="mt-2 text-xs uppercase tracking-[0.18em] text-ink/45">
+            Certificato {diamond.lab} {diamond.certNumber}
+          </p>
+        )}
+        <button type="button" onClick={go} className="btn-primary mt-5 self-start">
+          Scopri questa pietra
+        </button>
       </div>
-    </button>
+    </article>
   );
 }

@@ -18,7 +18,7 @@ const Jewel3DViewer = lazy(() =>
 );
 import { submitJewelConceptJob, pollJewelConceptJob } from "@/lib/jewel-concept.functions";
 import { submitTrellis3DJob, pollTrellis3DJob } from "@/lib/jewel-3d.functions";
-import { SELECTED_STONE_KEY, formatCarats, formatEur } from "@/lib/nivoda-types";
+import { SELECTED_STONE_KEY } from "@/lib/nivoda-types";
 
 type Model3DStage = "idle" | "generating" | "ready" | "error" | "timeout_pending";
 
@@ -1272,12 +1272,13 @@ function StepFrame({
  * ───────────────────────────────────────────────────────────── */
 type SelectedStone = {
   diamondId: string | null;
+  title?: string | null;
   shapeLabel?: string | null;
-  carats?: number | null;
+  caratsLabel?: string | null;
   color?: string | null;
   clarity?: string | null;
   lab?: string | null;
-  priceEur?: number | null;
+  certNumber?: string | null;
   image?: string | null;
 };
 
@@ -1318,12 +1319,12 @@ function StoneStepCallout() {
             <div>
               <p className="eyebrow text-gold-deep mb-1.5">Pietra scelta</p>
               <p className="font-display text-xl text-ink">
-                {stone.shapeLabel ?? "Diamante"} · {formatCarats(stone.carats ?? null)}
+                {stone.title ?? stone.shapeLabel ?? "Pietra certificata"}
               </p>
               <p className="text-sm text-ink/65">
                 Colore {stone.color ?? "—"} · Purezza {stone.clarity ?? "—"}
-                {stone.lab ? ` · ${stone.lab}` : ""}
-                {typeof stone.priceEur === "number" ? ` · ${formatEur(stone.priceEur)}` : ""}
+                {stone.lab ? ` · Certificato ${stone.lab}` : ""}
+                {stone.certNumber ? ` ${stone.certNumber}` : ""}
               </p>
             </div>
           </div>
@@ -1345,12 +1346,13 @@ function StoneStepCallout() {
           <div>
             <p className="eyebrow text-gold-deep mb-2">Primo passo · La pietra</p>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-              Vuoi partire dalla gemma? Sfoglia i diamanti certificati disponibili su richiesta e
-              scegli quello attorno a cui costruire il gioiello. Puoi anche saltare questo passaggio.
+              Vuoi partire dalla gemma? Ogni pietra è selezionata singolarmente e certificata:
+              scegli quella attorno a cui costruire il gioiello. Puoi anche saltare questo
+              passaggio.
             </p>
           </div>
           <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary shrink-0">
-            Scegli la pietra
+            Scegli la tua pietra
           </Link>
         </div>
       )}
