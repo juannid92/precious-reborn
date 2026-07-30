@@ -1319,12 +1319,12 @@ function StoneStepCallout() {
             <div>
               <p className="eyebrow text-gold-deep mb-1.5">Pietra scelta</p>
               <p className="font-display text-xl text-ink">
-                {stone.shapeLabel ?? "Diamante"} · {formatCarats(stone.carats ?? null)}
+                {stone.title ?? stone.shapeLabel ?? "Pietra certificata"}
               </p>
               <p className="text-sm text-ink/65">
                 Colore {stone.color ?? "—"} · Purezza {stone.clarity ?? "—"}
-                {stone.lab ? ` · ${stone.lab}` : ""}
-                {typeof stone.priceEur === "number" ? ` · ${formatEur(stone.priceEur)}` : ""}
+                {stone.lab ? ` · Certificato ${stone.lab}` : ""}
+                {stone.certNumber ? ` ${stone.certNumber}` : ""}
               </p>
             </div>
           </div>
