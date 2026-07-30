@@ -18,7 +18,7 @@ const Jewel3DViewer = lazy(() =>
 );
 import { submitJewelConceptJob, pollJewelConceptJob } from "@/lib/jewel-concept.functions";
 import { submitTrellis3DJob, pollTrellis3DJob } from "@/lib/jewel-3d.functions";
-import { SELECTED_STONE_KEY, formatCarats, formatEur } from "@/lib/nivoda-types";
+import { SELECTED_STONE_KEY } from "@/lib/nivoda-types";
 
 type Model3DStage = "idle" | "generating" | "ready" | "error" | "timeout_pending";
 
