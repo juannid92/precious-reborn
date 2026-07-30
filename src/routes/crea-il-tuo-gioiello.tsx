@@ -816,6 +816,8 @@ function AtelierCreatePage() {
               <p className="font-display italic text-xl text-ink/70">Una conversazione, non un form.</p>
             </div>
           </div>
+          <StoneStepCallout />
+
         </div>
       </section>
 
