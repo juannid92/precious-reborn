@@ -444,7 +444,7 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
   const go = () => {
     if (!diamond.diamondId) return;
     void navigate({
-      to: "/crea-il-tuo-gioiello_/pietra/$diamondId",
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId",
       params: { diamondId: diamond.diamondId },
     });
   };
