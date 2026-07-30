@@ -1264,3 +1264,95 @@ function StepFrame({
     </div>
   );
 }
+
+/* ─────────────────────────────────────────────────────────────
+ * Passo pietra — collegamento al catalogo diamanti (Nivoda).
+ * Mostra la pietra già scelta, se presente in localStorage.
+ * ───────────────────────────────────────────────────────────── */
+type SelectedStone = {
+  diamondId: string | null;
+  shapeLabel?: string | null;
+  carats?: number | null;
+  color?: string | null;
+  clarity?: string | null;
+  lab?: string | null;
+  priceEur?: number | null;
+  image?: string | null;
+};
+
+function StoneStepCallout() {
+  const [stone, setStone] = useState<SelectedStone | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(SELECTED_STONE_KEY);
+      if (raw) setStone(JSON.parse(raw) as SelectedStone);
+    } catch {
+      setStone(null);
+    }
+  }, []);
+
+  const clear = () => {
+    try {
+      window.localStorage.removeItem(SELECTED_STONE_KEY);
+    } catch {
+      /* noop */
+    }
+    setStone(null);
+  };
+
+  return (
+    <div className="mt-12 rounded-2xl border border-ink/12 bg-bone/60 p-6 md:p-8">
+      {stone ? (
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-5">
+            {stone.image && (
+              <img
+                src={stone.image}
+                alt=""
+                className="h-16 w-16 rounded-xl object-cover border border-ink/10"
+                loading="lazy"
+              />
+            )}
+            <div>
+              <p className="eyebrow text-gold-deep mb-1.5">Pietra scelta</p>
+              <p className="font-display text-xl text-ink">
+                {stone.shapeLabel ?? "Diamante"} · {formatCarats(stone.carats ?? null)}
+              </p>
+              <p className="text-sm text-ink/65">
+                Colore {stone.color ?? "—"} · Purezza {stone.clarity ?? "—"}
+                {stone.lab ? ` · ${stone.lab}` : ""}
+                {typeof stone.priceEur === "number" ? ` · ${formatEur(stone.priceEur)}` : ""}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-5">
+            <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary">
+              Cambia pietra
+            </Link>
+            <button
+              type="button"
+              onClick={clear}
+              className="text-[11px] uppercase tracking-[0.28em] text-ink/55 hover:text-gold-deep transition-colors"
+            >
+              Rimuovi
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="eyebrow text-gold-deep mb-2">Primo passo · La pietra</p>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+              Vuoi partire dalla gemma? Sfoglia i diamanti certificati disponibili su richiesta e
+              scegli quello attorno a cui costruire il gioiello. Puoi anche saltare questo passaggio.
+            </p>
+          </div>
+          <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary shrink-0">
+            Scegli la pietra
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
