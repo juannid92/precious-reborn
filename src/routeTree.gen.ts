@@ -30,6 +30,7 @@ import { Route as GioielliArgentoRouteImport } from './routes/gioielli.argento'
 import { Route as GioielliAnniversarioRouteImport } from './routes/gioielli.anniversario'
 import { Route as GioielliAnelliRouteImport } from './routes/gioielli.anelli'
 import { Route as CreaIlTuoGioielloPietraRouteImport } from './routes/crea-il-tuo-gioiello_.pietra'
+import { Route as CreaIlTuoGioielloPietraDiamondIdRouteImport } from './routes/crea-il-tuo-gioiello_.pietra_.$diamondId'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
 const StoriaRoute = StoriaRouteImport.update({
@@ -138,6 +139,12 @@ const CreaIlTuoGioielloPietraRoute = CreaIlTuoGioielloPietraRouteImport.update({
   path: '/crea-il-tuo-gioiello/pietra',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreaIlTuoGioielloPietraDiamondIdRoute =
+  CreaIlTuoGioielloPietraDiamondIdRouteImport.update({
+    id: '/crea-il-tuo-gioiello_/pietra_/$diamondId',
+    path: '/crea-il-tuo-gioiello/pietra/$diamondId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicFalTrellisWebhookRoute =
   ApiPublicFalTrellisWebhookRouteImport.update({
     id: '/api/public/fal-trellis-webhook',
@@ -168,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
+  '/crea-il-tuo-gioiello/pietra/$diamondId': typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -192,6 +200,7 @@ export interface FileRoutesByTo {
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
+  '/crea-il-tuo-gioiello/pietra/$diamondId': typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -217,6 +226,7 @@ export interface FileRoutesById {
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
+  '/crea-il-tuo-gioiello_/pietra_/$diamondId': typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
+    | '/crea-il-tuo-gioiello/pietra/$diamondId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
+    | '/crea-il-tuo-gioiello/pietra/$diamondId'
   id:
     | '__root__'
     | '/'
@@ -291,6 +303,7 @@ export interface FileRouteTypes {
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
+    | '/crea-il-tuo-gioiello_/pietra_/$diamondId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -316,6 +329,7 @@ export interface RootRouteChildren {
   GioielliOroGialloRoute: typeof GioielliOroGialloRoute
   GioielliRegaloRoute: typeof GioielliRegaloRoute
   ApiPublicFalTrellisWebhookRoute: typeof ApiPublicFalTrellisWebhookRoute
+  CreaIlTuoGioielloPietraDiamondIdRoute: typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -467,6 +481,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreaIlTuoGioielloPietraRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crea-il-tuo-gioiello_/pietra_/$diamondId': {
+      id: '/crea-il-tuo-gioiello_/pietra_/$diamondId'
+      path: '/crea-il-tuo-gioiello/pietra/$diamondId'
+      fullPath: '/crea-il-tuo-gioiello/pietra/$diamondId'
+      preLoaderRoute: typeof CreaIlTuoGioielloPietraDiamondIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/fal-trellis-webhook': {
       id: '/api/public/fal-trellis-webhook'
       path: '/api/public/fal-trellis-webhook'
@@ -500,6 +521,7 @@ const rootRouteChildren: RootRouteChildren = {
   GioielliOroGialloRoute: GioielliOroGialloRoute,
   GioielliRegaloRoute: GioielliRegaloRoute,
   ApiPublicFalTrellisWebhookRoute: ApiPublicFalTrellisWebhookRoute,
+  CreaIlTuoGioielloPietraDiamondIdRoute: CreaIlTuoGioielloPietraDiamondIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
