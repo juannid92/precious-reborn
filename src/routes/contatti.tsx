@@ -7,6 +7,9 @@ import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/contatti")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    richiesta: typeof search.richiesta === "string" ? search.richiesta.slice(0, 500) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Contatti e Appuntamento in Atelier · Cara Preziosi Bari" },
