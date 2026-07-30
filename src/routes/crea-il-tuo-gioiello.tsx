@@ -1272,12 +1272,13 @@ function StepFrame({
  * ───────────────────────────────────────────────────────────── */
 type SelectedStone = {
   diamondId: string | null;
+  title?: string | null;
   shapeLabel?: string | null;
-  carats?: number | null;
+  caratsLabel?: string | null;
   color?: string | null;
   clarity?: string | null;
   lab?: string | null;
-  priceEur?: number | null;
+  certNumber?: string | null;
   image?: string | null;
 };
 
