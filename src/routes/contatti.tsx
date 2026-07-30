@@ -305,7 +305,9 @@ function ContattiPage() {
 }
 
 function ContactForm() {
+  const { richiesta } = Route.useSearch();
   const [sending, setSending] = useState(false);
+
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
