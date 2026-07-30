@@ -375,7 +375,7 @@ function Field({ name, label, type = "text", required }: { name: string; label: 
   );
 }
 
-function FieldTextarea({ name, label, required }: { name: string; label: string; required?: boolean }) {
+function FieldTextarea({ name, label, required, defaultValue }: { name: string; label: string; required?: boolean; defaultValue?: string }) {
   return (
     <label className="block group">
       <span className="eyebrow text-muted-foreground block mb-3">{label}{required && <span className="text-gold-deep">*</span>}</span>
@@ -383,6 +383,7 @@ function FieldTextarea({ name, label, required }: { name: string; label: string;
         name={name}
         rows={5}
         required={required}
+        defaultValue={defaultValue}
         className="w-full bg-transparent border-b border-ink/20 py-3 text-base focus:outline-none focus:border-gold-deep transition-colors resize-none"
       />
     </label>
