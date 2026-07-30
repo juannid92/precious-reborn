@@ -420,6 +420,21 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
 
   const title = diamond.title ?? diamond.shapeLabel ?? "Pietra certificata";
 
+  const specLine = [
+    diamond.measurements,
+    diamond.tablePct ? `Tavola ${diamond.tablePct}` : null,
+    diamond.depthPct ? `Prof. ${diamond.depthPct}` : null,
+  ].filter((v): v is string => Boolean(v));
+
+  const tags = [
+    diamond.eyeClean === "Sì" || diamond.eyeClean === "Si" ? "Pulita a occhio nudo" : null,
+    diamond.luster === "Eccellente" ? "Lucentezza eccellente" : null,
+    diamond.shade === "Nessuna" ? "Nessuna sfumatura" : null,
+  ]
+    .filter((v): v is string => Boolean(v))
+    .slice(0, 3);
+
+
   const go = () => {
     if (!diamond.diamondId) return;
     void navigate({
