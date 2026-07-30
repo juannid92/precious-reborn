@@ -6,13 +6,7 @@ import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { contacts } from "@/content/site";
 import { getNivodaDiamond } from "@/lib/nivoda.functions";
-import {
-  SELECTED_STONE_KEY,
-  SHAPE_LABELS,
-  formatCarats,
-  formatEur,
-  type NivodaDiamond,
-} from "@/lib/nivoda-types";
+import { SELECTED_STONE_KEY, type NivodaDiamond } from "@/lib/nivoda-types";
 
 export const Route = createFileRoute("/crea-il-tuo-gioiello_/pietra_/$diamondId")({
   head: () => ({
@@ -21,7 +15,7 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello_/pietra_/$diamondId"
       {
         name: "description",
         content:
-          "Scheda tecnica del diamante certificato selezionato: carati, colore, purezza, taglio e laboratorio di certificazione.",
+          "Scheda tecnica della pietra certificata selezionata: carati, colore, purezza, taglio e laboratorio di certificazione.",
       },
       { name: "robots", content: "noindex, follow" },
     ],
@@ -58,7 +52,31 @@ function DettaglioPietraPage() {
     };
   }, [diamondId, fetchDiamond]);
 
-  const shapeLabel = item ? (SHAPE_LABELS[item.shape ?? ""] ?? item.shape ?? "—") : "—";
+  const title = item?.title ?? item?.shapeLabel ?? "Pietra certificata";
+
+  const specs: Array<{ label: string; value: string | null }> = item
+    ? [
+        { label: "Forma", value: item.shapeLabel },
+        { label: "Carati", value: item.caratsLabel },
+        { label: "Colore", value: item.color },
+        { label: "Purezza", value: item.clarity },
+        { label: "Taglio", value: item.cutLabel },
+        { label: "Lucidatura", value: item.polishLabel },
+        { label: "Simmetria", value: item.symmetryLabel },
+        { label: "Fluorescenza", value: item.fluorescence },
+        {
+          label: "Certificato",
+          value: item.lab ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}` : null,
+        },
+      ].filter((s) => s.value != null && s.value !== "")
+    : [];
+
+  const contactSearch = item
+    ? {
+        richiesta: `Sono interessato alla pietra: ${title}`,
+        pietra: item.diamondId ?? undefined,
+      }
+    : { richiesta: undefined, pietra: undefined };
 
   const chooseStone = () => {
     if (!item) return;
@@ -67,27 +85,21 @@ function DettaglioPietraPage() {
         SELECTED_STONE_KEY,
         JSON.stringify({
           diamondId: item.diamondId,
-          shape: item.shape,
-          shapeLabel,
-          carats: item.carats,
+          title,
+          shapeLabel: item.shapeLabel,
+          caratsLabel: item.caratsLabel,
           color: item.color,
           clarity: item.clarity,
-          cutLabel: item.cutLabel,
           lab: item.lab,
           certNumber: item.certNumber,
-          priceEur: item.priceEur,
           image: item.image,
         }),
       );
     } catch {
       /* storage non disponibile: si prosegue comunque */
     }
-    void navigate({ to: "/crea-il-tuo-gioiello" });
+    void navigate({ to: "/contatti", search: contactSearch });
   };
-
-  const richiesta = item
-    ? `Sono interessato/a alla pietra ${shapeLabel} da ${formatCarats(item.carats)}, colore ${item.color ?? "—"}, purezza ${item.clarity ?? "—"}${item.lab ? `, certificato ${item.lab}${item.certNumber ? ` n. ${item.certNumber}` : ""}` : ""} (rif. ${item.diamondId ?? "—"}).`
-    : "";
 
   return (
     <main className="bg-bone text-ink">
@@ -114,7 +126,7 @@ function DettaglioPietraPage() {
               <p className="font-display text-2xl text-ink">
                 {status === "missing"
                   ? "Questa pietra non è più disponibile"
-                  : "Non siamo riusciti a caricare la pietra"}
+                  : "Catalogo pietre momentaneamente non disponibile. Riprova tra qualche istante."}
               </p>
               <p className="mt-3 text-muted-foreground">
                 Il catalogo cambia di continuo. Torna alla selezione per scegliere un'altra pietra.
@@ -130,28 +142,24 @@ function DettaglioPietraPage() {
               {/* Media */}
               <div className="lg:col-span-6">
                 <div className="rounded-2xl border border-ink/12 overflow-hidden bg-bone-deep/40 aspect-square">
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={`Diamante ${shapeLabel} ${formatCarats(item.carats)}`}
+                  {item.video ? (
+                    <video
+                      src={item.video}
                       className="h-full w-full object-cover"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      poster={item.image ?? undefined}
                     />
+                  ) : item.image ? (
+                    <img src={item.image} alt={title} className="h-full w-full object-cover" />
                   ) : (
                     <div className="flex h-full items-center justify-center text-ink/40">
                       Immagine non disponibile
                     </div>
                   )}
                 </div>
-                {item.video && (
-                  <div className="mt-6 rounded-2xl border border-ink/12 overflow-hidden aspect-square">
-                    <iframe
-                      src={item.video}
-                      title="Video 360 della pietra"
-                      className="h-full w-full border-0"
-                      allow="autoplay; fullscreen"
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Dati */}
@@ -160,31 +168,28 @@ function DettaglioPietraPage() {
                   {item.available ? "Disponibile su richiesta" : "Verifica disponibilità"}
                 </p>
                 <h1
-                  className="font-display leading-[1.02] text-ink"
+                  className="font-display leading-[1.05] text-ink"
                   style={{ fontSize: "clamp(2rem, 4vw, 3.4rem)" }}
                 >
-                  Diamante {shapeLabel}
-                  <span className="block italic text-gold-deep">{formatCarats(item.carats)}</span>
+                  {title}
                 </h1>
 
-                <p className="mt-8 font-display text-3xl text-ink">{formatEur(item.priceEur)}</p>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Prezzo indicativo della sola pietra, IVA inclusa. La montatura viene quotata a
-                  parte dopo il colloquio in atelier.
-                </p>
+                {item.description && (
+                  <p className="mt-8 mb-10 text-base md:text-lg text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                )}
 
-                <dl className="mt-10 grid grid-cols-2 gap-x-8 gap-y-5 border-t border-ink/10 pt-8">
-                  <Spec label="Forma" value={shapeLabel} />
-                  <Spec label="Carati" value={formatCarats(item.carats)} />
-                  <Spec label="Colore" value={item.color} />
-                  <Spec label="Purezza" value={item.clarity} />
-                  <Spec label="Taglio" value={item.cutLabel} />
-                  <Spec label="Lucidatura" value={item.polish} />
-                  <Spec label="Simmetria" value={item.symmetry} />
-                  <Spec label="Fluorescenza" value={item.fluorescence} />
-                  <Spec label="Laboratorio" value={item.lab} />
-                  <Spec label="N. certificato" value={item.certNumber} />
-                </dl>
+                {specs.length > 0 && (
+                  <dl className="grid grid-cols-2 gap-x-8 gap-y-5 border-t border-ink/10 pt-8">
+                    {specs.map((s) => (
+                      <div key={s.label}>
+                        <dt className="eyebrow text-ink/45">{s.label}</dt>
+                        <dd className="mt-1.5 text-base text-ink">{s.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
 
                 {item.certPdf && (
                   <a
@@ -193,7 +198,7 @@ function DettaglioPietraPage() {
                     rel="noopener noreferrer"
                     className="mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors"
                   >
-                    Certificato originale
+                    Vedi il certificato
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 )}
@@ -204,14 +209,19 @@ function DettaglioPietraPage() {
                   </button>
                   <Link
                     to="/contatti"
-                    search={{ richiesta }}
+                    search={contactSearch}
                     className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors"
                   >
-                    Richiedi informazioni
+                    Richiedi un preventivo
                   </Link>
                 </div>
 
-                <p className="mt-8 text-sm text-muted-foreground leading-relaxed">
+                <p className="mt-10 text-sm text-muted-foreground leading-relaxed">
+                  Il prezzo della pietra e della montatura viene definito insieme a te in base alla
+                  creazione che sceglierai. Contattaci per un preventivo su misura.
+                </p>
+
+                <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
                   Ogni pietra viene verificata dal maestro orafo Nicola Caradonna prima della
                   conferma dell'ordine. Per vederla dal vivo scrivici su{" "}
                   <a
@@ -230,14 +240,5 @@ function DettaglioPietraPage() {
         </div>
       </section>
     </main>
-  );
-}
-
-function Spec({ label, value }: { label: string; value: string | null }) {
-  return (
-    <div>
-      <dt className="eyebrow text-ink/45">{label}</dt>
-      <dd className="mt-1.5 text-base text-ink">{value ?? "—"}</dd>
-    </div>
   );
 }
