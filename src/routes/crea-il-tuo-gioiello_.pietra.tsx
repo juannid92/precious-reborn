@@ -420,6 +420,21 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
 
   const title = diamond.title ?? diamond.shapeLabel ?? "Pietra certificata";
 
+  const specLine = [
+    diamond.measurements,
+    diamond.tablePct ? `Tavola ${diamond.tablePct}` : null,
+    diamond.depthPct ? `Prof. ${diamond.depthPct}` : null,
+  ].filter((v): v is string => Boolean(v));
+
+  const tags = [
+    diamond.eyeClean === "Sì" || diamond.eyeClean === "Si" ? "Pulita a occhio nudo" : null,
+    diamond.luster === "Eccellente" ? "Lucentezza eccellente" : null,
+    diamond.shade === "Nessuna" ? "Nessuna sfumatura" : null,
+  ]
+    .filter((v): v is string => Boolean(v))
+    .slice(0, 3);
+
+
   const go = () => {
     if (!diamond.diamondId) return;
     void navigate({
@@ -457,11 +472,27 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="font-display text-lg font-semibold leading-tight text-ink">{title}</p>
+        {specLine.length > 0 && (
+          <p className="mt-1.5 text-[11px] text-ink/55">{specLine.join(" · ")}</p>
+        )}
+        {tags.length > 0 && (
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
+            {tags.map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-ink/10 bg-ink/[0.04] px-2.5 py-1 text-[10px] tracking-wide text-ink/55"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
         {diamond.lab && diamond.certNumber && (
-          <p className="mt-2 text-xs uppercase tracking-[0.18em] text-ink/45">
+          <p className="mt-2.5 text-xs uppercase tracking-[0.18em] text-ink/45">
             Certificato {diamond.lab} {diamond.certNumber}
           </p>
         )}
+
         <button type="button" onClick={go} className="btn-primary mt-5 self-start">
           Scopri questa pietra
         </button>

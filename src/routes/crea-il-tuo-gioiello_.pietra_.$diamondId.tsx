@@ -23,7 +23,43 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello_/pietra_/$diamondId"
   component: DettaglioPietraPage,
 });
 
+const GLOSSARY: Array<{ term: string; text: string }> = [
+  {
+    term: "Carati",
+    text: "Indicano il peso della pietra: più alto è il valore, più grande appare il diamante.",
+  },
+  {
+    term: "Colore",
+    text: "Misura quanto la pietra è incolore. Si va dalla D (totalmente incolore) verso lettere successive, con sfumature sempre più calde.",
+  },
+  {
+    term: "Purezza",
+    text: "Indica quante piccole inclusioni naturali sono presenti. IF è la più pura, poi seguono VVS, VS e SI.",
+  },
+  {
+    term: "Taglio",
+    text: "Valuta la lavorazione delle faccette: è ciò che determina quanto la pietra brilla.",
+  },
+  {
+    term: "Tavola",
+    text: "È la faccetta piana in cima al diamante, espressa in percentuale rispetto alla larghezza della pietra.",
+  },
+  {
+    term: "Profondità",
+    text: "L'altezza della pietra in rapporto alla sua larghezza: influenza brillantezza e proporzioni.",
+  },
+  {
+    term: "Fluorescenza",
+    text: "Reazione della pietra alla luce ultravioletta. Nella maggior parte dei casi non è visibile alla luce normale.",
+  },
+  {
+    term: "Pulita a occhio nudo",
+    text: "Significa che le inclusioni non si vedono senza lente d'ingrandimento, guardando la pietra a distanza naturale.",
+  },
+];
+
 function DettaglioPietraPage() {
+
   const { diamondId } = Route.useParams();
   const navigate = useNavigate();
   const fetchDiamond = useServerFn(getNivodaDiamond);
@@ -54,21 +90,66 @@ function DettaglioPietraPage() {
 
   const title = item?.title ?? item?.shapeLabel ?? "Pietra certificata";
 
-  const specs: Array<{ label: string; value: string | null }> = item
+  type Row = { label: string; value: string | null };
+  const clean = (rows: Row[]) =>
+    rows.filter((r) => r.value != null && r.value !== "") as Array<{
+      label: string;
+      value: string;
+    }>;
+
+  const groups: Array<{ title: string; rows: Array<{ label: string; value: string }> }> = item
     ? [
-        { label: "Forma", value: item.shapeLabel },
-        { label: "Carati", value: item.caratsLabel },
-        { label: "Colore", value: item.color },
-        { label: "Purezza", value: item.clarity },
-        { label: "Taglio", value: item.cutLabel },
-        { label: "Lucidatura", value: item.polishLabel },
-        { label: "Simmetria", value: item.symmetryLabel },
-        { label: "Fluorescenza", value: item.fluorescence },
         {
-          label: "Certificato",
-          value: item.lab ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}` : null,
+          title: "Le 4 C",
+          rows: clean([
+            { label: "Forma", value: item.shapeLabel },
+            { label: "Carati", value: item.caratsLabel },
+            { label: "Colore", value: item.color },
+            { label: "Purezza", value: item.clarity },
+            { label: "Taglio", value: item.cutLabel },
+          ]),
         },
-      ].filter((s) => s.value != null && s.value !== "")
+        {
+          title: "Proporzioni",
+          rows: clean([
+            { label: "Misure", value: item.measurements },
+            { label: "Rapporto", value: item.ratio },
+            { label: "Tavola", value: item.tablePct },
+            { label: "Profondità", value: item.depthPct },
+            { label: "Angolo corona", value: item.crownAngle },
+            { label: "Angolo padiglione", value: item.pavAngle },
+            { label: "Cintura", value: item.girdle },
+            { label: "Apice", value: item.culet },
+            { label: "Lucidatura", value: item.polishLabel },
+            { label: "Simmetria", value: item.symmetryLabel },
+          ]),
+        },
+        {
+          title: "Aspetto e provenienza",
+          rows: clean([
+            { label: "Pulita a occhio nudo", value: item.eyeClean },
+            { label: "Lucentezza", value: item.luster },
+            { label: "Sfumatura di colore", value: item.shade },
+            { label: "Effetto bowtie", value: item.bowtie },
+            {
+              label: "Fluorescenza",
+              value: item.fluorescence
+                ? `${item.fluorescence}${item.fluorescenceColor ? ` (${item.fluorescenceColor})` : ""}`
+                : null,
+            },
+            { label: "Tipo di taglio", value: item.cutStyle },
+            { label: "Origine", value: item.natural },
+            { label: "Paese d'origine", value: item.origin },
+            { label: "Trattamenti", value: item.treated },
+            {
+              label: "Certificato",
+              value: item.lab
+                ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}`
+                : null,
+            },
+          ]),
+        },
+      ].filter((g) => g.rows.length > 0)
     : [];
 
   const contactSearch = item
@@ -77,6 +158,7 @@ function DettaglioPietraPage() {
         pietra: item.diamondId ?? undefined,
       }
     : { richiesta: undefined, pietra: undefined };
+
 
   const chooseStone = () => {
     if (!item) return;
@@ -180,16 +262,41 @@ function DettaglioPietraPage() {
                   </p>
                 )}
 
-                {specs.length > 0 && (
-                  <dl className="grid grid-cols-2 gap-x-8 gap-y-5 border-t border-ink/10 pt-8">
-                    {specs.map((s) => (
-                      <div key={s.label}>
-                        <dt className="eyebrow text-ink/45">{s.label}</dt>
-                        <dd className="mt-1.5 text-base text-ink">{s.value}</dd>
+                {groups.length > 0 && (
+                  <div className="grid gap-10 border-t border-ink/10 pt-8 md:grid-cols-2">
+                    {groups.map((g) => (
+                      <section key={g.title}>
+                        <p className="eyebrow text-gold-deep mb-4">{g.title}</p>
+                        <dl>
+                          {g.rows.map((r) => (
+                            <div
+                              key={r.label}
+                              className="flex items-baseline justify-between gap-4 border-b border-ink/8 py-2.5"
+                            >
+                              <dt className="text-sm text-ink/50">{r.label}</dt>
+                              <dd className="text-sm text-ink text-right">{r.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      </section>
+                    ))}
+                  </div>
+                )}
+
+                <details className="mt-10 rounded-2xl border border-ink/12 bg-bone/60 px-6 py-4">
+                  <summary className="cursor-pointer list-none text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors">
+                    Cosa significano questi valori
+                  </summary>
+                  <dl className="mt-5 space-y-4 text-sm leading-relaxed">
+                    {GLOSSARY.map((g) => (
+                      <div key={g.term}>
+                        <dt className="text-ink">{g.term}</dt>
+                        <dd className="text-muted-foreground">{g.text}</dd>
                       </div>
                     ))}
                   </dl>
-                )}
+                </details>
+
 
                 {item.certPdf && (
                   <a

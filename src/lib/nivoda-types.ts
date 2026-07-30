@@ -11,6 +11,7 @@ export type NivodaDiamond = {
   available: boolean;
   shape: string | null;
   shapeLabel: string | null;
+  fullShape: string | null;
   carats: number | null;
   caratsLabel: string | null;
   color: string | null;
@@ -22,12 +23,30 @@ export type NivodaDiamond = {
   symmetry: string | null;
   symmetryLabel: string | null;
   fluorescence: string | null;
+  fluorescenceColor: string | null;
+  measurements: string | null;
+  ratio: string | null;
+  tablePct: string | null;
+  depthPct: string | null;
+  crownAngle: string | null;
+  pavAngle: string | null;
+  girdle: string | null;
+  culet: string | null;
+  eyeClean: string | null;
+  luster: string | null;
+  shade: string | null;
+  bowtie: string | null;
+  origin: string | null;
+  cutStyle: string | null;
+  treated: string | null;
+  natural: string | null;
   lab: string | null;
   certNumber: string | null;
   certPdf: string | null;
   title: string | null;
   description: string | null;
 };
+
 
 /** Solo ordinamenti per carati: nessun ordinamento economico. */
 export type NivodaSort = "carat_asc" | "carat_desc";
