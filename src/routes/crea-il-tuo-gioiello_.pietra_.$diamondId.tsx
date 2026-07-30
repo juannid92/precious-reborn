@@ -54,21 +54,66 @@ function DettaglioPietraPage() {
 
   const title = item?.title ?? item?.shapeLabel ?? "Pietra certificata";
 
-  const specs: Array<{ label: string; value: string | null }> = item
+  type Row = { label: string; value: string | null };
+  const clean = (rows: Row[]) =>
+    rows.filter((r) => r.value != null && r.value !== "") as Array<{
+      label: string;
+      value: string;
+    }>;
+
+  const groups: Array<{ title: string; rows: Array<{ label: string; value: string }> }> = item
     ? [
-        { label: "Forma", value: item.shapeLabel },
-        { label: "Carati", value: item.caratsLabel },
-        { label: "Colore", value: item.color },
-        { label: "Purezza", value: item.clarity },
-        { label: "Taglio", value: item.cutLabel },
-        { label: "Lucidatura", value: item.polishLabel },
-        { label: "Simmetria", value: item.symmetryLabel },
-        { label: "Fluorescenza", value: item.fluorescence },
         {
-          label: "Certificato",
-          value: item.lab ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}` : null,
+          title: "Le 4 C",
+          rows: clean([
+            { label: "Forma", value: item.shapeLabel },
+            { label: "Carati", value: item.caratsLabel },
+            { label: "Colore", value: item.color },
+            { label: "Purezza", value: item.clarity },
+            { label: "Taglio", value: item.cutLabel },
+          ]),
         },
-      ].filter((s) => s.value != null && s.value !== "")
+        {
+          title: "Proporzioni",
+          rows: clean([
+            { label: "Misure", value: item.measurements },
+            { label: "Rapporto", value: item.ratio },
+            { label: "Tavola", value: item.tablePct },
+            { label: "Profondità", value: item.depthPct },
+            { label: "Angolo corona", value: item.crownAngle },
+            { label: "Angolo padiglione", value: item.pavAngle },
+            { label: "Cintura", value: item.girdle },
+            { label: "Apice", value: item.culet },
+            { label: "Lucidatura", value: item.polishLabel },
+            { label: "Simmetria", value: item.symmetryLabel },
+          ]),
+        },
+        {
+          title: "Aspetto e provenienza",
+          rows: clean([
+            { label: "Pulita a occhio nudo", value: item.eyeClean },
+            { label: "Lucentezza", value: item.luster },
+            { label: "Sfumatura di colore", value: item.shade },
+            { label: "Effetto bowtie", value: item.bowtie },
+            {
+              label: "Fluorescenza",
+              value: item.fluorescence
+                ? `${item.fluorescence}${item.fluorescenceColor ? ` (${item.fluorescenceColor})` : ""}`
+                : null,
+            },
+            { label: "Tipo di taglio", value: item.cutStyle },
+            { label: "Origine", value: item.natural },
+            { label: "Paese d'origine", value: item.origin },
+            { label: "Trattamenti", value: item.treated },
+            {
+              label: "Certificato",
+              value: item.lab
+                ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}`
+                : null,
+            },
+          ]),
+        },
+      ].filter((g) => g.rows.length > 0)
     : [];
 
   const contactSearch = item
@@ -77,6 +122,7 @@ function DettaglioPietraPage() {
         pietra: item.diamondId ?? undefined,
       }
     : { richiesta: undefined, pietra: undefined };
+
 
   const chooseStone = () => {
     if (!item) return;
