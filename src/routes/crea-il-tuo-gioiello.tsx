@@ -1346,12 +1346,13 @@ function StoneStepCallout() {
           <div>
             <p className="eyebrow text-gold-deep mb-2">Primo passo · La pietra</p>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-              Vuoi partire dalla gemma? Sfoglia i diamanti certificati disponibili su richiesta e
-              scegli quello attorno a cui costruire il gioiello. Puoi anche saltare questo passaggio.
+              Vuoi partire dalla gemma? Ogni pietra è selezionata singolarmente e certificata:
+              scegli quella attorno a cui costruire il gioiello. Puoi anche saltare questo
+              passaggio.
             </p>
           </div>
           <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary shrink-0">
-            Scegli la pietra
+            Scegli la tua pietra
           </Link>
         </div>
       )}
