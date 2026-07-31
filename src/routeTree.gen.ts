@@ -29,8 +29,10 @@ import { Route as GioielliMatrimonioRouteImport } from './routes/gioielli.matrim
 import { Route as GioielliArgentoRouteImport } from './routes/gioielli.argento'
 import { Route as GioielliAnniversarioRouteImport } from './routes/gioielli.anniversario'
 import { Route as GioielliAnelliRouteImport } from './routes/gioielli.anelli'
+import { Route as CreaIlTuoGioielloPietraDiColoreRouteImport } from './routes/crea-il-tuo-gioiello_.pietra-di-colore'
 import { Route as CreaIlTuoGioielloPietraRouteImport } from './routes/crea-il-tuo-gioiello_.pietra'
 import { Route as CreaIlTuoGioielloPietraDiamondIdRouteImport } from './routes/crea-il-tuo-gioiello_.pietra_.$diamondId'
+import { Route as CreaIlTuoGioielloPietraDiColoreGemIdRouteImport } from './routes/crea-il-tuo-gioiello_.pietra-di-colore_.$gemId'
 import { Route as ApiPublicFalTrellisWebhookRouteImport } from './routes/api/public/fal-trellis-webhook'
 
 const StoriaRoute = StoriaRouteImport.update({
@@ -134,6 +136,12 @@ const GioielliAnelliRoute = GioielliAnelliRouteImport.update({
   path: '/gioielli/anelli',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreaIlTuoGioielloPietraDiColoreRoute =
+  CreaIlTuoGioielloPietraDiColoreRouteImport.update({
+    id: '/crea-il-tuo-gioiello_/pietra-di-colore',
+    path: '/crea-il-tuo-gioiello/pietra-di-colore',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CreaIlTuoGioielloPietraRoute = CreaIlTuoGioielloPietraRouteImport.update({
   id: '/crea-il-tuo-gioiello_/pietra',
   path: '/crea-il-tuo-gioiello/pietra',
@@ -143,6 +151,12 @@ const CreaIlTuoGioielloPietraDiamondIdRoute =
   CreaIlTuoGioielloPietraDiamondIdRouteImport.update({
     id: '/crea-il-tuo-gioiello_/pietra_/$diamondId',
     path: '/crea-il-tuo-gioiello/pietra/$diamondId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const CreaIlTuoGioielloPietraDiColoreGemIdRoute =
+  CreaIlTuoGioielloPietraDiColoreGemIdRouteImport.update({
+    id: '/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId',
+    path: '/crea-il-tuo-gioiello/pietra-di-colore/$gemId',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicFalTrellisWebhookRoute =
@@ -166,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
   '/crea-il-tuo-gioiello/pietra': typeof CreaIlTuoGioielloPietraRoute
+  '/crea-il-tuo-gioiello/pietra-di-colore': typeof CreaIlTuoGioielloPietraDiColoreRoute
   '/gioielli/anelli': typeof GioielliAnelliRoute
   '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
@@ -175,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
+  '/crea-il-tuo-gioiello/pietra-di-colore/$gemId': typeof CreaIlTuoGioielloPietraDiColoreGemIdRoute
   '/crea-il-tuo-gioiello/pietra/$diamondId': typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 export interface FileRoutesByTo {
@@ -191,6 +207,7 @@ export interface FileRoutesByTo {
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
   '/crea-il-tuo-gioiello/pietra': typeof CreaIlTuoGioielloPietraRoute
+  '/crea-il-tuo-gioiello/pietra-di-colore': typeof CreaIlTuoGioielloPietraDiColoreRoute
   '/gioielli/anelli': typeof GioielliAnelliRoute
   '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
@@ -200,6 +217,7 @@ export interface FileRoutesByTo {
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
+  '/crea-il-tuo-gioiello/pietra-di-colore/$gemId': typeof CreaIlTuoGioielloPietraDiColoreGemIdRoute
   '/crea-il-tuo-gioiello/pietra/$diamondId': typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 export interface FileRoutesById {
@@ -217,6 +235,7 @@ export interface FileRoutesById {
   '/servizi': typeof ServiziRoute
   '/storia': typeof StoriaRoute
   '/crea-il-tuo-gioiello_/pietra': typeof CreaIlTuoGioielloPietraRoute
+  '/crea-il-tuo-gioiello_/pietra-di-colore': typeof CreaIlTuoGioielloPietraDiColoreRoute
   '/gioielli/anelli': typeof GioielliAnelliRoute
   '/gioielli/anniversario': typeof GioielliAnniversarioRoute
   '/gioielli/argento': typeof GioielliArgentoRoute
@@ -226,6 +245,7 @@ export interface FileRoutesById {
   '/gioielli/oro-giallo': typeof GioielliOroGialloRoute
   '/gioielli/regalo': typeof GioielliRegaloRoute
   '/api/public/fal-trellis-webhook': typeof ApiPublicFalTrellisWebhookRoute
+  '/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId': typeof CreaIlTuoGioielloPietraDiColoreGemIdRoute
   '/crea-il-tuo-gioiello_/pietra_/$diamondId': typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 export interface FileRouteTypes {
@@ -244,6 +264,7 @@ export interface FileRouteTypes {
     | '/servizi'
     | '/storia'
     | '/crea-il-tuo-gioiello/pietra'
+    | '/crea-il-tuo-gioiello/pietra-di-colore'
     | '/gioielli/anelli'
     | '/gioielli/anniversario'
     | '/gioielli/argento'
@@ -253,6 +274,7 @@ export interface FileRouteTypes {
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
+    | '/crea-il-tuo-gioiello/pietra-di-colore/$gemId'
     | '/crea-il-tuo-gioiello/pietra/$diamondId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -269,6 +291,7 @@ export interface FileRouteTypes {
     | '/servizi'
     | '/storia'
     | '/crea-il-tuo-gioiello/pietra'
+    | '/crea-il-tuo-gioiello/pietra-di-colore'
     | '/gioielli/anelli'
     | '/gioielli/anniversario'
     | '/gioielli/argento'
@@ -278,6 +301,7 @@ export interface FileRouteTypes {
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
+    | '/crea-il-tuo-gioiello/pietra-di-colore/$gemId'
     | '/crea-il-tuo-gioiello/pietra/$diamondId'
   id:
     | '__root__'
@@ -294,6 +318,7 @@ export interface FileRouteTypes {
     | '/servizi'
     | '/storia'
     | '/crea-il-tuo-gioiello_/pietra'
+    | '/crea-il-tuo-gioiello_/pietra-di-colore'
     | '/gioielli/anelli'
     | '/gioielli/anniversario'
     | '/gioielli/argento'
@@ -303,6 +328,7 @@ export interface FileRouteTypes {
     | '/gioielli/oro-giallo'
     | '/gioielli/regalo'
     | '/api/public/fal-trellis-webhook'
+    | '/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId'
     | '/crea-il-tuo-gioiello_/pietra_/$diamondId'
   fileRoutesById: FileRoutesById
 }
@@ -320,6 +346,7 @@ export interface RootRouteChildren {
   ServiziRoute: typeof ServiziRoute
   StoriaRoute: typeof StoriaRoute
   CreaIlTuoGioielloPietraRoute: typeof CreaIlTuoGioielloPietraRoute
+  CreaIlTuoGioielloPietraDiColoreRoute: typeof CreaIlTuoGioielloPietraDiColoreRoute
   GioielliAnelliRoute: typeof GioielliAnelliRoute
   GioielliAnniversarioRoute: typeof GioielliAnniversarioRoute
   GioielliArgentoRoute: typeof GioielliArgentoRoute
@@ -329,6 +356,7 @@ export interface RootRouteChildren {
   GioielliOroGialloRoute: typeof GioielliOroGialloRoute
   GioielliRegaloRoute: typeof GioielliRegaloRoute
   ApiPublicFalTrellisWebhookRoute: typeof ApiPublicFalTrellisWebhookRoute
+  CreaIlTuoGioielloPietraDiColoreGemIdRoute: typeof CreaIlTuoGioielloPietraDiColoreGemIdRoute
   CreaIlTuoGioielloPietraDiamondIdRoute: typeof CreaIlTuoGioielloPietraDiamondIdRoute
 }
 
@@ -474,6 +502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GioielliAnelliRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/crea-il-tuo-gioiello_/pietra-di-colore': {
+      id: '/crea-il-tuo-gioiello_/pietra-di-colore'
+      path: '/crea-il-tuo-gioiello/pietra-di-colore'
+      fullPath: '/crea-il-tuo-gioiello/pietra-di-colore'
+      preLoaderRoute: typeof CreaIlTuoGioielloPietraDiColoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/crea-il-tuo-gioiello_/pietra': {
       id: '/crea-il-tuo-gioiello_/pietra'
       path: '/crea-il-tuo-gioiello/pietra'
@@ -486,6 +521,13 @@ declare module '@tanstack/react-router' {
       path: '/crea-il-tuo-gioiello/pietra/$diamondId'
       fullPath: '/crea-il-tuo-gioiello/pietra/$diamondId'
       preLoaderRoute: typeof CreaIlTuoGioielloPietraDiamondIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId': {
+      id: '/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId'
+      path: '/crea-il-tuo-gioiello/pietra-di-colore/$gemId'
+      fullPath: '/crea-il-tuo-gioiello/pietra-di-colore/$gemId'
+      preLoaderRoute: typeof CreaIlTuoGioielloPietraDiColoreGemIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/fal-trellis-webhook': {
@@ -512,6 +554,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServiziRoute: ServiziRoute,
   StoriaRoute: StoriaRoute,
   CreaIlTuoGioielloPietraRoute: CreaIlTuoGioielloPietraRoute,
+  CreaIlTuoGioielloPietraDiColoreRoute: CreaIlTuoGioielloPietraDiColoreRoute,
   GioielliAnelliRoute: GioielliAnelliRoute,
   GioielliAnniversarioRoute: GioielliAnniversarioRoute,
   GioielliArgentoRoute: GioielliArgentoRoute,
@@ -521,6 +564,8 @@ const rootRouteChildren: RootRouteChildren = {
   GioielliOroGialloRoute: GioielliOroGialloRoute,
   GioielliRegaloRoute: GioielliRegaloRoute,
   ApiPublicFalTrellisWebhookRoute: ApiPublicFalTrellisWebhookRoute,
+  CreaIlTuoGioielloPietraDiColoreGemIdRoute:
+    CreaIlTuoGioielloPietraDiColoreGemIdRoute,
   CreaIlTuoGioielloPietraDiamondIdRoute: CreaIlTuoGioielloPietraDiamondIdRoute,
 }
 export const routeTree = rootRouteImport
