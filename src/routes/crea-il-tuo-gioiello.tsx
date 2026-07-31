@@ -1351,9 +1351,14 @@ function StoneStepCallout() {
               passaggio.
             </p>
           </div>
-          <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary shrink-0">
-            Scegli la tua pietra
-          </Link>
+          <div className="flex flex-wrap items-center gap-4 shrink-0">
+            <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary shrink-0">
+              Scegli la tua pietra
+            </Link>
+            <Link to="/crea-il-tuo-gioiello/pietra-di-colore" className="btn-primary shrink-0">
+              Oppure scegli una pietra di colore
+            </Link>
+          </div>
         </div>
       )}
     </div>
