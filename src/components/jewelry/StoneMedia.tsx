@@ -12,6 +12,7 @@ interface StoneMediaProps {
  * Gestore media per le pietre (diamanti e gemme).
  * Implementa logica di fallback: Immagine -> Video (se fallisce o non c'è) -> Placeholder.
  * Supporta hover su desktop per mostrare il video 360 nelle card.
+ * Garantisce che l'iframe non intercetti il clic sovrapponendo uno strato trasparente.
  */
 export function StoneMedia({ image, video, title, isCard = false }: StoneMediaProps) {
   const [hasImageError, setHasImageError] = useState(false);
@@ -60,13 +61,17 @@ export function StoneMedia({ image, video, title, isCard = false }: StoneMediaPr
 
       {/* Video Iframe (360) */}
       {showVideo && (
-        <iframe
-          src={video!}
-          title={title}
-          className="absolute inset-0 h-full w-full border-0"
-          allow="autoplay; fullscreen"
-          loading="lazy"
-        />
+        <div className="absolute inset-0 h-full w-full">
+          <iframe
+            src={video!}
+            title={title}
+            className="h-full w-full border-0"
+            allow="autoplay; fullscreen"
+            loading="lazy"
+          />
+          {/* Strato trasparente per intercettare il clic ed evitare che finisca nel sito del fornitore */}
+          <div className="absolute inset-0 z-10 cursor-pointer" />
+        </div>
       )}
 
       {/* Placeholder Elegante */}
@@ -83,7 +88,7 @@ export function StoneMedia({ image, video, title, isCard = false }: StoneMediaPr
 
       {/* Indicatore 360 discreto */}
       {video && isCard && (
-        <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-bone/90 px-2.5 py-1 text-[10px] font-bold tracking-tight text-gold-deep shadow-sm backdrop-blur-sm border border-gold-deep/20 pointer-events-none">
+        <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 rounded-full bg-bone/90 px-2.5 py-1 text-[10px] font-bold tracking-tight text-gold-deep shadow-sm backdrop-blur-sm border border-gold-deep/20 pointer-events-none">
           <RefreshCw className="h-2.5 w-2.5" />
           360
         </div>
@@ -91,3 +96,4 @@ export function StoneMedia({ image, video, title, isCard = false }: StoneMediaPr
     </div>
   );
 }
+
