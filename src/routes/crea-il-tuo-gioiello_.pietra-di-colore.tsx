@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Check, Loader2, RotateCcw, Search } from "lucide-react";
+import { StoneMedia } from "@/components/jewelry/StoneMedia";
 
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import {
@@ -458,24 +459,13 @@ function GemstoneCard({ gem }: { gem: Gemstone }) {
       }}
       className="group flex cursor-pointer flex-col rounded-2xl border border-ink/12 bg-bone/50 overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:border-gold-deep/60 hover:shadow-[0_18px_50px_-28px_oklch(0.58_0.085_60/0.6)]"
     >
-      <div className="relative aspect-square bg-bone-deep/40 overflow-hidden">
-        {gem.image ? (
-          <img
-            src={gem.image}
-            alt={title}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-          />
-        ) : gem.video ? (
-          <iframe
-            src={gem.video}
-            title={title}
-            loading="lazy"
-            className="h-full w-full border-0"
-            allow="autoplay; fullscreen"
-          />
-        ) : null}
+      <div className="relative aspect-square overflow-hidden bg-bone-deep/40">
+        <StoneMedia 
+          image={gem.image} 
+          video={gem.video} 
+          title={title} 
+          isCard 
+        />
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="font-display text-lg font-semibold leading-tight text-ink">{title}</p>
