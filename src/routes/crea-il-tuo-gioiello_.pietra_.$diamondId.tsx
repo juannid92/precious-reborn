@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Loader2, PlayCircle, Image as ImageIcon } from "lucide-react";
+import { StoneMedia } from "@/components/jewelry/StoneMedia";
 
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { contacts } from "@/content/site";
@@ -66,6 +67,7 @@ function DettaglioPietraPage() {
 
   const [item, setItem] = useState<NivodaDiamond | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error" | "missing">("loading");
+  const [activeView, setActiveView] = useState<"video" | "image">("video");
 
   useEffect(() => {
     let alive = true;
@@ -223,25 +225,43 @@ function DettaglioPietraPage() {
             <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
               {/* Media */}
               <div className="lg:col-span-6">
-                <div className="rounded-2xl border border-ink/12 overflow-hidden bg-bone-deep/40 aspect-square">
-                  {item.video ? (
-                    <video
-                      src={item.video}
-                      className="h-full w-full object-cover"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      poster={item.image ?? undefined}
-                    />
-                  ) : item.image ? (
-                    <img src={item.image} alt={title} className="h-full w-full object-cover" />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-ink/40">
-                      Immagine non disponibile
-                    </div>
-                  )}
+                <div className="relative rounded-2xl border border-ink/12 overflow-hidden bg-bone-deep/40 aspect-square">
+                  {/* Se il video non esiste, forziamo la vista immagine (che avrà i suoi fallback interni in StoneMedia) */}
+                  <StoneMedia 
+                    image={activeView === "image" || !item.video ? item.image : null} 
+                    video={activeView === "video" ? item.video : null}
+                    title={title}
+                  />
                 </div>
+
+                {item.video && item.image && (
+                  <div className="mt-4 flex justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveView("video")}
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        activeView === "video"
+                          ? "bg-gold-deep text-bone shadow-md"
+                          : "bg-bone border border-ink/10 text-ink/60 hover:border-gold-deep/40 hover:text-ink"
+                      }`}
+                    >
+                      <PlayCircle className="h-3.5 w-3.5" />
+                      Video 360
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveView("image")}
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        activeView === "image"
+                          ? "bg-gold-deep text-bone shadow-md"
+                          : "bg-bone border border-ink/10 text-ink/60 hover:border-gold-deep/40 hover:text-ink"
+                      }`}
+                    >
+                      <ImageIcon className="h-3.5 w-3.5" />
+                      Fotografia
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Dati */}
