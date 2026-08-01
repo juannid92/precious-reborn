@@ -67,7 +67,13 @@ function DettaglioPietraPage() {
 
   const [item, setItem] = useState<NivodaDiamond | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error" | "missing">("loading");
-  const [activeView, setActiveView] = useState<"video" | "image">("video");
+  const [activeView, setActiveView] = useState<"video" | "image">("image");
+
+  useEffect(() => {
+    if (item && !item.image && item.video) {
+      setActiveView("video");
+    }
+  }, [item]);
 
   useEffect(() => {
     let alive = true;
@@ -226,28 +232,23 @@ function DettaglioPietraPage() {
               {/* Media */}
               <div className="lg:col-span-6">
                 <div className="relative rounded-2xl border border-ink/12 overflow-hidden bg-bone-deep/40 aspect-square">
-                  {/* Se il video non esiste, forziamo la vista immagine (che avrà i suoi fallback interni in StoneMedia) */}
                   <StoneMedia 
                     image={activeView === "image" || !item.video ? item.image : null} 
                     video={activeView === "video" ? item.video : null}
                     title={title}
                   />
+                  {/* Sovrapposizione trasparente sempre presente per garantire che il clic non vada all'iframe */}
+                  <div className="absolute inset-0 z-10" />
                 </div>
 
+                {activeView === "video" && item.video && (
+                  <p className="mt-3 text-[11px] text-ink/40 text-center">
+                    Se il modello tridimensionale non compare, la pietra è in fase di aggiornamento presso il fornitore. Le fotografie e i dati del certificato restano validi.
+                  </p>
+                )}
+
                 {item.video && item.image && (
-                  <div className="mt-4 flex justify-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setActiveView("video")}
-                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${
-                        activeView === "video"
-                          ? "bg-gold-deep text-bone shadow-md"
-                          : "bg-bone border border-ink/10 text-ink/60 hover:border-gold-deep/40 hover:text-ink"
-                      }`}
-                    >
-                      <PlayCircle className="h-3.5 w-3.5" />
-                      Video 360
-                    </button>
+                  <div className="mt-6 flex justify-center gap-3">
                     <button
                       type="button"
                       onClick={() => setActiveView("image")}
@@ -259,6 +260,18 @@ function DettaglioPietraPage() {
                     >
                       <ImageIcon className="h-3.5 w-3.5" />
                       Fotografia
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveView("video")}
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        activeView === "video"
+                          ? "bg-gold-deep text-bone shadow-md"
+                          : "bg-bone border border-ink/10 text-ink/60 hover:border-gold-deep/40 hover:text-ink"
+                      }`}
+                    >
+                      <PlayCircle className="h-3.5 w-3.5" />
+                      Video 360
                     </button>
                   </div>
                 )}
