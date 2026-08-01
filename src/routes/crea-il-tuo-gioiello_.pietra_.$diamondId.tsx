@@ -237,8 +237,6 @@ function DettaglioPietraPage() {
                     video={activeView === "video" ? item.video : null}
                     title={title}
                   />
-                  {/* Sovrapposizione trasparente sempre presente per garantire che il clic non vada all'iframe */}
-                  <div className="absolute inset-0 z-10" />
                 </div>
 
                 {activeView === "video" && item.video && (
