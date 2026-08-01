@@ -69,8 +69,9 @@ export function StoneMedia({ image, video, title, isCard = false }: StoneMediaPr
             allow="autoplay; fullscreen"
             loading="lazy"
           />
-          {/* Strato trasparente per intercettare il clic ed evitare che finisca nel sito del fornitore */}
-          <div className="absolute inset-0 z-10 cursor-pointer" />
+          {/* Strato trasparente solo nelle card per intercettare il clic ed evitare che finisca nel sito del fornitore. 
+              Nelle pagine di dettaglio (isCard=false) l'utente deve poter interagire col modello. */}
+          {isCard && <div className="absolute inset-0 z-10 cursor-pointer" />}
         </div>
       )}
 
