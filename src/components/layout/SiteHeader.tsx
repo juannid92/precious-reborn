@@ -80,7 +80,7 @@ export function SiteHeader() {
               WhatsApp
             </a>
           </div>
-          <Link to="/contatti" className="btn-ghost !py-2.5 !px-6 !text-[10px] !tracking-[0.2em]">
+          <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost !py-2.5 !px-6 !text-[10px] !tracking-[0.2em]">
             Prenota
           </Link>
         </div>

@@ -215,7 +215,7 @@ function CreaAnelloPersonalizzatoBariPage() {
             <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
               Scrivici o chiamaci per fissare un primo incontro riservato. In atelier ascolteremo la tua idea e inizieremo, insieme, a disegnare l'anello che hai in mente.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Prenota un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

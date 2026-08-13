@@ -1137,11 +1137,11 @@ function AtelierCreatePage() {
                           </p>
                         )}
                         <div className="mt-7 flex flex-wrap gap-3">
-                          <Link to="/contatti" className="btn-primary">
+                          <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary">
                             Invia richiesta all'atelier
                             <ArrowRight className="h-4 w-4" />
                           </Link>
-                          <Link to="/contatti" className="btn-ghost text-ink">
+                          <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-ink">
                             Prenota una visita
                           </Link>
                         </div>

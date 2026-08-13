@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ExternalLink, Loader2, PlayCircle, Image as ImageIcon } from "lucide-react";
-import { StoneMedia } from "@/components/jewelry/StoneMedia";
+import { MediaPietraNivoda } from "@/components/MediaPietraNivoda";
 
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { contacts } from "@/content/site";
@@ -163,9 +163,9 @@ function DettaglioPietraPage() {
   const contactSearch = item
     ? {
         richiesta: `Sono interessato alla pietra: ${title}`,
-        pietra: item.diamondId ?? undefined,
+        pietra: item.diamondId || "",
       }
-    : { richiesta: undefined, pietra: undefined };
+    : { richiesta: "", pietra: "" };
 
 
   const chooseStone = () => {
@@ -232,18 +232,14 @@ function DettaglioPietraPage() {
               {/* Media */}
               <div className="lg:col-span-6">
                 <div className="relative rounded-2xl border border-ink/12 overflow-hidden bg-bone-deep/40 aspect-square">
-                  <StoneMedia 
+                  <MediaPietraNivoda 
                     image={activeView === "image" || !item.video ? item.image : null} 
                     video={activeView === "video" ? item.video : null}
-                    title={title}
+                    alt={title}
+                    interattivo={activeView === "video"}
                   />
                 </div>
 
-                {activeView === "video" && item.video && (
-                  <p className="mt-3 text-[11px] text-ink/40 text-center">
-                    Se il modello tridimensionale non compare, la pietra è in fase di aggiornamento presso il fornitore. Le fotografie e i dati del certificato restano validi.
-                  </p>
-                )}
 
                 {item.video && item.image && (
                   <div className="mt-6 flex justify-center gap-3">

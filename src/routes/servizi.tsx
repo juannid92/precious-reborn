@@ -138,7 +138,7 @@ function ServiziPage() {
                     </p>
                     <div className="mt-10">
                       <Link
-                        to="/contatti"
+                        to="/contatti" search={{ richiesta: "", pietra: "" }}
                         className={dark ? "btn-ghost text-bone" : "btn-ghost text-ink"}
                       >
                         Richiedi questo servizio
@@ -210,7 +210,7 @@ function ServiziPage() {
             <p className="text-bone/60 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
               Dalla creazione su misura alla cura dei tuoi pezzi più preziosi, il nostro laboratorio è al tuo servizio per garantire eccellenza e durata nel tempo.
             </p>
-            <Link to="/contatti" className="btn-primary bg-bone text-obsidian hover:bg-gold group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary bg-bone text-obsidian hover:bg-gold group">
               Prenota una visita
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

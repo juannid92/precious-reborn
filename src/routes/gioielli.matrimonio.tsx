@@ -241,7 +241,7 @@ function MatrimonioPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Scriveteci o chiamateci per raccontarci la data e l'idea: organizziamo insieme un primo incontro in atelier e valutiamo i passi più adatti, nei tempi reali della vostra giornata.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Scrivici per un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

@@ -169,7 +169,7 @@ function StoriaPage() {
             <p className="text-bone/70 text-lg leading-relaxed max-w-xl mx-auto mb-10">
               L'atelier è in Via Beatillo 14, a Bari. Bevi un caffè con noi.
             </p>
-            <Link to="/contatti" className="btn-ghost text-bone">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-bone">
               Prenota una visita
             </Link>
           </Reveal>

@@ -245,7 +245,7 @@ function OrecchiniPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Scrivici o chiamaci per raccontarci che orecchini stai cercando: per ogni giorno, per una cerimonia, come regalo o come reinterpretazione di un pezzo che già porti con te. Organizziamo un primo incontro in atelier per valutarli insieme.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Scrivici per un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

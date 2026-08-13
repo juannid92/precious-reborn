@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Check, Loader2, RotateCcw, Search } from "lucide-react";
-import { StoneMedia } from "@/components/jewelry/StoneMedia";
+import { MediaPietraNivoda } from "@/components/MediaPietraNivoda";
 
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import {
@@ -452,12 +452,12 @@ function DiamondCard({ diamond }: { diamond: NivodaDiamond }) {
       className="group flex cursor-pointer flex-col rounded-2xl border border-ink/12 bg-bone/50 overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:border-gold-deep/60 hover:shadow-[0_18px_50px_-28px_oklch(0.58_0.085_60/0.6)]"
     >
       <div className="relative aspect-square overflow-hidden bg-bone-deep/40">
-        <StoneMedia 
+        <MediaPietraNivoda 
           image={diamond.image} 
           video={diamond.video} 
-          title={title} 
-          isCard 
+          alt={title} 
         />
+        <div className="absolute inset-0 z-20" />
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="font-display text-lg font-semibold leading-tight text-ink">{title}</p>

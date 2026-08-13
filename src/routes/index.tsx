@@ -226,7 +226,7 @@ function HomePage() {
                   Le collezioni
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </Link>
-                <Link to="/contatti" className="btn-ghost text-ink">
+                <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-ink">
                   Su appuntamento
                 </Link>
               </div>
@@ -464,7 +464,7 @@ function HomePage() {
               Bevi un caffè, racconta cosa hai in mente. Esci con un'idea chiara
               di cosa diventerà il tuo gioiello.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Prenota una visita
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>
@@ -697,7 +697,7 @@ function JewelGenesisSection() {
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <span className="hairline-gold flex-1 hidden md:block max-w-[220px]" />
             <p className="font-display italic text-xl text-ink/80">Preferisci farlo dal vivo?</p>
-            <Link to="/contatti" className="btn-ghost text-ink">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-ink">
               Prenota una visita
             </Link>
           </div>

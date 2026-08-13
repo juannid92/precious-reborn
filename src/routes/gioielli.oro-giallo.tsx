@@ -243,7 +243,7 @@ function OroGialloPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Scrivici o chiamaci per fissare una visita in atelier: il primo incontro è gratuito e serve a capire insieme se l'oro giallo è il materiale giusto per il tuo progetto, e con quale percorso realizzarlo.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Scrivici per un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

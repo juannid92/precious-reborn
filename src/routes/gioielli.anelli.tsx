@@ -244,7 +244,7 @@ function AnelliPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Scrivici o chiamaci per raccontarci l'anello che vorresti: stile, misura, occasione. Organizziamo un primo incontro in atelier per valutare insieme la strada più adatta, sia che si tratti di un pezzo nuovo, sia che si parta da un anello che già porti con te.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Scrivici per un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>
