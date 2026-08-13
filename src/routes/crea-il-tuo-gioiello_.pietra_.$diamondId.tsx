@@ -163,9 +163,9 @@ function DettaglioPietraPage() {
   const contactSearch = item
     ? {
         richiesta: `Sono interessato alla pietra: ${title}`,
-        pietra: item.diamondId ?? undefined,
+        pietra: item.diamondId || "",
       }
-    : { richiesta: undefined, pietra: undefined };
+    : { richiesta: "", pietra: "" };
 
 
   const chooseStone = () => {

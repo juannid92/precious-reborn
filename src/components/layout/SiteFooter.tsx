@@ -17,7 +17,7 @@ export function SiteFooter() {
             Nel laboratorio di Via Beatillo, dove i gioielli nascono uno alla volta.
           </p>
           <div className="mt-10">
-            <Link to="/contatti" className="btn-ghost text-bone">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-bone">
               Prenota una visita
             </Link>
           </div>

@@ -133,7 +133,7 @@ function DettaglioPietraColorePage() {
         richiesta: `Sono interessato alla pietra: ${title}`,
         pietra: title,
       }
-    : { richiesta: undefined, pietra: undefined };
+    : { richiesta: "", pietra: "" };
 
   return (
     <main className="bg-bone text-ink">
