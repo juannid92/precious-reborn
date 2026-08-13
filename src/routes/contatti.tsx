@@ -8,8 +8,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export const Route = createFileRoute("/contatti")({
   validateSearch: (search: Record<string, unknown>) => ({
-    richiesta: typeof search.richiesta === "string" ? search.richiesta.slice(0, 500) : undefined,
-    pietra: typeof search.pietra === "string" ? search.pietra.slice(0, 128) : undefined,
+    richiesta: typeof search.richiesta === "string" ? search.richiesta.slice(0, 500) : "",
+    pietra: typeof search.pietra === "string" ? search.pietra.slice(0, 128) : "",
   }),
   head: () => ({
     meta: [
