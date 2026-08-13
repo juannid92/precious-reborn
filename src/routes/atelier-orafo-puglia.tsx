@@ -223,7 +223,7 @@ function AtelierOrafoPugliaPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Scrivici o chiamaci per organizzare la tua visita: il primo incontro è gratuito e senza impegno, e serve soprattutto a capire se l'approccio dell'atelier è quello giusto per il tuo progetto. Saremo felici di accoglierti in {contacts.address}, a Bari.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Prenota un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

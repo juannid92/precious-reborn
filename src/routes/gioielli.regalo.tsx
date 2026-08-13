@@ -243,7 +243,7 @@ function RegaloPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Scrivici o chiamaci per raccontarci la persona a cui pensi e l'occasione: organizziamo insieme un primo incontro in atelier e valutiamo il gioiello più adatto, con il tempo necessario perché sia davvero suo.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Scrivici per un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

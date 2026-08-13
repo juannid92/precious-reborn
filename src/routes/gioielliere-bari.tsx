@@ -176,7 +176,7 @@ function GioielliereBariPage() {
             </p>
             <p>
               Per fissare la prima visita basta scrivere o chiamare. Risponderemo personalmente, ti chiederemo solo qualche informazione utile e troveremo l'orario più comodo. Tutti i recapiti sono raccolti nella pagina{" "}
-              <Link to="/contatti" className="text-gold-deep underline-offset-4 hover:underline">
+              <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="text-gold-deep underline-offset-4 hover:underline">
                 contatti
               </Link>
               , insieme alla mappa per arrivare in atelier.
@@ -203,7 +203,7 @@ function GioielliereBariPage() {
             <p className="text-bone/75 text-lg mb-10 leading-relaxed">
               Che si tratti di un gioiello da creare, di un pezzo di famiglia da restaurare o solo di un consiglio sincero, in atelier troverai tempo, ascolto e mani esperte. Prenota una visita: il primo incontro è il modo migliore per conoscerci.
             </p>
-            <Link to="/contatti" className="btn-primary group">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary group">
               Prenota un appuntamento
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </Link>

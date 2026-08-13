@@ -131,7 +131,7 @@ function CategoriePage() {
                   <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-md">
                     {cat.description}
                   </p>
-                  <Link to="/contatti" className="underline-gold text-sm uppercase tracking-[0.28em]">
+                  <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="underline-gold text-sm uppercase tracking-[0.28em]">
                     Richiedi in atelier
                   </Link>
                 </Reveal>
@@ -156,7 +156,7 @@ function CategoriePage() {
               Ogni gioiello dell'atelier può essere ripensato, ridisegnato,
               fatto da capo. Raccontaci la tua idea.
             </p>
-            <Link to="/contatti" className="btn-ghost text-bone">
+            <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-bone">
               Inizia il progetto
             </Link>
           </Reveal>
@@ -171,7 +171,7 @@ function CategoriePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {rings.slice(0, 4).map((r, i) => (
               <Reveal key={i} delay={i * 0.05}>
-                <Link to="/contatti" className="block group">
+                <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="block group">
                   <div className="aspect-square overflow-hidden bg-bone">
                     <img src={r.image} alt={`Anello ${r.name} — ${r.description}`} className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
                   </div>
