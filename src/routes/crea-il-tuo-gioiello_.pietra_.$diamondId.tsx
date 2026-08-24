@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { ArrowLeft, ExternalLink, Loader2, PlayCircle, Image as ImageIcon } from "lucide-react";
@@ -162,10 +162,11 @@ function DettaglioPietraPage() {
 
   const contactSearch = item
     ? {
-        richiesta: `Sono interessato alla pietra: ${title}`,
-        pietra: item.diamondId || "",
+        pietra: encodeURIComponent(title),
+        pid: encodeURIComponent(item.diamondId || ""),
+        tipo: encodeURIComponent("diamante"),
       }
-    : { richiesta: "", pietra: "" };
+    : { pietra: "", pid: "", tipo: "" };
 
 
   const chooseStone = () => {
