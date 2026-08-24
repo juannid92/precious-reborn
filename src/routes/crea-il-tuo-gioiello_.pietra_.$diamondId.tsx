@@ -189,7 +189,7 @@ function DettaglioPietraPage() {
     } catch {
       /* storage non disponibile: si prosegue comunque */
     }
-    void navigate({ to: `/contatti?pietra=${contactSearch.pietra}&pid=${contactSearch.pid}&tipo=${contactSearch.tipo}` });
+    void navigate({ to: "/contatti", search: contactSearch });
   };
 
   return (
