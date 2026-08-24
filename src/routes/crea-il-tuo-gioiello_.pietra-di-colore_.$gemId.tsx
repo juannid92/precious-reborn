@@ -130,11 +130,12 @@ function DettaglioPietraColorePage() {
 
   const contactSearch = item
     ? {
+        richiesta: "",
         pietra: encodeURIComponent(title),
         pid: encodeURIComponent(gemId),
         tipo: encodeURIComponent("gemma"),
       }
-    : { pietra: "", pid: "", tipo: "" };
+    : { richiesta: "", pietra: "", pid: "", tipo: "" };
 
   return (
     <main className="bg-bone text-ink">
