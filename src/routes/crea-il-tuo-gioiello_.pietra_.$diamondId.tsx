@@ -163,9 +163,9 @@ function DettaglioPietraPage() {
   const contactSearch = item
     ? {
         richiesta: "",
-        pietra: encodeURIComponent(title),
-        pid: encodeURIComponent(item.diamondId || ""),
-        tipo: encodeURIComponent("diamante"),
+        pietra: title,
+        pid: item.diamondId || "",
+        tipo: "diamante",
       }
     : { richiesta: "", pietra: "", pid: "", tipo: "" };
 
