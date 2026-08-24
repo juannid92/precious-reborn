@@ -7,10 +7,11 @@ import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/contatti")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: ((search: Record<string, unknown>) => ({
     richiesta: typeof search.richiesta === "string" ? search.richiesta.slice(0, 500) : "",
     pietra: typeof search.pietra === "string" ? search.pietra.slice(0, 500) : "",
-  }),
+    tipo: typeof search.tipo === "string" ? search.tipo : "",
+  })) as (search: Record<string, unknown>) => { richiesta: string; pietra: string; tipo?: string },
   head: () => ({
     meta: [
       { title: "Contatti e Appuntamento in Atelier · Cara Preziosi Bari" },
@@ -307,6 +308,9 @@ function ContattiPage() {
 
 function ContactForm() {
   const { richiesta, pietra } = Route.useSearch();
+  const stoneName = pietra && pietra.includes("%")
+    ? (() => { try { return decodeURIComponent(pietra); } catch { return pietra; } })()
+    : pietra;
   const [sending, setSending] = useState(false);
 
 
@@ -346,7 +350,7 @@ function ContactForm() {
         <Field name="phone" label="Telefono" type="tel" />
       </div>
       <Field name="email" label="Email" type="email" required />
-      <FieldTextarea name="message" label="Cosa hai in mente?" required defaultValue={pietra ? `Sono interessato alla pietra: ${pietra}\n\nSono interessato a questa pietra e vorrei ricevere una proposta per la creazione.` : richiesta} />
+      <FieldTextarea name="message" label="Cosa hai in mente?" required defaultValue={stoneName ? `Sono interessato alla pietra: ${stoneName}\n\nSono interessato a questa pietra e vorrei ricevere una proposta per la creazione.` : richiesta} />
       <button
         type="submit"
         disabled={sending}

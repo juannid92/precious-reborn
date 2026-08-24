@@ -131,9 +131,9 @@ function DettaglioPietraColorePage() {
   const contactSearch = item
     ? {
         richiesta: "",
-        pietra: encodeURIComponent(title),
-        pid: encodeURIComponent(gemId),
-        tipo: encodeURIComponent("gemma"),
+        pietra: title,
+        pid: gemId,
+        tipo: "gemma",
       }
     : { richiesta: "", pietra: "", pid: "", tipo: "" };
 
