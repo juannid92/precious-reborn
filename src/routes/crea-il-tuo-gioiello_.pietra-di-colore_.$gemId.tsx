@@ -286,8 +286,15 @@ function DettaglioPietraColorePage() {
                 )}
 
                 <div className="mt-12 flex flex-wrap items-center gap-6">
-                  <Link to="/contatti" search={contactSearch} className="btn-primary">
-                    Richiedi informazioni su questa pietra
+                  <Link to="/crea-il-tuo-gioiello/pietra-di-colore/$gemId/montatura" params={{ gemId }} className="btn-primary">
+                    Progetta il tuo gioiello con questa pietra
+                  </Link>
+                  <Link
+                    to="/contatti"
+                    search={contactSearch}
+                    className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors"
+                  >
+                    Parla con noi
                   </Link>
                   <Link
                     to="/crea-il-tuo-gioiello/pietra-di-colore"
