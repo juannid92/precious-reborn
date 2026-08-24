@@ -162,11 +162,12 @@ function DettaglioPietraPage() {
 
   const contactSearch = item
     ? {
+        richiesta: "",
         pietra: encodeURIComponent(title),
         pid: encodeURIComponent(item.diamondId || ""),
         tipo: encodeURIComponent("diamante"),
       }
-    : { pietra: "", pid: "", tipo: "" };
+    : { richiesta: "", pietra: "", pid: "", tipo: "" };
 
 
   const chooseStone = () => {
