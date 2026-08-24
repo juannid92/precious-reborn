@@ -9,7 +9,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export const Route = createFileRoute("/contatti")({
   validateSearch: (search: Record<string, unknown>) => ({
     richiesta: typeof search.richiesta === "string" ? search.richiesta.slice(0, 500) : "",
-    pietra: typeof search.pietra === "string" ? search.pietra.slice(0, 128) : "",
+    pietra: typeof search.pietra === "string" ? search.pietra.slice(0, 500) : "",
+    tipo: typeof search.tipo === "string" ? search.tipo : "",
   }),
   head: () => ({
     meta: [
@@ -306,7 +307,7 @@ function ContattiPage() {
 }
 
 function ContactForm() {
-  const { richiesta } = Route.useSearch();
+  const { richiesta, pietra } = Route.useSearch();
   const [sending, setSending] = useState(false);
 
 
