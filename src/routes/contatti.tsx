@@ -347,7 +347,7 @@ function ContactForm() {
         <Field name="phone" label="Telefono" type="tel" />
       </div>
       <Field name="email" label="Email" type="email" required />
-      <FieldTextarea name="message" label="Cosa hai in mente?" required defaultValue={richiesta} />
+      <FieldTextarea name="message" label="Cosa hai in mente?" required defaultValue={pietra ? `Sono interessato alla pietra: ${pietra}\n\nSono interessato a questa pietra e vorrei ricevere una proposta per la creazione.` : richiesta} />
       <button
         type="submit"
         disabled={sending}
