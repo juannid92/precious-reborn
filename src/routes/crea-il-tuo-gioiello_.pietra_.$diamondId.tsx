@@ -340,22 +340,17 @@ function DettaglioPietraPage() {
                 )}
 
                 <div className="mt-12 flex flex-wrap items-center gap-6">
-                  <button type="button" onClick={chooseStone} className="btn-primary">
-                    Scegli questa pietra
-                  </button>
+                  <Link to="/crea-il-tuo-gioiello/pietra/$diamondId/montatura" params={{ diamondId }} className="btn-primary">
+                    Progetta il tuo gioiello con questa pietra
+                  </Link>
                   <Link
                     to="/contatti"
                     search={contactSearch}
                     className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors"
                   >
-                    Richiedi un preventivo
+                    Parla con noi
                   </Link>
                 </div>
-
-                <p className="mt-10 text-sm text-muted-foreground leading-relaxed">
-                  Il prezzo della pietra e della montatura viene definito insieme a te in base alla
-                  creazione che sceglierai. Contattaci per un preventivo su misura.
-                </p>
 
                 <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
                   Ogni pietra viene verificata dal maestro orafo Nicola Caradonna prima della
