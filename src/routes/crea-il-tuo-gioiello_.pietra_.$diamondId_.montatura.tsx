@@ -10,7 +10,7 @@ import { getMontature, getConfigSito, inviaRichiesta } from "@/lib/montature.fun
 import type { Montatura } from "@/lib/montature.server";
 
 export const Route = createFileRoute(
-  "/crea-il-tuo-gioiello_/pietra_/$diamondId/montatura",
+  "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
 )({
   validateSearch: ((search: Record<string, unknown>) => ({
     gioiello: typeof search.gioiello === "string" ? search.gioiello : "",
@@ -70,7 +70,8 @@ function MontaturaPietraPage() {
         setItem(res.item);
         setStoneStatus(res.item ? "ready" : "error");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("[montatura] errore caricamento pietra:", err);
         if (alive) setStoneStatus("error");
       });
     return () => { alive = false; };
@@ -80,14 +81,19 @@ function MontaturaPietraPage() {
     fetchConfig({ data: undefined }).then((cfg) => {
       const num = cfg.whatsapp?.replace(/\D/g, "") ?? null;
       setWhatsappNum(num && num !== "NUMERO_WHATSAPP" ? num : null);
-    }).catch(() => {});
+    }).catch((err) => {
+      console.error("[montatura] errore caricamento config:", err);
+    });
   }, [fetchConfig]);
 
   useEffect(() => {
     if (!item?.shape) return;
     fetchMontature({ data: { forma: item.shape } })
       .then((m) => setMontature(m))
-      .catch(() => setMontature([]));
+      .catch((err) => {
+        console.error("[montatura] errore caricamento montature:", err);
+        setMontature([]);
+      });
   }, [item?.shape, fetchMontature]);
 
   const categorie = useMemo(
@@ -111,29 +117,6 @@ function MontaturaPietraPage() {
     () => categorie.filter((c) => montature.some((m) => m.categoria === c)),
     [categorie, montature],
   );
-
-  const formatRiepilogo = (): string => {
-    const righe = [
-      "Richiesta di progetto dal sito",
-      "",
-      `Pietra: ${title}`,
-      `Codice pietra: ${diamondId}`,
-      `Gioiello: ${gioiello}`,
-      `Montatura: ${montaturaSel?.nome ?? ""}`,
-      `Metallo: ${capitalize(metallo)}`,
-    ];
-    if (misura) righe.push(`Misura: ${misura}`);
-    if (search.passo === "4") {
-      const note = (document.getElementById("note") as HTMLTextAreaElement | null)?.value ?? "";
-      if (note.trim()) righe.push(`Note: ${note.trim()}`);
-    }
-    righe.push("");
-    righe.push("Nome: ________________________");
-    righe.push("Contatti: ________________________");
-    righe.push("");
-    righe.push(`Pagina della pietra: ${typeof window !== "undefined" ? window.location.origin : ""}/crea-il-tuo-gioiello/pietra/${diamondId}`);
-    return righe.filter((r) => r !== "").join("\n");
-  };
 
   const goTo = (step: number) => {
     void navigate({
@@ -326,7 +309,9 @@ function MontaturaPietraPage() {
       <main className="bg-obsidian text-bone min-h-screen">
         <section className="pt-36 md:pt-44 pb-24 md:pb-36">
           <div className="container-cara text-center">
-            <p className="font-display text-2xl">Pietra non trovata</p>
+            <p className="font-display text-2xl mb-4">
+              Configuratore momentaneamente non disponibile. Riprova tra qualche istante.
+            </p>
             <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary mt-8 inline-flex">
               Torna al catalogo
             </Link>

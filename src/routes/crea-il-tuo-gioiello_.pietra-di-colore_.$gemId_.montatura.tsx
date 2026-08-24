@@ -10,7 +10,7 @@ import { getMontature, getConfigSito, inviaRichiesta } from "@/lib/montature.fun
 import type { Montatura } from "@/lib/montature.server";
 
 export const Route = createFileRoute(
-  "/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId/montatura",
+  "/crea-il-tuo-gioiello_/pietra-di-colore_/$gemId_/montatura",
 )({
   validateSearch: ((search: Record<string, unknown>) => ({
     gioiello: typeof search.gioiello === "string" ? search.gioiello : "",
@@ -70,7 +70,8 @@ function MontaturaGemmaPage() {
         setItem(res.item);
         setStoneStatus(res.item ? "ready" : "error");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("[montatura-gemma] errore caricamento pietra:", err);
         if (alive) setStoneStatus("error");
       });
     return () => { alive = false; };
@@ -80,14 +81,19 @@ function MontaturaGemmaPage() {
     fetchConfig({ data: undefined }).then((cfg) => {
       const num = cfg.whatsapp?.replace(/\D/g, "") ?? null;
       setWhatsappNum(num && num !== "NUMERO_WHATSAPP" ? num : null);
-    }).catch(() => {});
+    }).catch((err) => {
+      console.error("[montatura-gemma] errore caricamento config:", err);
+    });
   }, [fetchConfig]);
 
   useEffect(() => {
     if (!item?.shape) return;
     fetchMontature({ data: { forma: item.shape } })
       .then((m) => setMontature(m))
-      .catch(() => setMontature([]));
+      .catch((err) => {
+        console.error("[montatura-gemma] errore caricamento montature:", err);
+        setMontature([]);
+      });
   }, [item?.shape, fetchMontature]);
 
   const categorie = useMemo(
@@ -303,7 +309,9 @@ function MontaturaGemmaPage() {
       <main className="bg-obsidian text-bone min-h-screen">
         <section className="pt-36 md:pt-44 pb-24 md:pb-36">
           <div className="container-cara text-center">
-            <p className="font-display text-2xl">Pietra non trovata</p>
+            <p className="font-display text-2xl mb-4">
+              Configuratore momentaneamente non disponibile. Riprova tra qualche istante.
+            </p>
             <Link to="/crea-il-tuo-gioiello/pietra-di-colore" className="btn-primary mt-8 inline-flex">
               Torna al catalogo
             </Link>
