@@ -55,6 +55,7 @@ function MontaturaGemmaPage() {
   const [item, setItem] = useState<Gemstone | null>(null);
   const [stoneStatus, setStoneStatus] = useState<"loading" | "ready" | "error">("loading");
   const [montature, setMontature] = useState<Montatura[]>([]);
+  const [montatureStatus, setMontatureStatus] = useState<"loading" | "ready">("loading");
   const [whatsappNum, setWhatsappNum] = useState<string | null>(null);
 
   const fetchGem = useServerFn(getNivodaGemstone);
