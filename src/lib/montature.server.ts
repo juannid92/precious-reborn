@@ -40,19 +40,33 @@ export type RichiestaDati = {
   canale: string;
 };
 
+const SELECT_COLS =
+  "codice, nome, categoria, descrizione, metalli, forme_compatibili, carati_min, carati_max, immagine";
+
+function mapRow(r: Record<string, unknown>): Montatura {
+  return {
+    codice: String(r.codice),
+    nome: String(r.nome),
+    categoria: String(r.categoria),
+    descrizione: r.descrizione ? String(r.descrizione) : null,
+    metalli: Array.isArray(r.metalli) ? r.metalli.map(String) : [],
+    forme_compatibili: Array.isArray(r.forme_compatibili) ? r.forme_compatibili.map(String) : [],
+    carati_min: typeof r.carati_min === "number" ? r.carati_min : null,
+    carati_max: typeof r.carati_max === "number" ? r.carati_max : null,
+    immagine: r.immagine ? String(r.immagine) : null,
+  };
+}
+
 export async function caricaMontature(forma: string): Promise<Montatura[]> {
   const supabase = getSupabaseAdmin();
 
   const formaNorm = (forma ?? "").trim().toUpperCase();
-  console.log(MONTATURE_DIAG, { formaRicevuta: forma, formaCercata: formaNorm });
-
-  const SELECT =
-    "codice, nome, categoria, descrizione, metalli, forme_compatibili, carati_min, carati_max, immagine";
+  console.log(MONTATURE_DIAG, { formaRicevuta: forma, formaNormalizzata: formaNorm });
 
   async function queryPerForma(f: string) {
     return supabase
       .from("montature")
-      .select(SELECT)
+      .select(SELECT_COLS)
       .eq("attivo", true)
       .contains("forme_compatibili", [f])
       .order("ordine", { ascending: true });
@@ -64,20 +78,17 @@ export async function caricaMontature(forma: string): Promise<Montatura[]> {
   if (!result.error && (result.data ?? []).length === 0 && formaNorm.includes(" ")) {
     const primaParola = formaNorm.split(/\s+/)[0];
     console.log(MONTATURE_DIAG, "retry con prima parola:", primaParola);
-    result = await queryPerForma(primaParola);
-    formaEffettiva = primaParola;
+    const retry = await queryPerForma(primaParola);
+    if (!retry.error && (retry.data ?? []).length > 0) {
+      result = retry;
+      formaEffettiva = primaParola;
+    }
   }
 
   const { data, error } = result;
 
   if (error) {
-    console.log(
-      MONTATURE_DIAG,
-      "DB error:",
-      error.message,
-      error.details,
-      error.hint,
-    );
+    console.log(MONTATURE_DIAG, "DB error:", error.message, error.details, error.hint);
     return [];
   }
 
@@ -86,17 +97,7 @@ export async function caricaMontature(forma: string): Promise<Montatura[]> {
     righeTrovate: (data ?? []).length,
   });
 
-  return (data ?? []).map((r) => ({
-    codice: String(r.codice),
-    nome: String(r.nome),
-    categoria: String(r.categoria),
-    descrizione: r.descrizione ? String(r.descrizione) : null,
-    metalli: Array.isArray(r.metalli) ? r.metalli.map(String) : [],
-    forme_compatibili: Array.isArray(r.forme_compatibili) ? r.forme_compatibili.map(String) : [],
-    carati_min: typeof r.carati_min === "number" ? r.carati_min : null,
-    carati_max: typeof r.carati_max === "number" ? r.carati_max : null,
-    immagine: r.immagine ? String(r.immagine) : null,
-  }));
+  return (data ?? []).map(mapRow);
 }
 
 export async function caricaConfigSito(): Promise<SiteConfig> {
