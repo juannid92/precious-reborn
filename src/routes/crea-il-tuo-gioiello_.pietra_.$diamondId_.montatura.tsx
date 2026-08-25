@@ -55,6 +55,7 @@ function MontaturaPietraPage() {
   const [item, setItem] = useState<NivodaDiamond | null>(null);
   const [stoneStatus, setStoneStatus] = useState<"loading" | "ready" | "error">("loading");
   const [montature, setMontature] = useState<Montatura[]>([]);
+  const [montatureStatus, setMontatureStatus] = useState<"loading" | "ready">("loading");
   const [whatsappNum, setWhatsappNum] = useState<string | null>(null);
 
   const fetchDiamond = useServerFn(getNivodaDiamond);
