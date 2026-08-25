@@ -6,6 +6,8 @@
  */
 import { getSupabaseAdmin } from "@/integrations/supabase/client.server";
 
+const MONTATURE_DIAG = "MONTATURE_DIAG";
+
 export type Montatura = {
   codice: string;
   nome: string;
@@ -40,17 +42,49 @@ export type RichiestaDati = {
 
 export async function caricaMontature(forma: string): Promise<Montatura[]> {
   const supabase = getSupabaseAdmin();
-  const { data, error } = await supabase
-    .from("montature")
-    .select("codice, nome, categoria, descrizione, metalli, forme_compatibili, carati_min, carati_max, immagine")
-    .eq("attivo", true)
-    .contains("forme_compatibili", [forma])
-    .order("ordine", { ascending: true });
+
+  const formaNorm = (forma ?? "").trim().toUpperCase();
+  console.log(MONTATURE_DIAG, { formaRicevuta: forma, formaCercata: formaNorm });
+
+  const SELECT =
+    "codice, nome, categoria, descrizione, metalli, forme_compatibili, carati_min, carati_max, immagine";
+
+  async function queryPerForma(f: string) {
+    return supabase
+      .from("montature")
+      .select(SELECT)
+      .eq("attivo", true)
+      .contains("forme_compatibili", [f])
+      .order("ordine", { ascending: true });
+  }
+
+  let result = await queryPerForma(formaNorm);
+  let formaEffettiva = formaNorm;
+
+  if (!result.error && (result.data ?? []).length === 0 && formaNorm.includes(" ")) {
+    const primaParola = formaNorm.split(/\s+/)[0];
+    console.log(MONTATURE_DIAG, "retry con prima parola:", primaParola);
+    result = await queryPerForma(primaParola);
+    formaEffettiva = primaParola;
+  }
+
+  const { data, error } = result;
 
   if (error) {
-    console.error("[montature] query error", error.message);
+    console.log(
+      MONTATURE_DIAG,
+      "DB error:",
+      error.message,
+      error.details,
+      error.hint,
+    );
     return [];
   }
+
+  console.log(MONTATURE_DIAG, {
+    formaEffettiva,
+    righeTrovate: (data ?? []).length,
+  });
 
   return (data ?? []).map((r) => ({
     codice: String(r.codice),
