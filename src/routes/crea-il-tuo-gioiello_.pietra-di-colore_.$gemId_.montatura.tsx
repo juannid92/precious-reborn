@@ -388,9 +388,18 @@ function MontaturaGemmaPage() {
                       </button>
                     ))}
                     {categorieFiltrate.length === 0 && (
-                      <p className="text-bone/40 text-sm col-span-full">
-                        Nessuna montatura compatibile con questa pietra al momento.
-                      </p>
+                      <div className="col-span-full rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+                        <p className="text-bone/70 text-sm leading-relaxed mb-4">
+                          Per questa forma non abbiamo ancora montature pronte a catalogo:{' '}
+                          <Link
+                            to="/contatti"
+                            search={{ richiesta: "", pietra: "" }}
+                            className="text-gold-deep underline underline-offset-4 hover:text-gold-deep/80 transition-colors"
+                          >
+                            scrivici e la realizziamo su misura.
+                          </Link>
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
