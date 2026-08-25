@@ -408,35 +408,52 @@ function MontaturaPietraPage() {
               {passo === 2 && (
                 <div>
                   <h2 className="font-display text-2xl mb-2">Scegli la montatura</h2>
-                  <p className="text-bone/60 mb-8">
-                    {montature.filter((m) => m.categoria === gioiello).length} montature disponibili per {capitalize(gioiello)}.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {montature
-                      .filter((m) => m.categoria === gioiello)
-                      .map((m) => (
-                        <button
-                          key={m.codice}
-                          type="button"
-                          onClick={() => setMontatura_(m.codice)}
-                          className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left hover:border-gold-deep/50 hover:bg-gold-deep/5 transition-all"
+                  {montature.filter((m) => m.categoria === gioiello).length > 0 ? (
+                    <>
+                      <p className="text-bone/60 mb-8">
+                        {montature.filter((m) => m.categoria === gioiello).length} montature disponibili per {capitalize(gioiello)}.
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {montature
+                          .filter((m) => m.categoria === gioiello)
+                          .map((m) => (
+                            <button
+                              key={m.codice}
+                              type="button"
+                              onClick={() => setMontatura_(m.codice)}
+                              className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left hover:border-gold-deep/50 hover:bg-gold-deep/5 transition-all"
+                            >
+                              {m.immagine ? (
+                                <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-white/5">
+                                  <img src={m.immagine} alt={m.nome} className="w-full h-full object-cover" loading="lazy" />
+                                </div>
+                              ) : (
+                                <div className="aspect-[4/3] rounded-xl mb-4 bg-[#111] border border-white/5 flex items-center justify-center">
+                                  <span className="text-bone/25 text-xs uppercase tracking-widest">{m.nome}</span>
+                                </div>
+                              )}
+                              <p className="font-display text-lg mb-1">{m.nome}</p>
+                              {m.descrizione && (
+                                <p className="text-bone/50 text-sm leading-relaxed line-clamp-2">{m.descrizione}</p>
+                              )}
+                            </button>
+                          ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+                      <p className="text-bone/70 text-sm leading-relaxed mb-4">
+                        Per questa forma non abbiamo ancora montature pronte a catalogo:{' '}
+                        <Link
+                          to="/contatti"
+                          search={{ richiesta: "", pietra: "" }}
+                          className="text-gold-deep underline underline-offset-4 hover:text-gold-deep/80 transition-colors"
                         >
-                          {m.immagine ? (
-                            <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-white/5">
-                              <img src={m.immagine} alt={m.nome} className="w-full h-full object-cover" loading="lazy" />
-                            </div>
-                          ) : (
-                            <div className="aspect-[4/3] rounded-xl mb-4 bg-[#111] border border-white/5 flex items-center justify-center">
-                              <span className="text-bone/25 text-xs uppercase tracking-widest">{m.nome}</span>
-                            </div>
-                          )}
-                          <p className="font-display text-lg mb-1">{m.nome}</p>
-                          {m.descrizione && (
-                            <p className="text-bone/50 text-sm leading-relaxed line-clamp-2">{m.descrizione}</p>
-                          )}
-                        </button>
-                      ))}
-                  </div>
+                          scrivici e la realizziamo su misura.
+                        </Link>
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 
