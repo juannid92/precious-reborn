@@ -89,11 +89,13 @@ function MontaturaPietraPage() {
 
   useEffect(() => {
     if (!item?.shape) return;
+    setMontatureStatus("loading");
     fetchMontature({ data: { forma: item.shape } })
-      .then((m) => setMontature(m))
+      .then((m) => { setMontature(m); setMontatureStatus("ready"); })
       .catch((err) => {
         console.error("[montatura] errore caricamento montature:", err);
         setMontature([]);
+        setMontatureStatus("ready");
       });
   }, [item?.shape, fetchMontature]);
 
