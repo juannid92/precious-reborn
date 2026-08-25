@@ -61,7 +61,10 @@ export async function caricaMontature(forma: string): Promise<Montatura[]> {
   const supabase = getSupabaseAdmin();
 
   const formaNorm = (forma ?? "").trim().toUpperCase();
-  console.log(MONTATURE_DIAG, { formaRicevuta: forma, formaNormalizzata: formaNorm });
+  console.log(MONTATURE_DIAG, {
+    formaRicevuta: forma,
+    formaNormalizzata: formaNorm,
+  });
 
   async function queryPerForma(f: string) {
     return supabase
