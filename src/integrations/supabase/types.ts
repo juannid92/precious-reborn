@@ -14,21 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      app_settings: {
+      jewel_3d_jobs: {
         Row: {
-          key: string
-          updated_at: string | null
-          value: string | null
+          created_at: string
+          error_message: string | null
+          glb_url: string | null
+          id: string
+          request_id: string
+          source_image_url: string
+          status: string
+          updated_at: string
         }
         Insert: {
-          key: string
-          updated_at?: string | null
-          value?: string | null
+          created_at?: string
+          error_message?: string | null
+          glb_url?: string | null
+          id?: string
+          request_id: string
+          source_image_url: string
+          status?: string
+          updated_at?: string
         }
         Update: {
-          key?: string
-          updated_at?: string | null
-          value?: string | null
+          created_at?: string
+          error_message?: string | null
+          glb_url?: string | null
+          id?: string
+          request_id?: string
+          source_image_url?: string
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -164,48 +179,6 @@ export type Database = {
         }
         Relationships: []
       }
-      saved_jewelry: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          gemma: string
-          id: string
-          image_url: string
-          materiale: string
-          prezzo: string | null
-          session_id: string
-          stile: string
-          taglio: string | null
-          tipo: string
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          gemma: string
-          id?: string
-          image_url: string
-          materiale: string
-          prezzo?: string | null
-          session_id: string
-          stile: string
-          taglio?: string | null
-          tipo: string
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          gemma?: string
-          id?: string
-          image_url?: string
-          materiale?: string
-          prezzo?: string | null
-          session_id?: string
-          stile?: string
-          taglio?: string | null
-          tipo?: string
-        }
-        Relationships: []
-      }
       site_config: {
         Row: {
           key: string
@@ -221,72 +194,15 @@ export type Database = {
         }
         Relationships: []
       }
-      site_content: {
-        Row: {
-          content_key: string
-          content_type: string | null
-          content_value: string | null
-          created_at: string | null
-          id: string
-          section: string
-          sort_order: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          content_key: string
-          content_type?: string | null
-          content_value?: string | null
-          created_at?: string | null
-          id?: string
-          section: string
-          sort_order?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          content_key?: string
-          content_type?: string | null
-          content_value?: string | null
-          created_at?: string | null
-          id?: string
-          section?: string
-          sort_order?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -413,8 +329,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "user"],
-    },
+    Enums: {},
   },
 } as const
