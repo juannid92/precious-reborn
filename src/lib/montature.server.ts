@@ -25,6 +25,41 @@ export type SiteConfig = {
   email_richieste: string | null;
 };
 
+/** Configurazione completa del gioiello salvata nella richiesta. */
+export type Configurazione = {
+  version: 1;
+  /** Tipo di testa: four_prongs | basket | peg_head | pave | single_halo | double_halo | crown | flower_halo | null */
+  headType: string | null;
+  /** Pietre sulla testa: diamonds | sapphire | null */
+  headStoneType: string | null;
+  /** Tipo di gambo: single | double | double_twist | knife_edge | square_edge | tapered | contemporary | hidden_halo | split | null */
+  shankType: string | null;
+  /** Pietra peek-a-boo: none | round_diamond | princess_diamond | null */
+  peekaboo: string | null;
+  /** Incastonatura laterale: none | u_pave | channel | prong | bead | pave | null */
+  sideSetting: string | null;
+  /** Tipo pietre laterali: lab_diamond | sapphire_alternating | emerald_alternating | ruby_alternating | null */
+  sideStoneType: string | null;
+  /** Lunghezza pietre laterali: half | three_quarters | null */
+  sideStoneLength: string | null;
+  /** Decorazione gambo: plain | leaf | scroll | null */
+  carvingType: string | null;
+  /** Metallo: gold | platinum | null */
+  metalType: string | null;
+  /** Qualita metallo: KT_9 | KT_14 | KT_18 | platinum | null */
+  metalQuality: string | null;
+  /** Colore testa: yellow_gold | white_gold | rose_gold | platinum | null */
+  headMetalColor: string | null;
+  /** Colore gambo: yellow_gold | white_gold | rose_gold | platinum | null */
+  shankMetalColor: string | null;
+  /** Testo incisione (max 24 caratteri) */
+  engravingText: string;
+  /** Sistema misura: UK | US | null */
+  ringSizeSystem: string | null;
+  /** Misura anello (dipende dal sistema) */
+  ringSize: string | null;
+};
+
 export type RichiestaDati = {
   cliente_nome: string;
   cliente_email: string;
@@ -38,6 +73,16 @@ export type RichiestaDati = {
   misura: string;
   note: string;
   canale: string;
+  /** Configurazione serializzata come stringa JSON */
+  configurazione_json: string;
+  /** Testo riepilogativo in italiano per il gioielliere */
+  riepilogo_testuale: string;
+  /** URL immagine della pietra */
+  immagine_pietra: string;
+  /** URL immagine della montatura */
+  immagine_montatura: string;
+  /** Stato iniziale della richiesta */
+  stato: string;
 };
 
 const SELECT_COLS =
@@ -142,6 +187,11 @@ export async function salvaRichiesta(dati: RichiestaDati): Promise<string | null
       misura: dati.misura,
       note: dati.note,
       canale: dati.canale,
+      configurazione: dati.configurazione_json,
+      immagine_pietra: dati.immagine_pietra,
+      immagine_montatura: dati.immagine_montatura,
+      riepilogo_configurazione: dati.riepilogo_testuale,
+      stato: dati.stato,
     })
     .select("id")
     .single();

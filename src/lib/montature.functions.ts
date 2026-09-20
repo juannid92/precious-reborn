@@ -27,6 +27,25 @@ export const getConfigSito = createServerFn({ method: "POST" })
     return caricaConfigSito();
   });
 
+const ConfigurazioneSchema = z.object({
+  version: z.literal(1),
+  headType: z.string().nullable(),
+  headStoneType: z.string().nullable(),
+  shankType: z.string().nullable(),
+  peekaboo: z.string().nullable(),
+  sideSetting: z.string().nullable(),
+  sideStoneType: z.string().nullable(),
+  sideStoneLength: z.string().nullable(),
+  carvingType: z.string().nullable(),
+  metalType: z.string().nullable(),
+  metalQuality: z.string().nullable(),
+  headMetalColor: z.string().nullable(),
+  shankMetalColor: z.string().nullable(),
+  engravingText: z.string(),
+  ringSizeSystem: z.string().nullable(),
+  ringSize: z.string().nullable(),
+});
+
 const RichiestaSchema = z.object({
   cliente_nome: z.string().min(1).max(200),
   cliente_email: z.string().min(1).max(320),
@@ -36,15 +55,42 @@ const RichiestaSchema = z.object({
   pietra_titolo: z.string().max(500),
   gioiello: z.string().max(64),
   montatura_codice: z.string().max(64),
-  metallo: z.string().max(64),
+  metallo: z.string().max(200),
   misura: z.string().max(32),
   note: z.string().max(2000),
   canale: z.string().max(32),
+  /** Configurazione come oggetto (non ancora serializzato) */
+  configurazione: ConfigurazioneSchema,
+  /** Testo riepilogativo in italiano */
+  riepilogo_testuale: z.string().max(4000),
+  /** URL immagine pietra */
+  immagine_pietra: z.string().max(1000),
+  /** URL immagine montatura */
+  immagine_montatura: z.string().max(1000),
 });
 
 export const inviaRichiesta = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => RichiestaSchema.parse(input))
   .handler(async ({ data }): Promise<{ id: string | null }> => {
-    const id = await salvaRichiesta(data as RichiestaDati);
+    const richiestaDati: RichiestaDati = {
+      cliente_nome: data.cliente_nome,
+      cliente_email: data.cliente_email,
+      cliente_telefono: data.cliente_telefono,
+      pietra_tipo: data.pietra_tipo,
+      pietra_id: data.pietra_id,
+      pietra_titolo: data.pietra_titolo,
+      gioiello: data.gioiello,
+      montatura_codice: data.montatura_codice,
+      metallo: data.metallo,
+      misura: data.misura,
+      note: data.note,
+      canale: data.canale,
+      configurazione_json: JSON.stringify(data.configurazione),
+      riepilogo_testuale: data.riepilogo_testuale,
+      immagine_pietra: data.immagine_pietra,
+      immagine_montatura: data.immagine_montatura,
+      stato: "ricevuta",
+    };
+    const id = await salvaRichiesta(richiestaDati);
     return { id };
   });
