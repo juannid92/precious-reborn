@@ -114,6 +114,74 @@ const CATEGORIE: { valore: string; etichetta: string }[] = [
   { valore: "orecchini", etichetta: "Orecchini" },
 ];
 
+// ─── OPZIONI PERSONALIZZAZIONE ─────────────────────────────────────────────
+
+type Opt<T extends string> = { value: T; label: string };
+
+const HEAD_TYPE_OPTIONS: Opt<string>[] = [
+  { value: "four_prongs", label: "4 griffe" },
+  { value: "basket", label: "Cestino" },
+  { value: "peg_head", label: "Testa a perno" },
+  { value: "pave", label: "Pave" },
+  { value: "single_halo", label: "Halo singolo" },
+  { value: "double_halo", label: "Doppio halo" },
+  { value: "crown", label: "Corona" },
+  { value: "flower_halo", label: "Halo a fiore" },
+];
+
+// Tipi di testa che richiedono pietre aggiuntive nella testa
+const HEAD_TYPES_WITH_STONES = new Set(["pave", "single_halo", "double_halo", "crown", "flower_halo"]);
+
+const HEAD_STONE_OPTIONS: Opt<string>[] = [
+  { value: "diamonds", label: "Diamanti" },
+  { value: "sapphire", label: "Zaffiri" },
+];
+
+const SHANK_TYPE_OPTIONS: Opt<string>[] = [
+  { value: "single", label: "Singolo" },
+  { value: "double", label: "Doppio" },
+  { value: "double_twist", label: "Doppio intreccio" },
+  { value: "knife_edge", label: "Bordo a lama" },
+  { value: "square_edge", label: "Bordo squadrato" },
+  { value: "tapered", label: "Graduato" },
+  { value: "contemporary", label: "Contemporaneo" },
+  { value: "hidden_halo", label: "Halo nascosto" },
+  { value: "split", label: "Gambo diviso" },
+];
+
+const PEEKABOO_OPTIONS: Opt<string>[] = [
+  { value: "none", label: "Nessuna" },
+  { value: "round_diamond", label: "Diamante rotondo" },
+  { value: "princess_diamond", label: "Diamante princess" },
+];
+
+const SIDE_SETTING_OPTIONS: Opt<string>[] = [
+  { value: "none", label: "Nessuna" },
+  { value: "u_pave", label: "Pave a U" },
+  { value: "channel", label: "Incastonatura a canale" },
+  { value: "prong", label: "Griffe" },
+  { value: "bead", label: "Grani" },
+  { value: "pave", label: "Pave" },
+];
+
+const SIDE_STONE_OPTIONS: Opt<string>[] = [
+  { value: "lab_diamond", label: "Diamanti di laboratorio" },
+  { value: "sapphire_alternating", label: "Zaffiri alternati" },
+  { value: "emerald_alternating", label: "Smeraldi alternati" },
+  { value: "ruby_alternating", label: "Rubini alternati" },
+];
+
+const SIDE_STONE_LENGTH_OPTIONS: Opt<string>[] = [
+  { value: "half", label: "Metà" },
+  { value: "three_quarters", label: "Tre quarti" },
+];
+
+const CARVING_TYPE_OPTIONS: Opt<string>[] = [
+  { value: "plain", label: "Liscio" },
+  { value: "leaf", label: "Foglia" },
+  { value: "scroll", label: "Voluta" },
+];
+
 // ─── STEP INDICATOR ────────────────────────────────────────────────────────
 
 function StepIndicator({ passo }: { passo: number }) {
@@ -306,6 +374,222 @@ function CategoriaCard({
   );
 }
 
+// ─── CARD OPZIONE GENERICA ─────────────────────────────────────────────────
+
+function OptionCard({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={`rounded-xl border-2 p-4 text-center transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep ${
+        selected
+          ? "border-gold-deep bg-gold-deep/5"
+          : "border-white/10 bg-white/[0.03] hover:border-gold-deep/40 hover:bg-gold-deep/5"
+      }`}
+    >
+      <p className={`text-sm font-medium transition-colors ${
+        selected ? "text-gold-deep" : "text-bone/80"
+      }`}>
+        {label}
+      </p>
+    </button>
+  );
+}
+
+// ─── SEZIONE PERSONALIZZAZIONE ─────────────────────────────────────────────
+
+function PersonalizzazioneSezione({
+  config,
+  onUpdate,
+}: {
+  config: Configurazione;
+  onUpdate: (updated: Configurazione) => void;
+}) {
+  // Aggiorna un singolo campo della configurazione
+  const updateField = <K extends keyof Configurazione>(key: K, value: Configurazione[K]) => {
+    onUpdate({ ...config, [key]: value });
+  };
+
+  // Quando cambia headType, resetta headStoneType se non serve più
+  const handleHeadTypeChange = (value: string) => {
+    const needsStones = HEAD_TYPES_WITH_STONES.has(value);
+    updateField("headType", value);
+    if (!needsStones) {
+      updateField("headStoneType", null);
+    }
+  };
+
+  // Quando sideSetting diventa none, resetta le pietre laterali
+  const handleSideSettingChange = (value: string) => {
+    updateField("sideSetting", value);
+    if (value === "none") {
+      updateField("sideStoneType", null);
+      updateField("sideStoneLength", null);
+    }
+  };
+
+  return (
+    <div className="space-y-12">
+      {/* A. TESTA DELL'ANELLO */}
+      <section>
+        <h3 className="font-display text-lg mb-1">Testa dell&apos;anello</h3>
+        <p className="text-bone/50 text-sm mb-6">
+          La forma della testa che incastra la pietra principale.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {HEAD_TYPE_OPTIONS.map((opt) => (
+            <OptionCard
+              key={opt.value}
+              label={opt.label}
+              selected={config.headType === opt.value}
+              onClick={() => handleHeadTypeChange(opt.value)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* B. PIETRE DELLA TESTA */}
+      {config.headType && HEAD_TYPES_WITH_STONES.has(config.headType) && (
+        <section>
+          <h3 className="font-display text-lg mb-1">Pietre della testa</h3>
+          <p className="text-bone/50 text-sm mb-6">
+            Pietre decorative intorno alla pietra principale.
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {HEAD_STONE_OPTIONS.map((opt) => (
+              <OptionCard
+                key={opt.value}
+                label={opt.label}
+                selected={config.headStoneType === opt.value}
+                onClick={() => updateField("headStoneType", opt.value)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* C. TIPO DI GAMBO */}
+      <section>
+        <h3 className="font-display text-lg mb-1">Tipo di gambo</h3>
+        <p className="text-bone/50 text-sm mb-6">
+          La forma della banda che scorre lungo il dito.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {SHANK_TYPE_OPTIONS.map((opt) => (
+            <OptionCard
+              key={opt.value}
+              label={opt.label}
+              selected={config.shankType === opt.value}
+              onClick={() => updateField("shankType", opt.value)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* D. PEEK-A-BOO */}
+      <section>
+        <h3 className="font-display text-lg mb-1">Pietra peek-a-boo</h3>
+        <p className="text-bone/50 text-sm mb-6">
+          Piccola pietra nascosta sotto la testa dell&apos;anello.
+        </p>
+        <div className="grid grid-cols-3 gap-3">
+          {PEEKABOO_OPTIONS.map((opt) => (
+            <OptionCard
+              key={opt.value}
+              label={opt.label}
+              selected={config.peekaboo === opt.value}
+              onClick={() => updateField("peekaboo", opt.value)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* E. INCASTONATURA LATERALE */}
+      <section>
+        <h3 className="font-display text-lg mb-1">Incastonatura laterale</h3>
+        <p className="text-bone/50 text-sm mb-6">
+          Come sono incastonate le pietre lungo il gambo.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {SIDE_SETTING_OPTIONS.map((opt) => (
+            <OptionCard
+              key={opt.value}
+              label={opt.label}
+              selected={config.sideSetting === opt.value}
+              onClick={() => handleSideSettingChange(opt.value)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* F. PIETRE LATERALI */}
+      {config.sideSetting && config.sideSetting !== "none" && (
+        <section>
+          <h3 className="font-display text-lg mb-1">Pietre laterali</h3>
+          <p className="text-bone/50 text-sm mb-6">
+            Tipo di pietre lungo il gambo dell&apos;anello.
+          </p>
+          <div className="space-y-6">
+            <div>
+              <p className="text-bone/60 text-xs uppercase tracking-widest mb-3">Materiale</p>
+              <div className="grid grid-cols-2 gap-3">
+                {SIDE_STONE_OPTIONS.map((opt) => (
+                  <OptionCard
+                    key={opt.value}
+                    label={opt.label}
+                    selected={config.sideStoneType === opt.value}
+                    onClick={() => updateField("sideStoneType", opt.value)}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-bone/60 text-xs uppercase tracking-widest mb-3">Lunghezza</p>
+              <div className="grid grid-cols-2 gap-3">
+                {SIDE_STONE_LENGTH_OPTIONS.map((opt) => (
+                  <OptionCard
+                    key={opt.value}
+                    label={opt.label}
+                    selected={config.sideStoneLength === opt.value}
+                    onClick={() => updateField("sideStoneLength", opt.value)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* G. DECORAZIONE DEL GAMBO */}
+      <section>
+        <h3 className="font-display text-lg mb-1">Decorazione del gambo</h3>
+        <p className="text-bone/50 text-sm mb-6">
+          Lavorazione decorativa sulla superficie del gambo.
+        </p>
+        <div className="grid grid-cols-3 gap-3">
+          {CARVING_TYPE_OPTIONS.map((opt) => (
+            <OptionCard
+              key={opt.value}
+              label={opt.label}
+              selected={config.carvingType === opt.value}
+              onClick={() => updateField("carvingType", opt.value)}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 // ─── MAIN COMPONENT ─────────────────────────────────────────────────────────
 
 function MontaturaPietraPage() {
@@ -376,6 +660,7 @@ function MontaturaPietraPage() {
   );
 
   const stoneCarats = item?.carats ?? null;
+  const isAnello = gioiello === "anello";
 
   // ─── NAVIGAZIONE PASSI ──────────────────────────────────────────────────
 
@@ -390,150 +675,47 @@ function MontaturaPietraPage() {
   const goPrev = () => { if (passo > 1) goTo(passo - 1); };
 
   const setGioiello = (val: string) => {
-    const newConfig = serializeConfig({ ...config });
+    // Resetta i campi non applicabili e azzera montatura
+    const resetConfig: Configurazione = {
+      ...DEFAULT_CONFIG,
+      headType: isAnello ? "four_prongs" : null,
+      headStoneType: null,
+      shankType: isAnello ? "single" : null,
+      peekaboo: isAnello ? "none" : null,
+      sideSetting: isAnello ? "none" : null,
+      sideStoneType: null,
+      sideStoneLength: null,
+      carvingType: isAnello ? "plain" : null,
+    };
     void navigate({
       to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
-      search: { ...search, gioiello: val, montatura: "", metallo: "", passo: "2", config: newConfig },
+      search: {
+        ...search,
+        gioiello: val,
+        montatura: "",
+        metallo: "",
+        passo: "2",
+        config: serializeConfig(resetConfig),
+      },
     });
   };
 
   const setMontatura_ = (codice: string) => {
-    const newConfig = serializeConfig({ ...config });
     void navigate({
       to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
-      search: { ...search, montatura: codice, metallo: "", passo: "3", config: newConfig },
+      search: { ...search, montatura: codice, metallo: "", passo: "3" },
     });
   };
 
-  const setMetallo_ = (val: string) => {
+  const setConfigInUrl = (updated: Configurazione) => {
     void navigate({
       to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
-      search: { ...prev, metallo: val },
+      search: { ...search, config: serializeConfig(updated) },
     });
   };
-
-  const setMisura_ = (val: string) => {
-    void navigate({
-      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
-      params: { diamondId },
-      search: { ...prev, misura: val },
-    });
-  };
-
-  // ─── INVIO RICHIESTA ───────────────────────────────────────────────────
-
-  const handleInvia = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const nome = String(fd.get("nome") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const telefono = String(fd.get("telefono") ?? "").trim();
-    const note = String(fd.get("note") ?? "").trim();
-    if (!nome || !email) return;
-    const res = await inviaRichiesta({
-      data: {
-        cliente_nome: nome,
-        cliente_email: email,
-        cliente_telefono: telefono,
-        pietra_tipo: "diamante",
-        pietra_id: diamondId,
-        pietra_titolo: title,
-        gioiello: gioiello ?? "",
-        montatura_codice: montaturaCodice ?? "",
-        metallo: metallo ?? "",
-        misura: misura ?? "",
-        note,
-        canale: " sito",
-        configurazione: { ...DEFAULT_CONFIG },
-        riepilogo_configurazione: null,
-        immagine_pietra: item?.image ?? null,
-        immagine_montatura: montaturaSel?.immagine ?? null,
-      },
-    });
-    if (res.id) goTo(6);
-  };
-
-  const handleWhatsApp = async () => {
-    if (!whatsappNum) return;
-    const form = document.getElementById("form-riepilogo") as HTMLFormElement | null;
-    if (form) form.requestSubmit();
-    const fd = form ? new FormData(form) : new FormData();
-    const nome = String(fd.get("nome") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const telefono = String(fd.get("telefono") ?? "").trim();
-    const note = String(fd.get("note") ?? "").trim();
-    if (!nome || !email) return;
-    await inviaRichiesta({
-      data: {
-        cliente_nome: nome,
-        cliente_email: email,
-        cliente_telefono: telefono,
-        pietra_tipo: "diamante",
-        pietra_id: diamondId,
-        pietra_titolo: title,
-        gioiello: gioiello ?? "",
-        montatura_codice: montaturaCodice ?? "",
-        metallo: metallo ?? "",
-        misura: misura ?? "",
-        note,
-        canale: "whatsapp",
-        configurazione: { ...DEFAULT_CONFIG },
-        riepilogo_configurazione: null,
-        immagine_pietra: item?.image ?? null,
-        immagine_montatura: montaturaSel?.immagine ?? null,
-      },
-    });
-    const righe = [
-      "Richiesta di progetto dal sito",
-      "",
-      `Pietra: ${title}`,
-      `Codice pietra: ${diamondId}`,
-      `Gioiello: ${capitalize(gioiello ?? "—")}`,
-      `Montatura: ${montaturaSel?.nome ?? "—"}`,
-      `Metallo: ${capitalize(metallo ?? "—")}`,
-    ];
-    if (misura) righe.push(`Misura: ${misura}`);
-    if (note) righe.push(`Note: ${note}`);
-    righe.push("", `Nome: ${nome}`, `Contatti: ${email}${telefono ? ` · ${telefono}` : ""}`, "",
-      `Pagina della pietra: ${window.location.origin}/crea-il-tuo-gioiello/pietra/${diamondId}`);
-    const msg = righe.filter((r) => r !== "").join("\n");
-    window.open(`https://wa.me/${whatsappNum}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
-  };
-
-  // ─── PREVIEW PIETRA ────────────────────────────────────────────────────
-
-  const StonePreview = () => (
-    <div className="flex flex-col items-center gap-5">
-      <div className="relative w-full aspect-square max-w-[300px] rounded-2xl border border-gold-deep/30 bg-[#0a0a0a] overflow-hidden flex items-center justify-center">
-        <div className="w-[72%] aspect-square">
-          <MediaPietraNivoda
-            image={item?.image ?? null}
-            video={item?.video ?? null}
-            alt={title}
-            interattivo={false}
-          />
-        </div>
-      </div>
-      <div className="text-center">
-        <p className="font-display text-lg text-bone mb-1">{title}</p>
-        {item?.shapeLabel && (
-          <p className="text-[11px] uppercase tracking-[0.25em] text-bone/40">{item.shapeLabel}</p>
-        )}
-        {stoneCarats !== null && (
-          <p className="text-[11px] uppercase tracking-[0.2em] text-bone/30 mt-1">{stoneCarats} ct</p>
-        )}
-      </div>
-      {montaturaSel && (
-        <p className="text-center text-sm text-bone/60">
-          {montaturaSel.nome}
-          {metallo && <>, {capitalize(metallo)}</>}
-        </p>
-      )}
-    </div>
-  );
 
   // ─── STATI DI CARICAMENTO ──────────────────────────────────────────────
 
@@ -579,7 +761,7 @@ function MontaturaPietraPage() {
             </div>
             <h1 className="font-display text-3xl md:text-4xl mb-6">Richiesta ricevuta</h1>
             <p className="text-bone/70 text-lg leading-relaxed mb-4">
-              Grazie, {title}. Il maestro orafo Nicola Caradonna analizzerà la tua richiesta e ti contatterà per definire insieme i dettagli del progetto.
+              Grazie. Il maestro orafo Nicola Caradonna analizzerà la tua richiesta e ti contatterà per definire insieme i dettagli del progetto.
             </p>
             <p className="text-bone/50 text-sm mb-12">
               Nessuna fretta: ogni gioiello viene studiato con cura prima di ogni proposta.
@@ -596,6 +778,15 @@ function MontaturaPietraPage() {
   // ─── LAYOUT PRINCIPALE ─────────────────────────────────────────────────
 
   const montaturaFiltrate = montature.filter((m) => m.categoria === gioiello);
+
+  // Helper per navigazione con config aggiornata
+  const goToWithConfig = (step: number, currentConfig: Configurazione) => {
+    void navigate({
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
+      params: { diamondId },
+      search: { ...search, passo: String(step), config: serializeConfig(currentConfig) },
+    });
+  };
 
   return (
     <main className="bg-obsidian text-bone min-h-screen">
@@ -686,54 +877,28 @@ function MontaturaPietraPage() {
                 </div>
               )}
 
-              {/* ── PASSO 3: PERSONALIZZAZIONE (temporaneo) ── */}
+              {/* ── PASSO 3: PERSONALIZZAZIONE ── */}
               {passo === 3 && (
                 <div>
-                  <h2 className="font-display text-2xl mb-8">Dettagli personalizzazione</h2>
-                  <div className="space-y-10">
-                    <div>
-                      <p className="eyebrow text-gold-deep mb-4">Metallo</p>
-                      <div className="flex flex-wrap gap-3">
-                        {(montaturaSel?.metalli ?? []).map((met) => (
-                          <button
-                            key={met}
-                            type="button"
-                            onClick={() => setMetallo_(met)}
-                            className={`rounded-full px-5 py-2.5 text-sm transition-all ${
-                              metallo === met
-                                ? "bg-gold-deep text-bone shadow-md"
-                                : "border border-white/15 text-bone/70 hover:border-gold-deep/50 hover:text-bone"
-                            }`}
-                          >
-                            {capitalize(met)}
-                          </button>
-                        ))}
-                      </div>
+                  <h2 className="font-display text-2xl mb-2">Personalizza il tuo gioiello</h2>
+                  <p className="text-bone/60 mb-10">
+                    {isAnello
+                      ? "Scegli le caratteristiche tecniche della montatura."
+                      : "Definisci le caratteristiche per questa tipologia di gioiello."}
+                  </p>
+
+                  {isAnello ? (
+                    <PersonalizzazioneSezione
+                      config={config}
+                      onUpdate={setConfigInUrl}
+                    />
+                  ) : (
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+                      <p className="text-bone/60 text-sm">
+                        La personalizzazione per {capitalize(gioiello ?? "")} è disponibile nella fase successiva.
+                      </p>
                     </div>
-                    <div>
-                      <label className="block">
-                        <span className="eyebrow text-bone/50 block mb-3">Misura del dito (facoltativo)</span>
-                        <input
-                          type="text"
-                          value={misura}
-                          onChange={(e) => setMisura_(e.target.value)}
-                          placeholder="es. 14, 15.5, M"
-                          className="w-full max-w-xs bg-transparent border-b border-white/20 py-3 text-base text-bone placeholder:text-bone/25 focus:outline-none focus:border-gold-deep transition-colors"
-                        />
-                      </label>
-                    </div>
-                    <div>
-                      <label className="block">
-                        <span className="eyebrow text-bone/50 block mb-3">Note (facoltativo)</span>
-                        <textarea
-                          id="note"
-                          rows={3}
-                          placeholder="Descrivi eventuali preferenze, ispirazioni o richieste particolari…"
-                          className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone placeholder:text-bone/25 focus:outline-none focus:border-gold-deep transition-colors resize-none"
-                        />
-                      </label>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
 
@@ -769,7 +934,7 @@ function MontaturaPietraPage() {
                         )}
                       </dl>
                     </div>
-                    <form id="form-riepilogo" onSubmit={handleInvia} className="space-y-6">
+                    <form id="form-riepilogo" onSubmit={(e) => e.preventDefault()} className="space-y-6">
                       <div className="grid gap-6 md:grid-cols-2">
                         <label className="block">
                           <span className="eyebrow text-bone/50 block mb-3">Nome<span className="text-gold-deep">*</span></span>
@@ -803,7 +968,7 @@ function MontaturaPietraPage() {
                   {passo < 4 ? (
                     <button
                       type="button"
-                      onClick={goNext}
+                      onClick={() => goToWithConfig(passo + 1, config)}
                       disabled={
                         (passo === 2 && !montaturaCodice)
                       }
@@ -813,20 +978,13 @@ function MontaturaPietraPage() {
                       <ArrowRight className="h-3.5 w-3.5 ml-1" />
                     </button>
                   ) : (
-                    <div className="flex flex-wrap items-center gap-4">
-                      <button type="submit" form="form-riepilogo" className="btn-primary">
-                        Invia la richiesta
-                      </button>
-                      {whatsappNum && (
-                        <button
-                          type="button"
-                          onClick={handleWhatsApp}
-                          className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm text-bone/70 hover:border-gold-deep/50 hover:text-bone transition-all"
-                        >
-                          Manda su WhatsApp
-                        </button>
-                      )}
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => goTo(5)}
+                      className="btn-primary"
+                    >
+                      Invia la richiesta
+                    </button>
                   )}
                 </div>
               )}
@@ -836,7 +994,42 @@ function MontaturaPietraPage() {
             {passo >= 2 && (
               <div className="lg:col-span-5">
                 <div className="lg:sticky lg:top-28">
-                  <StonePreview />
+                  <div className="rounded-2xl border border-gold-deep/20 bg-[#0a0a0a]/80 backdrop-blur-sm p-6">
+                    <p className="eyebrow text-gold-deep mb-4">Anteprima</p>
+                    <div className="flex flex-col items-center gap-5">
+                      <div className="relative w-full aspect-square max-w-[200px] rounded-xl overflow-hidden bg-[#0a0a0a] flex items-center justify-center">
+                        <div className="w-[65%] aspect-square">
+                          <MediaPietraNivoda
+                            image={item?.image ?? null}
+                            video={item?.video ?? null}
+                            alt={title}
+                            interattivo={false}
+                          />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="font-display text-base text-bone mb-1">{title}</p>
+                        {item?.shapeLabel && (
+                          <p className="text-[10px] uppercase tracking-[0.25em] text-bone/40">{item.shapeLabel}</p>
+                        )}
+                        {stoneCarats !== null && (
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-bone/30 mt-1">{stoneCarats} ct</p>
+                        )}
+                      </div>
+                      {montaturaSel && (
+                        <div className="w-full pt-4 border-t border-white/10">
+                          <p className="text-center text-sm text-bone/70">
+                            {montaturaSel.nome}
+                          </p>
+                          {metallo && (
+                            <p className="text-center text-xs text-bone/50 mt-1">
+                              {capitalize(metallo)}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
