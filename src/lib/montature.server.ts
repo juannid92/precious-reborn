@@ -73,14 +73,14 @@ export type RichiestaDati = {
   misura: string;
   note: string;
   canale: string;
-  /** Configurazione serializzata come stringa JSON */
-  configurazione_json: string;
+  /** Configurazione come oggetto (serializzato in JSONB) */
+  configurazione?: Configurazione;
   /** Testo riepilogativo in italiano per il gioielliere */
-  riepilogo_testuale: string;
+  riepilogo_configurazione?: string | null;
   /** URL immagine della pietra */
-  immagine_pietra: string;
+  immagine_pietra?: string | null;
   /** URL immagine della montatura */
-  immagine_montatura: string;
+  immagine_montatura?: string | null;
   /** Stato iniziale della richiesta */
   stato: string;
 };
@@ -95,7 +95,9 @@ function mapRow(r: Record<string, unknown>): Montatura {
     categoria: String(r.categoria),
     descrizione: r.descrizione ? String(r.descrizione) : null,
     metalli: Array.isArray(r.metalli) ? r.metalli.map(String) : [],
-    forme_compatibili: Array.isArray(r.forme_compatibili) ? r.forme_compatibili.map(String) : [],
+    forme_compatibili: Array.isArray(r.forme_compatibili)
+      ? r.forme_compatibili.map(String)
+      : [],
     carati_min: typeof r.carati_min === "number" ? r.carati_min : null,
     carati_max: typeof r.carati_max === "number" ? r.carati_max : null,
     immagine: r.immagine ? String(r.immagine) : null,
@@ -123,7 +125,11 @@ export async function caricaMontature(forma: string): Promise<Montatura[]> {
   let result = await queryPerForma(formaNorm);
   let formaEffettiva = formaNorm;
 
-  if (!result.error && (result.data ?? []).length === 0 && formaNorm.includes(" ")) {
+  if (
+    !result.error &&
+    (result.data ?? []).length === 0 &&
+    formaNorm.includes(" ")
+  ) {
     const primaParola = formaNorm.split(/\s+/)[0];
     console.log(MONTATURE_DIAG, "retry con prima parola:", primaParola);
     const retry = await queryPerForma(primaParola);
@@ -172,6 +178,7 @@ export async function caricaConfigSito(): Promise<SiteConfig> {
 
 export async function salvaRichiesta(dati: RichiestaDati): Promise<string | null> {
   const supabase = getSupabaseAdmin();
+
   const { data, error } = await supabase
     .from("richieste")
     .insert({
@@ -187,11 +194,11 @@ export async function salvaRichiesta(dati: RichiestaDati): Promise<string | null
       misura: dati.misura,
       note: dati.note,
       canale: dati.canale,
-      configurazione: dati.configurazione_json,
-      immagine_pietra: dati.immagine_pietra,
-      immagine_montatura: dati.immagine_montatura,
-      riepilogo_configurazione: dati.riepilogo_testuale,
       stato: dati.stato,
+      configurazione: dati.configurazione ?? {},
+      riepilogo_configurazione: dati.riepilogo_configurazione ?? null,
+      immagine_pietra: dati.immagine_pietra ?? null,
+      immagine_montatura: dati.immagine_montatura ?? null,
     })
     .select("id")
     .single();
