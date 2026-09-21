@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Loader2, Gem, Settings, Palette, Ruler, FileText } from "lucide-react";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { RingStudioPreview } from "@/components/atelier/RingStudioPreview";
+import { RING_STUDIO_ASSETS } from "@/lib/ring-studio-assets";
 import { getNivodaDiamond } from "@/lib/nivoda.functions";
 import { type NivodaDiamond } from "@/lib/nivoda-types";
 import { getMontature, getConfigSito, inviaRichiesta } from "@/lib/montature.functions";
@@ -53,11 +54,15 @@ export type Configurazione = {
   sideStoneType: string | null;
   sideStoneLength: string | null;
   carvingType: string | null;
+  carvingLength: string | null;
   metalType: string | null;
   metalQuality: string | null;
   headMetalColor: string | null;
   shankMetalColor: string | null;
   engravingText: string;
+  engravingFont: string | null;
+  hallmarkIncluded: boolean;
+  sampleRequested: boolean;
   ringSizeSystem: string | null;
   ringSize: string | null;
 };
@@ -72,11 +77,15 @@ export const DEFAULT_CONFIG: Configurazione = {
   sideStoneType: null,
   sideStoneLength: null,
   carvingType: "plain",
+  carvingLength: "half",
   metalType: "gold",
   metalQuality: "KT_18",
   headMetalColor: "yellow_gold",
   shankMetalColor: "yellow_gold",
   engravingText: "",
+  engravingFont: "clarendon",
+  hallmarkIncluded: true,
+  sampleRequested: false,
   ringSizeSystem: "UK",
   ringSize: "",
 };
@@ -116,58 +125,61 @@ const CATEGORIE: { valore: string; etichetta: string }[] = [
 
 // ─── OPZIONI PERSONALIZZAZIONE ─────────────────────────────────────────────
 
-type Opt<T extends string> = { value: T; label: string; image?: string };
+type Opt<T extends string> = { value: T; label: string; image?: string; disabled?: boolean };
 
 const HEAD_TYPE_OPTIONS: Opt<string>[] = [
-  { value: "four_prongs", image: "/ring-studio/head-four-prongs.svg", label: "4 griffe" },
-  { value: "basket", image: "/ring-studio/head-basket.svg", label: "Cestino" },
-  { value: "peg_head", image: "/ring-studio/head-peg-head.svg", label: "Testa a perno" },
-  { value: "pave", image: "/ring-studio/head-pave.svg", label: "Pave" },
-  { value: "single_halo", image: "/ring-studio/head-single-halo.svg", label: "Halo singolo" },
-  { value: "double_halo", image: "/ring-studio/head-double-halo.svg", label: "Doppio halo" },
-  { value: "crown", image: "/ring-studio/head-crown.svg", label: "Corona" },
-  { value: "flower_halo", image: "/ring-studio/head-flower-halo.svg", label: "Halo a fiore" },
+  { value: "four_prongs", image: RING_STUDIO_ASSETS.ringHeadTypeFourProngs, label: "4 griffe" },
+  { value: "basket", image: RING_STUDIO_ASSETS.ringHeadTypeBasket, label: "Cestino" },
+  { value: "peg_head", image: RING_STUDIO_ASSETS.ringHeadTypePegHead, label: "Testa a perno" },
+  { value: "pave", image: RING_STUDIO_ASSETS.ringHeadTypePave, label: "Pavé" },
+  { value: "single_halo", image: RING_STUDIO_ASSETS.ringHeadTypeSingleHalo, label: "Halo singolo" },
+  { value: "double_halo", image: RING_STUDIO_ASSETS.ringHeadTypeDoubleHalo, label: "Doppio halo" },
+  { value: "crown", image: RING_STUDIO_ASSETS.ringHeadTypeCrown, label: "Corona" },
+  { value: "flower_halo", image: RING_STUDIO_ASSETS.ringHeadTypeFlowerHalo, label: "Halo a fiore" },
 ];
 
 const HEAD_TYPES_WITH_STONES = new Set(["pave", "single_halo", "double_halo", "crown", "flower_halo"]);
 
 const HEAD_STONE_OPTIONS: Opt<string>[] = [
   { value: "diamonds", label: "Diamanti" },
-  { value: "sapphire", label: "Zaffiri" },
+  { value: "sapphire", label: "Zaffiro" },
+  { value: "black_diamonds", label: "Diamanti neri", disabled: true },
 ];
 
 const SHANK_TYPE_OPTIONS: Opt<string>[] = [
-  { value: "single", image: "/ring-studio/shank-single.svg", label: "Singolo" },
-  { value: "double", image: "/ring-studio/shank-double.svg", label: "Doppio" },
-  { value: "double_twist", image: "/ring-studio/shank-double-twist.svg", label: "Doppio intreccio" },
-  { value: "knife_edge", image: "/ring-studio/shank-knife-edge.svg", label: "Bordo a lama" },
-  { value: "square_edge", image: "/ring-studio/shank-square-edge.svg", label: "Bordo squadrato" },
-  { value: "tapered", image: "/ring-studio/shank-tapered.svg", label: "Graduato" },
-  { value: "contemporary", image: "/ring-studio/shank-contemporary.svg", label: "Contemporaneo" },
-  { value: "hidden_halo", image: "/ring-studio/shank-hidden-halo.svg", label: "Halo nascosto" },
-  { value: "split", image: "/ring-studio/shank-split.svg", label: "Gambo diviso" },
+  { value: "single", image: RING_STUDIO_ASSETS.mountingTypeSingleShank, label: "Singolo" },
+  { value: "double", image: RING_STUDIO_ASSETS.mountingTypeDoubleShank, label: "Doppio" },
+  { value: "double_twist", image: RING_STUDIO_ASSETS.mountingTypeDoubleTwist, label: "Doppio intreccio" },
+  { value: "knife_edge", image: RING_STUDIO_ASSETS.mountingTypeKnifeEdge, label: "Bordo a lama" },
+  { value: "square_edge", image: RING_STUDIO_ASSETS.mountingTypeSquareEdge, label: "Bordo squadrato" },
+  { value: "tapered", image: RING_STUDIO_ASSETS.mountingTypeTapered, label: "Graduato" },
+  { value: "contemporary", image: RING_STUDIO_ASSETS.mountingTypeContemporary, label: "Contemporaneo" },
+  { value: "hidden_halo", image: RING_STUDIO_ASSETS.mountingTypeHiddenHalo, label: "Halo nascosto" },
+  { value: "split", image: RING_STUDIO_ASSETS.mountingTypeSplit, label: "Gambo diviso" },
 ];
 
 const PEEKABOO_OPTIONS: Opt<string>[] = [
-  { value: "none", image: "/ring-studio/peek-none.svg", label: "Nessuna" },
-  { value: "round_diamond", image: "/ring-studio/peek-round-diamond.svg", label: "Diamante rotondo" },
-  { value: "princess_diamond", image: "/ring-studio/peek-princess-diamond.svg", label: "Diamante princess" },
+  { value: "none", label: "Nessuna" },
+  { value: "round_diamond", label: "Diamante rotondo" },
+  { value: "princess_diamond", label: "Diamante princess" },
 ];
 
 const SIDE_SETTING_OPTIONS: Opt<string>[] = [
-  { value: "none", image: "/ring-studio/setting-none.svg", label: "Nessuna" },
-  { value: "u_pave", image: "/ring-studio/setting-u-pave.svg", label: "Pave a U" },
-  { value: "channel", image: "/ring-studio/setting-channel.svg", label: "Incastonatura a canale" },
-  { value: "prong", image: "/ring-studio/setting-prong.svg", label: "Griffe" },
-  { value: "bead", image: "/ring-studio/setting-bead.svg", label: "Grani" },
-  { value: "pave", image: "/ring-studio/setting-pave.svg", label: "Pave" },
+  { value: "none", image: RING_STUDIO_ASSETS.sideSettingTypeNone, label: "Nessuna" },
+  { value: "u_pave", image: RING_STUDIO_ASSETS.sideSettingTypeUPave, label: "Pavé a U" },
+  { value: "channel", image: RING_STUDIO_ASSETS.sideSettingTypeChannel, label: "Incassatura a canale" },
+  { value: "prong", image: RING_STUDIO_ASSETS.sideSettingTypeProng, label: "Griffe" },
+  { value: "bead", image: RING_STUDIO_ASSETS.sideSettingTypeBead, label: "Grani" },
+  { value: "pave", image: RING_STUDIO_ASSETS.sideSettingTypePave, label: "Pavé" },
 ];
 
 const SIDE_STONE_OPTIONS: Opt<string>[] = [
-  { value: "lab_diamond", label: "Diamanti di laboratorio" },
-  { value: "sapphire_alternating", label: "Zaffiri alternati" },
-  { value: "emerald_alternating", label: "Smeraldi alternati" },
-  { value: "ruby_alternating", label: "Rubini alternati" },
+  { value: "lab_diamond", label: "Diamante di laboratorio" },
+  { value: "natural_black_diamond", label: "Diamante nero naturale", disabled: true },
+  { value: "alternating_black_diamond", label: "Diamanti neri alternati", disabled: true },
+  { value: "alternating_sapphire", label: "Zaffiri alternati" },
+  { value: "alternating_emerald", label: "Smeraldi alternati" },
+  { value: "alternating_ruby", label: "Rubini alternati" },
 ];
 
 const SIDE_STONE_LENGTH_OPTIONS: Opt<string>[] = [
@@ -176,9 +188,9 @@ const SIDE_STONE_LENGTH_OPTIONS: Opt<string>[] = [
 ];
 
 const CARVING_TYPE_OPTIONS: Opt<string>[] = [
-  { value: "plain", image: "/ring-studio/carving-plain.svg", label: "Liscio" },
-  { value: "leaf", image: "/ring-studio/carving-leaf.svg", label: "Foglia" },
-  { value: "scroll", image: "/ring-studio/carving-scroll.svg", label: "Voluta" },
+  { value: "plain", image: RING_STUDIO_ASSETS.ringCarvingTypePlain, label: "Liscio" },
+  { value: "leaf", image: RING_STUDIO_ASSETS.ringCarvingTypeLeaf, label: "Foglia" },
+  { value: "scroll", image: RING_STUDIO_ASSETS.ringCarvingTypeScroll, label: "Voluta" },
 ];
 
 // ─── OPZIONI MATERIALI ─────────────────────────────────────────────────────
@@ -205,9 +217,9 @@ const RING_SIZE_SYSTEM_OPTIONS: Opt<string>[] = [
   { value: "US", label: "US" },
 ];
 
-const UK_RING_SIZES = ["G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+const UK_RING_SIZES = ["F", "F 1/2", "G", "G 1/2", "H", "H 1/2", "I", "I 1/2", "J", "J 1/2", "K", "K 1/2", "L", "L 1/2", "M", "M 1/2", "N", "N 1/2", "O", "O 1/2", "P", "P 1/2", "Q", "Q 1/2", "R", "R 1/2", "S", "S 1/2", "T"];
 
-const US_RING_SIZES = ["3", "3.5", "4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"];
+const US_RING_SIZES = ["3", "3.25", "3.5", "3.75", "4", "4.25", "4.5", "4.75", "5", "5.25", "5.5", "5.75", "6", "6.25", "6.5", "6.75", "7", "7.25", "7.5", "7.75", "8", "8.25", "8.5", "8.75", "9", "9.25", "9.5", "9.75", "10"];
 
 function getMetalColorLabel(color: string | null): string {
   if (!color) return "";
@@ -353,8 +365,8 @@ function MontaturaCard({
       aria-pressed={selected}
       className={`group w-full text-left rounded-2xl border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep ${
         selected
-          ? "border-gold-deep bg-gold-deep/5"
-          : "border-white/10 bg-white/[0.03] hover:border-gold-deep/40 hover:bg-gold-deep/5"
+          ? "border-gold-deep bg-gold-deep/10"
+          : "border-white/15 bg-white/[0.035] hover:border-gold-deep/50 hover:bg-gold-deep/5"
       }`}
     >
       {montatura.immagine ? (
@@ -447,8 +459,8 @@ function CategoriaCard({
       aria-pressed={selected}
       className={`group flex flex-col items-center gap-4 rounded-2xl border-2 p-8 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep ${
         selected
-          ? "border-gold-deep bg-gold-deep/5"
-          : "border-white/10 bg-white/[0.03] hover:border-gold-deep/40 hover:bg-gold-deep/5"
+          ? "border-gold-deep bg-gold-deep/10"
+          : "border-white/15 bg-white/[0.035] hover:border-gold-deep/50 hover:bg-gold-deep/5"
       }`}
     >
       <div
@@ -478,11 +490,13 @@ function OptionCard({
   label,
   image,
   selected,
+  disabled = false,
   onClick,
 }: {
   label: string;
   image?: string;
   selected: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }) {
   return (
@@ -490,15 +504,16 @@ function OptionCard({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={`rounded-xl border-2 p-4 text-center transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep ${
+      disabled={disabled}
+      className={`min-h-[116px] rounded-xl border p-3 text-center transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-deep disabled:cursor-not-allowed disabled:opacity-35 ${
         selected
-          ? "border-gold-deep bg-gold-deep/5"
-          : "border-white/10 bg-white/[0.03] hover:border-gold-deep/40 hover:bg-gold-deep/5"
+          ? "border-gold-deep bg-gold-deep/10"
+          : "border-white/15 bg-white/[0.035] hover:border-gold-deep/50 hover:bg-gold-deep/5"
       }`}
     >
       {image && (
-        <span className="mb-3 block overflow-hidden rounded-lg border border-white/10 bg-[#0c0c0c]">
-          <img src={image} alt="" className="aspect-[4/3] w-full object-cover" loading="lazy" />
+        <span className="mx-auto mb-3 grid h-[72px] w-full place-items-center rounded-lg bg-[#f8f8f7]">
+          <img src={image} alt="" width={64} height={64} className="h-16 w-16 object-contain" loading="lazy" />
         </span>
       )}
       <span className={`block text-sm font-medium transition-colors ${
@@ -554,6 +569,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
               selected={config.headType === opt.value}
               onClick={() => handleHeadTypeChange(opt.value)}
             />
@@ -573,6 +589,7 @@ function PersonalizzazioneSezione({
                 key={opt.value}
                 label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                 selected={config.headStoneType === opt.value}
                 onClick={() => updateField("headStoneType", opt.value)}
               />
@@ -592,6 +609,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
               selected={config.shankType === opt.value}
               onClick={() => updateField("shankType", opt.value)}
             />
@@ -610,6 +628,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
               selected={config.peekaboo === opt.value}
               onClick={() => updateField("peekaboo", opt.value)}
             />
@@ -628,6 +647,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
               selected={config.sideSetting === opt.value}
               onClick={() => handleSideSettingChange(opt.value)}
             />
@@ -650,6 +670,7 @@ function PersonalizzazioneSezione({
                     key={opt.value}
                     label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                     selected={config.sideStoneType === opt.value}
                     onClick={() => updateField("sideStoneType", opt.value)}
                   />
@@ -664,6 +685,7 @@ function PersonalizzazioneSezione({
                     key={opt.value}
                     label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                     selected={config.sideStoneLength === opt.value}
                     onClick={() => updateField("sideStoneLength", opt.value)}
                   />
@@ -685,6 +707,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
               selected={config.carvingType === opt.value}
               onClick={() => updateField("carvingType", opt.value)}
             />
@@ -758,6 +781,7 @@ function MaterialiSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
               selected={config.metalType === opt.value}
               onClick={() => handleMetalTypeChange(opt.value)}
             />
@@ -778,6 +802,7 @@ function MaterialiSezione({
                 key={opt.value}
                 label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                 selected={config.metalQuality === opt.value}
                 onClick={() => updateField("metalQuality", opt.value)}
               />
@@ -799,6 +824,7 @@ function MaterialiSezione({
                 key={opt.value}
                 label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                 selected={config.headMetalColor === opt.value}
                 onClick={() => updateField("headMetalColor", opt.value)}
               />
@@ -820,6 +846,7 @@ function MaterialiSezione({
                 key={opt.value}
                 label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                 selected={config.shankMetalColor === opt.value}
                 onClick={() => updateField("shankMetalColor", opt.value)}
               />
@@ -850,6 +877,7 @@ function MaterialiSezione({
                   key={opt.value}
                   label={opt.label}
               image={opt.image}
+              disabled={opt.disabled}
                   selected={config.ringSizeSystem === opt.value}
                   onClick={() => handleRingSizeSystemChange(opt.value)}
                 />
@@ -895,6 +923,17 @@ function MaterialiSezione({
                 {config.engravingText.length}/24
               </span>
             </div>
+          </section>
+
+          <section className="space-y-4">
+            <div className="rounded-xl border border-white/15 bg-white/[0.035] p-5">
+              <p className="text-xs uppercase tracking-widest text-bone/45">Marchiatura · Marchio di garanzia</p>
+              <p className="mt-2 flex items-center gap-2 text-sm text-bone/75"><Check className="h-4 w-4 text-gold-deep" />Inclusa per gli ordini UE e Regno Unito</p>
+            </div>
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/15 bg-white/[0.035] p-5">
+              <input type="checkbox" checked={config.sampleRequested} onChange={(event) => updateField("sampleRequested", event.target.checked)} className="mt-1 h-4 w-4 accent-[#b8894b]" />
+              <span><span className="block font-medium text-bone">Richiedi un anello campione</span><span className="mt-1 block text-sm text-bone/50">Replica dimostrativa in argento e zirconia, da concordare con l’atelier.</span></span>
+            </label>
           </section>
         </>
       )}
@@ -1447,8 +1486,10 @@ function MontaturaPietraPage() {
                   <div className="rounded-2xl border border-gold-deep/20 bg-[#0a0a0a]/80 p-4 sm:p-6 backdrop-blur-sm">
                     <RingStudioPreview
                       config={config}
-                      stoneImage={item?.image ?? null}
                       stoneAlt={title}
+                      stoneShape={item?.shape ?? "ROUND"}
+                      stoneCarats={stoneCarats ?? 1}
+                      centerStoneType={"LABGROWN_DIAMOND"}
                       mountingImage={montaturaSel?.immagine ?? null}
                     />
                     {montaturaSel && (
