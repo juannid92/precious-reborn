@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Loader2, Gem, Settings, Palette, Ruler, FileText } from "lucide-react";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { RingStudioPreview } from "@/components/atelier/RingStudioPreview";
+import { getMontaturaImage } from "@/lib/montatura-images";
 import { RING_STUDIO_ASSETS } from "@/lib/ring-studio-assets";
 import { getNivodaDiamond } from "@/lib/nivoda.functions";
 import { type NivodaDiamond } from "@/lib/nivoda-types";
@@ -352,6 +353,7 @@ function MontaturaCard({
   stoneCarats: number | null;
   onClick: () => void;
 }) {
+  const image = getMontaturaImage(montatura.codice, montatura.immagine);
   const outOfRange =
     stoneCarats !== null &&
     montatura.carati_min !== null &&
@@ -369,12 +371,12 @@ function MontaturaCard({
           : "border-white/15 bg-white/[0.035] hover:border-gold-deep/50 hover:bg-gold-deep/5"
       }`}
     >
-      {montatura.immagine ? (
-        <div className="aspect-[4/3] rounded-t-xl overflow-hidden">
+      {image ? (
+        <div className="aspect-[4/3] rounded-t-xl overflow-hidden bg-white p-2">
           <img
-            src={montatura.immagine}
+            src={image}
             alt={montatura.nome}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
             loading="lazy"
           />
         </div>
@@ -1147,7 +1149,7 @@ function MontaturaPietraPage() {
           configurazione: configToSave,
           riepilogo_configurazione: riepilogo,
           immagine_pietra: item.image ?? null,
-          immagine_montatura: montaturaSel.immagine ?? null,
+          immagine_montatura: getMontaturaImage(montaturaSel.codice, montaturaSel.immagine) || null,
         },
       });
       if (!result.id) throw new Error("La richiesta non e stata salvata");
@@ -1490,7 +1492,7 @@ function MontaturaPietraPage() {
                       stoneShape={item?.shape ?? "ROUND"}
                       stoneCarats={stoneCarats ?? 1}
                       centerStoneType={"LABGROWN_DIAMOND"}
-                      mountingImage={montaturaSel?.immagine ?? null}
+                      mountingImage={montaturaSel ? getMontaturaImage(montaturaSel.codice, montaturaSel.immagine) : null}
                     />
                     {montaturaSel && (
                       <div className="mt-5 border-t border-white/10 pt-4 text-center">
