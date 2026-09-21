@@ -44,6 +44,8 @@ export type Configurazione = {
   sideStoneLength: string | null;
   /** Decorazione gambo: plain | leaf | scroll | null */
   carvingType: string | null;
+  /** Lunghezza della lavorazione decorativa */
+  carvingLength?: string | null;
   /** Metallo: gold | platinum | null */
   metalType: string | null;
   /** Qualita metallo: KT_9 | KT_14 | KT_18 | platinum | null */
@@ -54,6 +56,12 @@ export type Configurazione = {
   shankMetalColor: string | null;
   /** Testo incisione (max 24 caratteri) */
   engravingText: string;
+  /** Carattere incisione */
+  engravingFont?: string | null;
+  /** Marchio di garanzia incluso */
+  hallmarkIncluded?: boolean;
+  /** Richiesta di campione dimostrativo */
+  sampleRequested?: boolean;
   /** Sistema misura: UK | US | null */
   ringSizeSystem: string | null;
   /** Misura anello (dipende dal sistema) */
