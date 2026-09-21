@@ -246,9 +246,45 @@ function buildMetalloText(config: Configurazione): string {
   return "";
 }
 
+function optionLabel(options: Opt<string>[], value: string | null): string {
+  if (!value) return "";
+  return options.find((option) => option.value === value)?.label ?? value;
+}
+
+function buildRiepilogoConfigurazione(
+  config: Configurazione,
+  gioiello: string,
+  montatura: Montatura | null,
+): string {
+  const righe = [
+    `Gioiello: ${capitalize(gioiello)}`,
+    `Montatura: ${montatura?.nome ?? "Da definire"}`,
+    `Metallo: ${buildMetalloText(config) || "Da definire"}`,
+  ];
+
+  if (gioiello === "anello") {
+    righe.push(`Testa: ${optionLabel(HEAD_TYPE_OPTIONS, config.headType) || "Da definire"}`);
+    if (config.headStoneType) righe.push(`Pietre della testa: ${optionLabel(HEAD_STONE_OPTIONS, config.headStoneType)}`);
+    righe.push(`Gambo: ${optionLabel(SHANK_TYPE_OPTIONS, config.shankType) || "Da definire"}`);
+    if (config.peekaboo && config.peekaboo !== "none") righe.push(`Peek-a-boo: ${optionLabel(PEEKABOO_OPTIONS, config.peekaboo)}`);
+    if (config.sideSetting && config.sideSetting !== "none") {
+      righe.push(`Incastonatura laterale: ${optionLabel(SIDE_SETTING_OPTIONS, config.sideSetting)}`);
+      if (config.sideStoneType) righe.push(`Pietre laterali: ${optionLabel(SIDE_STONE_OPTIONS, config.sideStoneType)}`);
+      if (config.sideStoneLength) righe.push(`Lunghezza pietre laterali: ${optionLabel(SIDE_STONE_LENGTH_OPTIONS, config.sideStoneLength)}`);
+    }
+    if (config.carvingType) righe.push(`Decorazione: ${optionLabel(CARVING_TYPE_OPTIONS, config.carvingType)}`);
+  }
+
+  if ((gioiello === "anello" || gioiello === "veretta") && config.ringSize) {
+    righe.push(`Misura: ${config.ringSizeSystem ?? ""} ${config.ringSize}`.trim());
+  }
+  if (config.engravingText.trim()) righe.push(`Incisione: ${config.engravingText.trim()}`);
+  return righe.join("\n");
+}
+
 // ─── STEP INDICATOR ────────────────────────────────────────────────────────
 
-function StepIndicator({ passo }: { passo: number }) {
+function StepIndicator({ passo, diamondId }: { passo: number; diamondId: string }) {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-center gap-2 mb-14">
@@ -263,7 +299,7 @@ function StepIndicator({ passo }: { passo: number }) {
               onClick={() => {
                 void navigate({
                   to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
-                  params: { diamondId: Route.useParams().diamondId },
+                  params: { diamondId },
                   search: (prev) => ({ ...prev, passo: String(n) }),
                 });
               }}
@@ -482,18 +518,20 @@ function PersonalizzazioneSezione({
 
   const handleHeadTypeChange = (value: string) => {
     const needsStones = HEAD_TYPES_WITH_STONES.has(value);
-    updateField("headType", value);
-    if (!needsStones) {
-      updateField("headStoneType", null);
-    }
+    onUpdate({
+      ...config,
+      headType: value,
+      headStoneType: needsStones ? (config.headStoneType ?? "diamonds") : null,
+    });
   };
 
   const handleSideSettingChange = (value: string) => {
-    updateField("sideSetting", value);
-    if (value === "none") {
-      updateField("sideStoneType", null);
-      updateField("sideStoneLength", null);
-    }
+    onUpdate({
+      ...config,
+      sideSetting: value,
+      sideStoneType: value === "none" ? null : (config.sideStoneType ?? "lab_diamond"),
+      sideStoneLength: value === "none" ? null : (config.sideStoneLength ?? "half"),
+    });
   };
 
   return (
@@ -658,22 +696,25 @@ function MaterialiSezione({
   };
 
   const handleMetalTypeChange = (value: string) => {
-    if (value === "platinum") {
-      updateField("metalType", "platinum");
-      updateField("metalQuality", null);
-      updateField("headMetalColor", null);
-      updateField("shankMetalColor", null);
-    } else {
-      updateField("metalType", "gold");
-      updateField("metalQuality", "KT_18");
-      updateField("headMetalColor", "yellow_gold");
-      updateField("shankMetalColor", "yellow_gold");
-    }
+    onUpdate(value === "platinum"
+      ? {
+          ...config,
+          metalType: "platinum",
+          metalQuality: null,
+          headMetalColor: null,
+          shankMetalColor: null,
+        }
+      : {
+          ...config,
+          metalType: "gold",
+          metalQuality: "KT_18",
+          headMetalColor: "yellow_gold",
+          shankMetalColor: "yellow_gold",
+        });
   };
 
   const handleRingSizeSystemChange = (value: string) => {
-    updateField("ringSizeSystem", value);
-    updateField("ringSize", "");
+    onUpdate({ ...config, ringSizeSystem: value, ringSize: "" });
   };
 
   const handleEngravingChange = (value: string) => {
@@ -855,6 +896,9 @@ function MontaturaPietraPage() {
   const [montature, setMontature] = useState<Montatura[]>([]);
   const [montatureStatus, setMontatureStatus] = useState<"loading" | "ready">("loading");
   const [whatsappNum, setWhatsappNum] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [requestId, setRequestId] = useState<string | null>(null);
 
   const fetchDiamond = useServerFn(getNivodaDiamond);
   const fetchMontature = useServerFn(getMontature);
@@ -1005,6 +1049,83 @@ function MontaturaPietraPage() {
     });
   };
 
+  const submitRichiesta = async (canale: "sito" | "whatsapp") => {
+    if (isSubmitting || !item || !montaturaSel) return;
+    const form = document.getElementById("form-riepilogo") as HTMLFormElement | null;
+    if (!form || !form.reportValidity()) return;
+
+    const fd = new FormData(form);
+    const nome = String(fd.get("nome") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim();
+    const telefono = String(fd.get("telefono") ?? "").trim();
+    const note = String(fd.get("note") ?? "").trim();
+    const configToSave: Configurazione = {
+      ...config,
+      engravingText: config.engravingText.trim(),
+      ringSize: showRingOptions ? (config.ringSize || null) : null,
+      ringSizeSystem: showRingOptions ? config.ringSizeSystem : null,
+    };
+    const riepilogo = buildRiepilogoConfigurazione(configToSave, gioiello, montaturaSel);
+    const popup = canale === "whatsapp" ? window.open("", "_blank") : null;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const result = await inviaRichiesta({
+        data: {
+          cliente_nome: nome,
+          cliente_email: email,
+          cliente_telefono: telefono,
+          pietra_tipo: "diamante",
+          pietra_id: diamondId,
+          pietra_titolo: title,
+          gioiello,
+          montatura_codice: montaturaSel.codice,
+          metallo: buildMetalloText(configToSave),
+          misura: showRingOptions ? (configToSave.ringSize ?? "") : "",
+          note,
+          canale,
+          configurazione: configToSave,
+          riepilogo_configurazione: riepilogo,
+          immagine_pietra: item.image ?? null,
+          immagine_montatura: montaturaSel.immagine ?? null,
+        },
+      });
+      if (!result.id) throw new Error("La richiesta non e stata salvata");
+
+      setRequestId(result.id);
+      if (canale === "whatsapp" && whatsappNum) {
+        const messaggio = [
+          "Richiesta di progetto dal sito Cara Preziosi",
+          `Identificativo: ${result.id}`,
+          `Cliente: ${nome}`,
+          `Pietra: ${title}`,
+          `Codice pietra: ${diamondId}`,
+          riepilogo,
+          note ? `Note: ${note}` : "",
+          `Contatti: ${email}${telefono ? ` · ${telefono}` : ""}`,
+        ].filter(Boolean).join("\n");
+        const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(messaggio)}`;
+        if (popup) popup.location.href = whatsappUrl;
+        else window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      } else {
+        popup?.close();
+      }
+      goToWithConfig(6, configToSave);
+    } catch (error) {
+      popup?.close();
+      console.error("[configuratore-diamante] invio fallito", error);
+      setSubmitError("Non siamo riusciti a inviare la richiesta. Riprova tra qualche istante.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    void submitRichiesta("sito");
+  };
+
   // ─── STATI DI CARICAMENTO ──────────────────────────────────────────────
 
   if (stoneStatus === "loading") {
@@ -1051,9 +1172,12 @@ function MontaturaPietraPage() {
             <p className="text-bone/70 text-lg leading-relaxed mb-4">
               Grazie. Il maestro orafo Nicola Caradonna analizzerà la tua richiesta e ti contatterà per definire insieme i dettagli del progetto.
             </p>
-            <p className="text-bone/50 text-sm mb-12">
+            <p className="text-bone/50 text-sm mb-4">
               Nessuna fretta: ogni gioiello viene studiato con cura prima di ogni proposta.
             </p>
+            {requestId && (
+              <p className="text-xs text-gold-deep mb-12">Identificativo richiesta: {requestId}</p>
+            )}
             <Link to="/crea-il-tuo-gioiello/pietra" className="btn-primary inline-flex">
               Continua a esplorare
             </Link>
@@ -1086,7 +1210,7 @@ function MontaturaPietraPage() {
             <h1 className="font-display text-2xl md:text-3xl">{title}</h1>
           </div>
 
-          <StepIndicator passo={passo} />
+          <StepIndicator passo={passo} diamondId={diamondId} />
 
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             {/* COLONNA PRINCIPALE */}
@@ -1218,7 +1342,7 @@ function MontaturaPietraPage() {
                         )}
                       </dl>
                     </div>
-                    <form id="form-riepilogo" onSubmit={(e) => e.preventDefault()} className="space-y-6">
+                    <form id="form-riepilogo" onSubmit={handleFormSubmit} className="space-y-6">
                       <div className="grid gap-6 md:grid-cols-2">
                         <label className="block">
                           <span className="eyebrow text-bone/50 block mb-3">Nome<span className="text-gold-deep">*</span></span>
@@ -1233,6 +1357,15 @@ function MontaturaPietraPage() {
                         <span className="eyebrow text-bone/50 block mb-3">Email<span className="text-gold-deep">*</span></span>
                         <input name="email" type="email" required className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors" />
                       </label>
+                      <label className="block">
+                        <span className="eyebrow text-bone/50 block mb-3">Note</span>
+                        <textarea name="note" rows={3} className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors resize-none" />
+                      </label>
+                      {submitError && (
+                        <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/10 p-4 text-sm text-red-200">
+                          {submitError}
+                        </p>
+                      )}
                     </form>
                   </div>
                 </div>
@@ -1262,13 +1395,26 @@ function MontaturaPietraPage() {
                       <ArrowRight className="h-3.5 w-3.5 ml-1" />
                     </button>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={() => goTo(6)}
-                      className="btn-primary"
-                    >
-                      Invia la richiesta
-                    </button>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="submit"
+                        form="form-riepilogo"
+                        disabled={isSubmitting}
+                        className="btn-primary disabled:opacity-50"
+                      >
+                        {isSubmitting ? "Invio in corso…" : "Invia la richiesta"}
+                      </button>
+                      {whatsappNum && (
+                        <button
+                          type="button"
+                          disabled={isSubmitting}
+                          onClick={() => void submitRichiesta("whatsapp")}
+                          className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm text-bone/70 hover:border-gold-deep/50 hover:text-bone transition-all disabled:opacity-50"
+                        >
+                          Invia su WhatsApp
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
               )}

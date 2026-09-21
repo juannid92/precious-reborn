@@ -158,7 +158,7 @@ export async function caricaConfigSito(): Promise<SiteConfig> {
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("site_config")
-    .select("chiave, valore");
+    .select("key, value");
 
   if (error) {
     console.error("[site_config] query error", error.message);
@@ -167,7 +167,7 @@ export async function caricaConfigSito(): Promise<SiteConfig> {
 
   const map = new Map<string, string>();
   for (const row of data ?? []) {
-    map.set(String(row.chiave), String(row.valore));
+    map.set(String(row.key), String(row.value));
   }
 
   return {
