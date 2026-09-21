@@ -298,7 +298,7 @@ function StepIndicator({ passo, diamondId }: { passo: number; diamondId: string 
               type="button"
               onClick={() => {
                 void navigate({
-                  to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
+                  to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
                   params: { diamondId },
                   search: (prev) => ({ ...prev, passo: String(n) }),
                 });
@@ -939,8 +939,8 @@ function MontaturaPietraPage() {
   }, [item?.shape, fetchMontature]);
 
   const title = item?.title ?? item?.shapeLabel ?? "Pietra certificata";
-  const gioiello = search.gioiello;
-  const montaturaCodice = search.montatura;
+  const gioiello = search.gioiello ?? "";
+  const montaturaCodice = search.montatura ?? "";
 
   const montaturaSel = useMemo(
     () => montature.find((m) => m.codice === montaturaCodice) ?? null,
@@ -957,7 +957,7 @@ function MontaturaPietraPage() {
   const goTo = (step: number) => {
     const metalloText = buildMetalloText(config);
     void navigate({
-      to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
       search: {
         ...search,
@@ -971,7 +971,7 @@ function MontaturaPietraPage() {
   const goToWithConfig = (step: number, currentConfig: Configurazione) => {
     const metalloText = buildMetalloText(currentConfig);
     void navigate({
-      to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
       search: {
         ...search,
@@ -1007,7 +1007,7 @@ function MontaturaPietraPage() {
       ringSize: "",
     };
     void navigate({
-      to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
       search: {
         ...search,
@@ -1024,7 +1024,7 @@ function MontaturaPietraPage() {
   const setMontatura_ = (codice: string) => {
     const metalloText = buildMetalloText(config);
     void navigate({
-      to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
       search: {
         ...search,
@@ -1038,7 +1038,7 @@ function MontaturaPietraPage() {
   const setConfigInUrl = (updated: Configurazione) => {
     const metalloText = buildMetalloText(updated);
     void navigate({
-      to: "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
+      to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
       params: { diamondId },
       search: {
         ...search,
@@ -1196,7 +1196,7 @@ function MontaturaPietraPage() {
       <section className="pt-36 md:pt-44 pb-24 md:pb-36">
         <div className="container-cara">
           <Link
-            to="/crea-il-tuo-gioiello_/pietra_/$diamondId"
+            to="/crea-il-tuo-gioiello/pietra/$diamondId"
             params={{ diamondId }}
             className="inline-flex items-center gap-2 text-[10.5px] uppercase tracking-[0.32em] text-bone/50 hover:text-gold-deep transition-colors mb-6 group"
           >
