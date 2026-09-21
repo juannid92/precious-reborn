@@ -48,7 +48,7 @@ const ConfigurazioneSchema = z.object({
 
 const RichiestaSchema = z.object({
   cliente_nome: z.string().min(1).max(200),
-  cliente_email: z.string().min(1).max(320),
+  cliente_email: z.string().email().max(320),
   cliente_telefono: z.string().max(64),
   pietra_tipo: z.string().max(32),
   pietra_id: z.string().max(128),
@@ -60,13 +60,13 @@ const RichiestaSchema = z.object({
   note: z.string().max(2000),
   canale: z.string().max(32),
   /** Configurazione come oggetto */
-  configurazione: ConfigurazioneSchema,
+  configurazione: ConfigurazioneSchema.optional(),
   /** Testo riepilogativo in italiano */
-  riepilogo_configurazione: z.string().max(4000).nullable(),
+  riepilogo_configurazione: z.string().max(4000).nullable().optional(),
   /** URL immagine pietra */
-  immagine_pietra: z.string().max(1000).nullable(),
+  immagine_pietra: z.string().max(1000).nullable().optional(),
   /** URL immagine montatura */
-  immagine_montatura: z.string().max(1000).nullable(),
+  immagine_montatura: z.string().max(1000).nullable().optional(),
 });
 
 export const inviaRichiesta = createServerFn({ method: "POST" })
@@ -89,7 +89,7 @@ export const inviaRichiesta = createServerFn({ method: "POST" })
       riepilogo_configurazione: data.riepilogo_configurazione ?? null,
       immagine_pietra: data.immagine_pietra ?? null,
       immagine_montatura: data.immagine_montatura ?? null,
-      stato: "ricevuta",
+      stato: "nuova",
     };
     const id = await salvaRichiesta(richiestaDati);
     return { id };

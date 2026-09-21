@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install
+
+      - name: TypeScript
+        id: typecheck
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          bunx tsc --noEmit 2>&1 | tee typecheck.log
+
+      - name: Production build
+        id: build
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          bun run build 2>&1 | tee build.log
+
+      - name: Report diagnostics
+        if: always() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          TYPECHECK_RESULT: ${{ steps.typecheck.outcome }}
+          BUILD_RESULT: ${{ steps.build.outcome }}
+        run: |
+          {
+            echo '## CI diagnostics'
+            echo
+            echo "- TypeScript: **${TYPECHECK_RESULT}**"
+            echo "- Build: **${BUILD_RESULT}**"
+            echo
+            echo '<details><summary>TypeScript output</summary>'
+            echo
+            echo '```text'
+            tail -120 typecheck.log
+            echo '```'
+            echo '</details>'
+            echo
+            echo '<details><summary>Build output</summary>'
+            echo
+            echo '```text'
+            tail -120 build.log
+            echo '```'
+            echo '</details>'
+          } > ci-report.md
+          gh pr comment "$PR_NUMBER" --body-file ci-report.md
+
+      - name: Enforce successful checks
+        if: steps.typecheck.outcome != 'success' || steps.build.outcome != 'success'
+        run: exit 1

@@ -128,12 +128,15 @@ export type Database = {
       richieste: {
         Row: {
           canale: string | null
+          configurazione: Json
           cliente_email: string | null
           cliente_nome: string | null
           cliente_telefono: string | null
           creata_il: string
           gioiello: string | null
           id: string
+          immagine_montatura: string | null
+          immagine_pietra: string | null
           metallo: string | null
           misura: string | null
           montatura_codice: string | null
@@ -141,16 +144,20 @@ export type Database = {
           pietra_id: string | null
           pietra_tipo: string | null
           pietra_titolo: string | null
+          riepilogo_configurazione: string | null
           stato: string
         }
         Insert: {
           canale?: string | null
+          configurazione?: Json
           cliente_email?: string | null
           cliente_nome?: string | null
           cliente_telefono?: string | null
           creata_il?: string
           gioiello?: string | null
           id?: string
+          immagine_montatura?: string | null
+          immagine_pietra?: string | null
           metallo?: string | null
           misura?: string | null
           montatura_codice?: string | null
@@ -158,16 +165,20 @@ export type Database = {
           pietra_id?: string | null
           pietra_tipo?: string | null
           pietra_titolo?: string | null
+          riepilogo_configurazione?: string | null
           stato?: string
         }
         Update: {
           canale?: string | null
+          configurazione?: Json
           cliente_email?: string | null
           cliente_nome?: string | null
           cliente_telefono?: string | null
           creata_il?: string
           gioiello?: string | null
           id?: string
+          immagine_montatura?: string | null
+          immagine_pietra?: string | null
           metallo?: string | null
           misura?: string | null
           montatura_codice?: string | null
@@ -175,6 +186,7 @@ export type Database = {
           pietra_id?: string | null
           pietra_tipo?: string | null
           pietra_titolo?: string | null
+          riepilogo_configurazione?: string | null
           stato?: string
         }
         Relationships: []

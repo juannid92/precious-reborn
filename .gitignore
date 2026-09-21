@@ -37,3 +37,8 @@ ECC
 .opencode
 .agent-deps/
 .nitro/
+
+# Environment files
+.env
+.env.*
+!.env.example
