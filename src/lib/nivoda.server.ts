@@ -9,10 +9,23 @@ import type { NivodaDiamond, NivodaSearchResult } from "./nivoda-types";
 
 async function invokeNivoda<T>(body: Record<string, unknown>): Promise<T> {
   const supabase = getSupabaseAdmin();
-  const { data, error } = await supabase.functions.invoke("nivoda-diamonds", { body });
 
+  const invoke = () => supabase.functions.invoke("nivoda-diamonds", { body });
+  let response = await invoke();
+
+  // Il token OAuth Nivoda può scadere prima del valore expires_at memorizzato.
+  // Al primo errore eliminiamo la cache e ripetiamo una sola volta: la Edge
+  // Function autentica nuovamente Nivoda e salva un token fresco.
+  if (response.error) {
+    console.warn("[nivoda] first invoke failed, refreshing cached token", response.error.message);
+    const { error: clearError } = await supabase.from("nivoda_token").delete().eq("id", 1);
+    if (clearError) console.error("[nivoda] token cache reset failed", clearError.message);
+    response = await invoke();
+  }
+
+  const { data, error } = response;
   if (error) {
-    console.error("[nivoda] invoke error", error.message);
+    console.error("[nivoda] invoke error after retry", error.message);
     throw new Error("Catalogo pietre momentaneamente non raggiungibile.");
   }
   if (data && typeof data === "object" && "error" in (data as Record<string, unknown>)) {
@@ -22,9 +35,7 @@ async function invokeNivoda<T>(body: Record<string, unknown>): Promise<T> {
   return data as T;
 }
 
-export async function searchDiamonds(
-  body: Record<string, unknown>,
-): Promise<NivodaSearchResult> {
+export async function searchDiamonds(body: Record<string, unknown>): Promise<NivodaSearchResult> {
   const data = await invokeNivoda<{ items?: NivodaDiamond[]; hasMore?: boolean }>(body);
   return { items: data.items ?? [], hasMore: Boolean(data.hasMore) };
 }
