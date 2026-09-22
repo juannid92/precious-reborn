@@ -39,11 +39,29 @@ async function gql(cfg: Config, query: string, variables: Record<string, unknown
   return json.data
 }
 
+function tokenExpiresAt(token: string): number {
+  try {
+    const payload = token.split(".")[1]
+    if (!payload) return 0
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/")
+    const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=")
+    const decoded = JSON.parse(atob(padded))
+    return Number(decoded.exp || 0) * 1000
+  } catch {
+    return 0
+  }
+}
+
 async function getToken(cfg: Config): Promise<string> {
   const { data: row } = await supabase
     .from("nivoda_token").select("token, expires_at").eq("id", 1).maybeSingle()
 
-  if (row && new Date(row.expires_at) > new Date(Date.now() + 5 * 60000)) return row.token
+  const safetyWindow = Date.now() + 5 * 60000
+  if (
+    row &&
+    new Date(row.expires_at).getTime() > safetyWindow &&
+    tokenExpiresAt(row.token) > safetyWindow
+  ) return row.token
 
   const authQuery =
     "query ($u: String!, $p: String!) {" +
@@ -102,8 +120,6 @@ Deno.serve(async (req) => {
   try {
     const cfg = await loadConfig()
     const b = await req.json().catch(() => ({}))
-    const token = await getToken(cfg)
-
     if (b.diamondId) {
       const detailQuery =
         "query ($token: String!, $id: ID!) {" +
@@ -115,7 +131,16 @@ Deno.serve(async (req) => {
         "  }" +
         "}"
 
-      const d = await gql(cfg, detailQuery, { token, id: b.diamondId })
+      let token = await getToken(cfg)
+      let d
+      try {
+        d = await gql(cfg, detailQuery, { token, id: b.diamondId })
+      } catch (error) {
+        if (!/jwt expired|invalid token|unauthorized/i.test(String((error as Error)?.message || error))) throw error
+        await supabase.from("nivoda_token").delete().eq("id", 1)
+        token = await getToken(cfg)
+        d = await gql(cfg, detailQuery, { token, id: b.diamondId })
+      }
       return new Response(
         JSON.stringify({ item: normalize(d.as.get_diamond_by_id, cfg.markup) }),
         { headers: cors },
@@ -167,7 +192,16 @@ Deno.serve(async (req) => {
       "  }" +
       "}"
 
-    const data = await gql(cfg, searchQuery, { token })
+    let token = await getToken(cfg)
+    let data
+    try {
+      data = await gql(cfg, searchQuery, { token })
+    } catch (error) {
+      if (!/jwt expired|invalid token|unauthorized/i.test(String((error as Error)?.message || error))) throw error
+      await supabase.from("nivoda_token").delete().eq("id", 1)
+      token = await getToken(cfg)
+      data = await gql(cfg, searchQuery, { token })
+    }
     const rawItems = (data.as.diamonds_by_query && data.as.diamonds_by_query.items) || []
     const items = rawItems.map((i: any) => normalize(i, cfg.markup))
 
