@@ -314,6 +314,7 @@ function StepIndicator({ passo, diamondId }: { passo: number; diamondId: string 
                   to: "/crea-il-tuo-gioiello/pietra/$diamondId/montatura",
                   params: { diamondId },
                   search: (prev) => ({ ...prev, passo: String(n) }),
+                  resetScroll: false,
                 });
               }}
               disabled={!done && !active}
@@ -957,6 +958,7 @@ function MontaturaPietraPage() {
   const [montature, setMontature] = useState<Montatura[]>([]);
   const [montatureStatus, setMontatureStatus] = useState<"loading" | "ready">("loading");
   const [whatsappNum, setWhatsappNum] = useState<string | null>(null);
+  const [requestEmail, setRequestEmail] = useState("info@carapreziosi.it");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [requestId, setRequestId] = useState<string | null>(null);
@@ -987,6 +989,7 @@ function MontaturaPietraPage() {
       .then((cfg) => {
         const num = cfg.whatsapp?.replace(/\D/g, "") ?? null;
         setWhatsappNum(num && num !== "NUMERO_WHATSAPP" ? num : null);
+        if (cfg.email_richieste?.includes("@")) setRequestEmail(cfg.email_richieste);
       })
       .catch(() => {});
   }, [fetchConfig]);
@@ -1026,6 +1029,7 @@ function MontaturaPietraPage() {
         metallo: metalloText,
         misura: showRingOptions ? (config.ringSize ?? "") : "",
       },
+      resetScroll: false,
     });
   };
 
@@ -1041,6 +1045,7 @@ function MontaturaPietraPage() {
         metallo: metalloText,
         misura: showRingOptions ? (currentConfig.ringSize ?? "") : "",
       },
+      resetScroll: false,
     });
   };
 
@@ -1079,6 +1084,7 @@ function MontaturaPietraPage() {
         passo: "2",
         config: serializeConfig(resetConfig),
       },
+      resetScroll: false,
     });
   };
 
@@ -1093,6 +1099,7 @@ function MontaturaPietraPage() {
         metallo: metalloText,
         passo: "3",
       },
+      resetScroll: false,
     });
   };
 
@@ -1107,10 +1114,12 @@ function MontaturaPietraPage() {
         metallo: metalloText,
         misura: showRingOptions ? (updated.ringSize ?? "") : "",
       },
+      resetScroll: false,
+      replace: true,
     });
   };
 
-  const submitRichiesta = async (canale: "sito" | "whatsapp") => {
+  const submitRichiesta = async (canale: "email" | "whatsapp") => {
     if (isSubmitting || !item || !montaturaSel) return;
     const form = document.getElementById("form-riepilogo") as HTMLFormElement | null;
     if (!form || !form.reportValidity()) return;
@@ -1127,7 +1136,8 @@ function MontaturaPietraPage() {
       ringSizeSystem: showRingOptions ? config.ringSizeSystem : null,
     };
     const riepilogo = buildRiepilogoConfigurazione(configToSave, gioiello, montaturaSel);
-    const popup = canale === "whatsapp" ? window.open("", "_blank") : null;
+    const imageShareUrl = `${window.location.origin}/api/public/montatura-image/${encodeURIComponent(montaturaSel.codice)}`;
+    const popup = window.open("", "_blank");
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -1149,26 +1159,34 @@ function MontaturaPietraPage() {
           configurazione: configToSave,
           riepilogo_configurazione: riepilogo,
           immagine_pietra: item.image ?? null,
-          immagine_montatura: getMontaturaImage(montaturaSel.codice, montaturaSel.immagine) || null,
+          immagine_montatura: imageShareUrl,
         },
       });
       if (!result.id) throw new Error("La richiesta non e stata salvata");
 
       setRequestId(result.id);
+      const messaggio = [
+        "Richiesta di progetto dal sito Cara Preziosi",
+        `Identificativo: ${result.id}`,
+        `Cliente: ${nome}`,
+        `Pietra: ${title}`,
+        `Codice pietra: ${diamondId}`,
+        riepilogo,
+        note ? `Note: ${note}` : "",
+        `Contatti: ${email}${telefono ? ` · ${telefono}` : ""}`,
+        `Anteprima montatura: ${imageShareUrl}`,
+        item.image ? `Immagine pietra: ${item.image}` : "",
+      ].filter(Boolean).join("\n");
+
       if (canale === "whatsapp" && whatsappNum) {
-        const messaggio = [
-          "Richiesta di progetto dal sito Cara Preziosi",
-          `Identificativo: ${result.id}`,
-          `Cliente: ${nome}`,
-          `Pietra: ${title}`,
-          `Codice pietra: ${diamondId}`,
-          riepilogo,
-          note ? `Note: ${note}` : "",
-          `Contatti: ${email}${telefono ? ` · ${telefono}` : ""}`,
-        ].filter(Boolean).join("\n");
         const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(messaggio)}`;
         if (popup) popup.location.href = whatsappUrl;
         else window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      } else if (canale === "email") {
+        const subject = `Nuova richiesta Cara Preziosi · ${result.id}`;
+        const mailtoUrl = `mailto:${requestEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(messaggio)}`;
+        if (popup) popup.location.href = mailtoUrl;
+        else window.location.href = mailtoUrl;
       } else {
         popup?.close();
       }
@@ -1184,7 +1202,7 @@ function MontaturaPietraPage() {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    void submitRichiesta("sito");
+    void submitRichiesta("email");
   };
 
   // ─── STATI DI CARICAMENTO ──────────────────────────────────────────────
@@ -1457,24 +1475,24 @@ function MontaturaPietraPage() {
                     </button>
                   ) : (
                     <div className="flex flex-wrap items-center gap-3">
-                      <button
-                        type="submit"
-                        form="form-riepilogo"
-                        disabled={isSubmitting}
-                        className="btn-primary disabled:opacity-50"
-                      >
-                        {isSubmitting ? "Invio in corso…" : "Invia la richiesta"}
-                      </button>
                       {whatsappNum && (
                         <button
                           type="button"
                           disabled={isSubmitting}
                           onClick={() => void submitRichiesta("whatsapp")}
-                          className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm text-bone/70 hover:border-gold-deep/50 hover:text-bone transition-all disabled:opacity-50"
+                          className="btn-primary disabled:opacity-50"
                         >
-                          Invia su WhatsApp
+                          {isSubmitting ? "Invio in corso…" : "Invia su WhatsApp"}
                         </button>
                       )}
+                      <button
+                        type="submit"
+                        form="form-riepilogo"
+                        disabled={isSubmitting}
+                        className={whatsappNum ? "inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-bone hover:border-gold-deep/60 transition-all disabled:opacity-50" : "btn-primary disabled:opacity-50"}
+                      >
+                        {isSubmitting ? "Invio in corso…" : "Invia richiesta per email"}
+                      </button>
                     </div>
                   )}
                 </div>
