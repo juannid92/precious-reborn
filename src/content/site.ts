@@ -218,7 +218,7 @@ export const services = {
   items: [
     {
       title: "Creazione su misura",
-      body: "Realizziamo gioielli personalizzati, progettati su misura per rispecchiare il vostro stile e le vostre emozioni. Dall'anello di fidanzamento al gioiello per un'occasione speciale, trasformiamo le vostre idee in realtà attraverso un processo artigianale curato nei minimi dettagli.",
+      body: "Realizziamo gioielli personalizzati, progettati su misura per rispecchiare il vostro stile e le vostre emozioni. Dall'anello di fidanzamento al gioiello per un'occasione speciale, trasformiamo le vostre idee in realtà attraverso un processo di Manifattura Italiana curato nei minimi dettagli.",
       image: servizioCreazione,
     },
     {
