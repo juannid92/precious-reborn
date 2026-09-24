@@ -41,7 +41,7 @@ export function SiteHeader() {
         <Link to="/" onClick={() => setOpen(false)} aria-label="Cara Preziosi" className="group flex items-center gap-2.5">
           <img src={logoCara} alt="Cara Preziosi" className="h-8 md:h-10 w-auto select-none" draggable={false} width="146" height="56" />
           <div className="flex flex-col gap-0.5">
-            <span className="font-display text-xl md:text-2xl tracking-tight leading-none italic text-gold-deep hidden sm:inline">
+            <span className="font-display text-xl md:text-2xl tracking-tight leading-none italic text-gold-deep">
               Preziosi
             </span>
             <span className="text-[8px] uppercase tracking-[0.35em] opacity-70 hidden md:inline ml-0.5">Atelier Orafo</span>
