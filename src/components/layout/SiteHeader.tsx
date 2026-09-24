@@ -44,7 +44,7 @@ export function SiteHeader() {
             <span className="font-display text-xl md:text-2xl tracking-tight leading-none italic text-gold-deep">
               Preziosi
             </span>
-            <span className="text-[8px] uppercase tracking-[0.35em] opacity-70 hidden md:inline ml-0.5">Atelier Orafo</span>
+            <span className="text-[8px] uppercase tracking-[0.35em] opacity-70 ml-0.5">Atelier Orafo</span>
           </div>
         </Link>
 
