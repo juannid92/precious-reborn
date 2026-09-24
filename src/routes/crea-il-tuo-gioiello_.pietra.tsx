@@ -18,6 +18,12 @@ import {
   CARAT_MIN,
   CLARITIES,
   COLORS,
+  CUT_OPTIONS,
+  CURATED_CARAT_FROM,
+  CURATED_CARAT_TO,
+  CURATED_CLARITIES,
+  CURATED_COLORS,
+  CURATED_CUT,
   PAGE_SIZE,
   SEARCH_COOLDOWN_SECONDS,
   SHAPE_OPTIONS,
@@ -53,15 +59,33 @@ type Filters = {
   shapes: string[];
   color: string[];
   clarity: string[];
+  cut: string[];
   caratFrom: number;
   caratTo: number;
   sort: NivodaSort;
 };
 
+/**
+ * Prima schermata: la selezione curata dell'atelier.
+ * Senza questi filtri il fornitore restituisce per prime le pietre più
+ * economiche del catalogo, cioè le meno belle.
+ */
 const DEFAULT_FILTERS: Filters = {
+  shapes: [],
+  color: [...CURATED_COLORS],
+  clarity: [...CURATED_CLARITIES],
+  cut: [...CURATED_CUT],
+  caratFrom: CURATED_CARAT_FROM,
+  caratTo: CURATED_CARAT_TO,
+  sort: "carat_asc",
+};
+
+/** Ricerca libera su tutto il catalogo. */
+const ALL_FILTERS: Filters = {
   shapes: [],
   color: [],
   clarity: [],
+  cut: [],
   caratFrom: CARAT_MIN,
   caratTo: CARAT_MAX,
   sort: "carat_asc",
@@ -82,6 +106,7 @@ function buildBody(f: Filters, page: number) {
   if (f.shapes.length) body.shapes = f.shapes;
   if (f.color.length) body.color = f.color;
   if (f.clarity.length) body.clarity = f.clarity;
+  if (f.cut.length) body.cut = f.cut;
   return body;
 }
 
@@ -250,6 +275,20 @@ function PietraPage() {
                 </div>
               </FilterBlock>
 
+              <FilterBlock label="Taglio">
+                <div className="flex flex-wrap gap-2">
+                  {CUT_OPTIONS.map((c) => (
+                    <Chip
+                      key={c.value}
+                      active={filters.cut.includes(c.value)}
+                      onClick={() => setFilters((f) => ({ ...f, cut: toggle(f.cut, c.value) }))}
+                    >
+                      {c.label}
+                    </Chip>
+                  ))}
+                </div>
+              </FilterBlock>
+
               <FilterBlock label="Ordina per">
                 <Select
                   value={filters.sort}
@@ -286,7 +325,14 @@ function PietraPage() {
                 className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                Azzera filtri
+                Selezione dell'atelier
+              </button>
+              <button
+                type="button"
+                onClick={() => setFilters(ALL_FILTERS)}
+                className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink/60 hover:text-gold-deep transition-colors"
+              >
+                Mostra tutto il catalogo
               </button>
               <p className="text-xs text-muted-foreground">
                 La ricerca parte solo quando premi «Cerca».
@@ -341,7 +387,7 @@ function PietraPage() {
                   disabled={cooldown > 0}
                   className="btn-primary mt-8 disabled:opacity-60"
                 >
-                  {cooldown > 0 ? `Attendi ${cooldown}s` : "Azzera filtri"}
+                  {cooldown > 0 ? `Attendi ${cooldown}s` : "Torna alla selezione dell'atelier"}
                 </button>
               </div>
             )}

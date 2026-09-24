@@ -174,7 +174,10 @@ Deno.serve(async (req) => {
 
     const pageSize = Math.min(Number(b.pageSize || 24), 50)
     const offset = Number(b.page || 0) * pageSize
-    const orderType = b.sort === "carat_desc" ? "size" : "price"
+    // "carat_*" ordina davvero per peso: prima ordinava per prezzo crescente
+    // e faceva uscire per prime le pietre peggiori del catalogo.
+    const byCarat = b.sort === "carat_desc" || b.sort === "carat_asc"
+    const orderType = byCarat ? "size" : "price"
     const orderDir = (b.sort === "carat_desc" || b.sort === "price_desc") ? "DESC" : "ASC"
 
     const searchQuery =

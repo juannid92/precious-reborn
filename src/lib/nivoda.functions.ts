@@ -11,6 +11,7 @@ const SearchSchema = z.object({
   shapes: z.array(z.string().max(24)).max(20).optional(),
   color: z.array(z.string().max(4)).max(12).optional(),
   clarity: z.array(z.string().max(6)).max(12).optional(),
+  cut: z.array(z.string().max(4)).max(8).optional(),
   caratFrom: z.number().min(0).max(50).optional(),
   caratTo: z.number().min(0).max(50).optional(),
   sort: z.enum(["carat_asc", "carat_desc"]).optional(),

@@ -55,6 +55,7 @@ export type NivodaSearchInput = {
   shapes?: string[];
   color?: string[];
   clarity?: string[];
+  cut?: string[];
   caratFrom?: number;
   caratTo?: number;
   sort?: NivodaSort;
@@ -83,6 +84,24 @@ export const SHAPE_LABELS: Record<string, string> = Object.fromEntries(
 
 export const COLORS = ["D", "E", "F", "G", "H", "I", "J"] as const;
 export const CLARITIES = ["IF", "VVS1", "VVS2", "VS1", "VS2", "SI1"] as const;
+
+/** Qualità di taglio (enum Nivoda). */
+export const CUT_OPTIONS = [
+  { value: "ID", label: "Ideale" },
+  { value: "EX", label: "Eccellente" },
+  { value: "VG", label: "Molto buono" },
+  { value: "GD", label: "Buono" },
+] as const;
+
+/**
+ * Selezione di partenza dell'atelier: solo pietre che vale la pena mostrare.
+ * Tagli ideali/eccellenti, colore alto, purezza occhio-pulito.
+ */
+export const CURATED_CUT = ["ID", "EX"];
+export const CURATED_COLORS = ["D", "E", "F", "G"];
+export const CURATED_CLARITIES = ["IF", "VVS1", "VVS2", "VS1", "VS2"];
+export const CURATED_CARAT_FROM = 0.5;
+export const CURATED_CARAT_TO = 3;
 
 export const CARAT_MIN = 0.3;
 export const CARAT_MAX = 5;
