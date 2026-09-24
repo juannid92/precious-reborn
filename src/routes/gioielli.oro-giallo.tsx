@@ -203,7 +203,7 @@ function OroGialloPage() {
           <div className="md:col-span-6 order-1 md:order-2">
             <img
               src={ringAurora}
-              alt="Dettaglio di un anello in oro giallo con incastonatura artigianale"
+              alt="Dettaglio di un anello in oro giallo con incastonatura eseguita a mano"
               className="w-full aspect-[4/3] object-cover"
               loading="lazy"
               decoding="async"

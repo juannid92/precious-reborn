@@ -173,7 +173,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               additionalType: "https://schema.org/LocalBusiness",
               name: "Cara Preziosi",
               description:
-                "Cara Preziosi è un atelier orafo artigianale a Bari specializzato in gioielli su misura, restauro e manutenzione professionale.",
+                "Cara Preziosi è un atelier di alta oreficeria a Bari specializzato in gioielli su misura, restauro e manutenzione professionale.",
               url: "https://www.carapreziosi.it/",
               image:
                 "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png",
@@ -202,7 +202,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 "Gioielli su misura",
                 "Restauro di gioielli",
                 "Lucidatura e messa a misura",
-                "Lavorazione artigianale orafa",
+                "Lavorazione orafa fatta a mano",
                 "Microfusione a cera persa",
                 "Incastonatura di pietre preziose",
                 "Progettazione e disegno del gioiello",
@@ -215,7 +215,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: "Nicola Caradonna",
               jobTitle: "Maestro orafo",
               description:
-                "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione artigianale di gioielli unici su misura.",
+                "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione a mano di gioielli unici su misura.",
               worksFor: { "@id": "https://www.carapreziosi.it/#business" },
               knowsAbout: [
                 "Creazione di gioielli su misura",
@@ -224,7 +224,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 "Incastonatura di pietre preziose",
                 "Lucidatura e messa a misura di anelli",
                 "Progettazione del gioiello e disegno CAD",
-                "Lavorazione artigianale orafa italiana",
+                "Lavorazione orafa italiana fatta a mano",
               ],
             },
 

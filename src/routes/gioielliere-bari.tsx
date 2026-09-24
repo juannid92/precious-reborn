@@ -5,9 +5,9 @@ import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { contacts } from "@/content/site";
 import storiaLaboratorio from "@/assets/cara/storia-laboratorio.jpg";
 
-const TITLE = "Gioielliere a Bari — Atelier orafo artigianale Cara Preziosi";
+const TITLE = "Gioielliere a Bari — Atelier orafo Cara Preziosi";
 const DESCRIPTION =
-  "Cara Preziosi è l'atelier orafo artigianale di Nicola Caradonna a Bari, Via Beatillo 14. Creazioni su misura, restauro e manutenzione su appuntamento.";
+  "Cara Preziosi è l'atelier orafo di Nicola Caradonna a Bari, Via Beatillo 14. Creazioni su misura, restauro e manutenzione su appuntamento.";
 const URL = "https://www.carapreziosi.it/gioielliere-bari";
 const IMAGE = `https://www.carapreziosi.it${storiaLaboratorio}`;
 
@@ -59,7 +59,7 @@ function GioielliereBariPage() {
           </Reveal>
           <Reveal delay={0.15} className="mt-10 grid gap-8 md:grid-cols-12">
             <p className="md:col-span-6 md:col-start-3 text-lg text-muted-foreground leading-relaxed">
-              In {contacts.address}, nel cuore di Bari, il maestro orafo Nicola Caradonna riceve su appuntamento chi cerca un gioielliere artigiano vero: non una catena, non una vetrina seriale, ma una bottega dove ogni pezzo viene pensato, lavorato e custodito a mano. Una tradizione che da oltre quarant'anni accompagna le famiglie del territorio nei momenti più importanti.
+              In {contacts.address}, nel cuore di Bari, il maestro orafo Nicola Caradonna riceve su appuntamento chi cerca un maestro orafo vero: non una catena, non una vetrina seriale, ma una bottega dove ogni pezzo viene pensato, lavorato e custodito a mano. Una tradizione che da oltre quarant'anni accompagna le famiglie del territorio nei momenti più importanti.
             </p>
           </Reveal>
         </div>
@@ -70,10 +70,10 @@ function GioielliereBariPage() {
         <div className="container-cara grid gap-12 md:grid-cols-12">
           <div className="md:col-span-7 md:col-start-2 space-y-6 text-lg text-ink/85 leading-relaxed">
             <p>
-              Cercare un gioielliere a Bari significa, oggi, scegliere tra due mondi molto diversi. Da un lato le grandi insegne, con cataloghi standardizzati e gioielli prodotti in serie all'estero; dall'altro le poche botteghe artigiane rimaste, dove il banco del maestro orafo è ancora il vero centro del lavoro. Cara Preziosi appartiene a questa seconda famiglia: un atelier in cui creazione, restauro e manutenzione passano dalle stesse mani esperte, in laboratorio, senza intermediari.
+              Cercare un gioielliere a Bari significa, oggi, scegliere tra due mondi molto diversi. Da un lato le grandi insegne, con cataloghi standardizzati e gioielli prodotti in serie all'estero; dall'altro le poche botteghe orafe rimaste, dove il banco del maestro orafo è ancora il vero centro del lavoro. Cara Preziosi appartiene a questa seconda famiglia: un atelier in cui creazione, restauro e manutenzione passano dalle stesse mani esperte, in laboratorio, senza intermediari.
             </p>
             <p>
-              Per chi vive a Bari e in provincia, avere a disposizione un gioielliere artigiano vicino casa significa poter affidare con tranquillità anche il pezzo più importante: l'anello di fidanzamento da progettare, la collana ereditata da rimettere a nuovo, le fedi da personalizzare con un'incisione. Tutto questo viene curato qui, in Via Antonio Beatillo, con la possibilità di parlare di persona con chi mette davvero le mani sul gioiello.
+              Per chi vive a Bari e in provincia, avere a disposizione un maestro orafo vicino casa significa poter affidare con tranquillità anche il pezzo più importante: l'anello di fidanzamento da progettare, la collana ereditata da rimettere a nuovo, le fedi da personalizzare con un'incisione. Tutto questo viene curato qui, in Via Antonio Beatillo, con la possibilità di parlare di persona con chi mette davvero le mani sul gioiello.
             </p>
           </div>
         </div>
@@ -87,7 +87,7 @@ function GioielliereBariPage() {
               <p className="eyebrow text-gold-deep">§ I servizi</p>
             </div>
             <Reveal as="h2" className="display-md md:col-span-8">
-              Cosa fa un <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>gioielliere artigiano</em>
+              Cosa fa un <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>maestro orafo</em>
             </Reveal>
           </div>
           <div className="grid gap-10 md:grid-cols-3">
@@ -129,7 +129,7 @@ function GioielliereBariPage() {
               <p className="eyebrow text-gold-deep">§ La differenza</p>
             </div>
             <Reveal as="h2" className="display-md md:col-span-8">
-              Atelier artigiano e catena: due approcci diversi
+              Atelier orafo e catena: due approcci diversi
             </Reveal>
           </div>
           <div className="grid gap-12 md:grid-cols-12 md:items-center">

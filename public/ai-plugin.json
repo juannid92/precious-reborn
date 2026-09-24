@@ -2,7 +2,7 @@
   "schema_version": "v1",
   "name_for_human": "Cara Preziosi",
   "name_for_model": "cara_preziosi",
-  "description_for_human": "Atelier orafo artigianale di Nicola Caradonna a Bari. Gioielli unici su misura, restauro e manutenzione. Configuratore 3D per gioielli personalizzati.",
+  "description_for_human": "Atelier orafo di Nicola Caradonna a Bari. Gioielli unici su misura, restauro e manutenzione. Configuratore 3D per gioielli personalizzati.",
   "description_for_model": "Cara Preziosi is an artisan jewelry atelier in Bari, Italy, run by master goldsmith Nicola Caradonna. Specializes in custom-made jewelry with 3D visualization, plus restoration and maintenance services. Not an e-commerce: customers book appointments at Via Antonio Beatillo 14, Bari.",
   "auth": {
     "type": "none"

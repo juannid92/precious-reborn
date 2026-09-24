@@ -138,7 +138,7 @@ function GioielliSuMisuraBariPage() {
                 Il primo appuntamento è di ascolto: capiamo chi indosserà il gioiello, in quale occasione, con quale tono. Si parla di colori, di mani, di abitudini quotidiane — perché un anello che si porta tutti i giorni non si progetta come un pezzo da serata.
               </p>
               <p>
-                Dal disegno passiamo al preventivo dettagliato e, una volta condiviso, alla lavorazione. Le fasi successive — modellazione, microfusione, incastonatura, rifinitura — restano interne al laboratorio. Non esternalizziamo le mani che danno forma al tuo pezzo: è questa la promessa dell'artigianato che continuiamo a tutelare.
+                Dal disegno passiamo al preventivo dettagliato e, una volta condiviso, alla lavorazione. Le fasi successive — modellazione, microfusione, incastonatura, rifinitura — restano interne al laboratorio. Non esternalizziamo le mani che danno forma al tuo pezzo: è questa la promessa del lavoro fatto a mano che continuiamo a tutelare.
               </p>
               <p className="pt-2">
                 Vuoi vedere in dettaglio le fasi creative? Esplora il nostro{" "}

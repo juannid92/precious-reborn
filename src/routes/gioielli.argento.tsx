@@ -203,7 +203,7 @@ function ArgentoPage() {
           <div className="md:col-span-6 order-1 md:order-2">
             <img
               src={ringBouquet}
-              alt="Dettaglio di un anello in argento con lavorazione artigianale"
+              alt="Dettaglio di un anello in argento con lavorazione orafa a mano"
               className="w-full aspect-[4/3] object-cover"
               loading="lazy"
               decoding="async"

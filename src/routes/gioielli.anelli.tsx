@@ -13,9 +13,9 @@ import { contacts } from "@/content/site";
 import ringSchiuma from "@/assets/cara/ring-schiuma.jpg";
 import ringCharlotte from "@/assets/cara/ring-charlotte.jpg";
 
-const TITLE = "Anelli artigianali a Bari — Atelier Cara Preziosi";
+const TITLE = "Anelli fatti a mano a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Anelli artigianali fatti a mano nell'atelier Cara Preziosi a Bari: stile personale, impegno e regalo, su appuntamento in Via Antonio Beatillo 14.";
+  "Anelli fatti a mano al banco del maestro orafo nell'atelier Cara Preziosi a Bari: stile personale, impegno e regalo, su appuntamento in Via Antonio Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/anelli";
 const IMAGE = `https://www.carapreziosi.it${ringSchiuma}`;
 const IMAGE_ALT = `https://www.carapreziosi.it${ringCharlotte}`;
@@ -83,7 +83,7 @@ function AnelliPage() {
           <p className="eyebrow text-gold-deep mb-8">Gioielli · Anelli</p>
           <Reveal as="h1" className="display-xl max-w-6xl">
             Anelli{" "}
-            <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>artigianali</em> a Bari
+            <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>fatti a mano</em> a Bari
           </Reveal>
           <Reveal delay={0.15} className="mt-10 grid gap-8 md:grid-cols-12">
             <p className="md:col-span-6 md:col-start-3 text-lg text-muted-foreground leading-relaxed">
@@ -159,7 +159,7 @@ function AnelliPage() {
           <div className="md:col-span-6">
             <img
               src={ringSchiuma}
-              alt="Anello artigianale realizzato nell'atelier Cara Preziosi a Bari"
+              alt="Anello realizzato a mano nell'atelier Cara Preziosi a Bari"
               className="w-full aspect-[4/3] object-cover"
               loading="lazy"
               decoding="async"

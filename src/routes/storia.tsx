@@ -10,13 +10,13 @@ export const Route = createFileRoute("/storia")({
       {
         name: "description",
         content:
-          "Scopri la storia del laboratorio Cara Preziosi e di Nicola Caradonna, da oltre 40 anni riferimento della gioielleria artigianale a Bari.",
+          "Scopri la storia del laboratorio Cara Preziosi e di Nicola Caradonna, da oltre 40 anni riferimento dell'alta oreficeria a Bari.",
       },
       { property: "og:title", content: "Il Laboratorio di Nicola Caradonna · Cara Preziosi" },
       {
         property: "og:description",
         content:
-          "Scopri la storia del laboratorio Cara Preziosi e di Nicola Caradonna, da oltre 40 anni riferimento della gioielleria artigianale a Bari.",
+          "Scopri la storia del laboratorio Cara Preziosi e di Nicola Caradonna, da oltre 40 anni riferimento dell'alta oreficeria a Bari.",
       },
       { property: "og:url", content: "https://www.carapreziosi.it/storia" },
       { property: "og:type", content: "website" },
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/storia")({
       {
         name: "twitter:description",
         content:
-          "Scopri la storia del laboratorio Cara Preziosi e di Nicola Caradonna, da oltre 40 anni riferimento della gioielleria artigianale a Bari.",
+          "Scopri la storia del laboratorio Cara Preziosi e di Nicola Caradonna, da oltre 40 anni riferimento dell'alta oreficeria a Bari.",
       },
       { name: "twitter:image", content: `https://www.carapreziosi.it${storia.hero.image}` },
     ],

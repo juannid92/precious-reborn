@@ -60,7 +60,7 @@ function AtelierOrafoPugliaPage() {
           </Reveal>
           <Reveal delay={0.15} className="mt-10 grid gap-8 md:grid-cols-12">
             <p className="md:col-span-6 md:col-start-3 text-lg text-muted-foreground leading-relaxed">
-              Un atelier orafo non è solo un negozio: è il banco di lavoro dove un maestro disegna, fonde e rifinisce ogni gioiello con le proprie mani. In Puglia questa figura è oggi una scelta consapevole, lontana dalle vetrine seriali. Cara Preziosi, in {contacts.address} a Bari, è il punto di riferimento per chi cerca questo tipo di artigianato sul territorio regionale.
+              Un atelier orafo non è solo un negozio: è il banco di lavoro dove un maestro disegna, fonde e rifinisce ogni gioiello con le proprie mani. In Puglia questa figura è oggi una scelta consapevole, lontana dalle vetrine seriali. Cara Preziosi, in {contacts.address} a Bari, è il punto di riferimento per chi cerca questo tipo di lavorazione orafa sul territorio regionale.
             </p>
           </Reveal>
         </div>
@@ -103,7 +103,7 @@ function AtelierOrafoPugliaPage() {
             </div>
             <div className="md:col-span-6 space-y-5 text-lg text-ink/85 leading-relaxed">
               <p>
-                Il maestro orafo Nicola Caradonna porta avanti da oltre quarant'anni un mestiere che richiede mano ferma, pazienza e ascolto. La sua formazione nasce e cresce a Bari, in un dialogo costante con altre botteghe artigiane e con i clienti che, anno dopo anno, hanno reso il laboratorio un punto fisso per le occasioni importanti delle loro famiglie.
+                Il maestro orafo Nicola Caradonna porta avanti da oltre quarant'anni un mestiere che richiede mano ferma, pazienza e ascolto. La sua formazione nasce e cresce a Bari, in un dialogo costante con altre botteghe orafe e con i clienti che, anno dopo anno, hanno reso il laboratorio un punto fisso per le occasioni importanti delle loro famiglie.
               </p>
               <p>
                 Per la sintesi completa di questo percorso, dai primi anni al laboratorio attuale, puoi consultare la pagina dedicata alla{" "}

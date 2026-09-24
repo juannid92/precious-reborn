@@ -14,9 +14,9 @@ import catOrecchiniAsset from "@/assets/cara/cat-orecchini.jpg.asset.json";
 const catOrecchini = catOrecchiniAsset.url;
 import storiaMani from "@/assets/cara/storia-mani.jpg";
 
-const TITLE = "Orecchini artigianali a Bari — Atelier Cara Preziosi";
+const TITLE = "Orecchini fatti a mano a Bari — Atelier Cara Preziosi";
 const DESCRIPTION =
-  "Orecchini artigianali fatti a mano nell'atelier Cara Preziosi a Bari: pezzi quotidiani, da cerimonia, da regalo e su misura. Su appuntamento, Via Beatillo 14.";
+  "Orecchini fatti a mano al banco del maestro orafo nell'atelier Cara Preziosi a Bari: pezzi quotidiani, da cerimonia, da regalo e su misura. Su appuntamento, Via Beatillo 14.";
 const URL = "https://www.carapreziosi.it/gioielli/orecchini";
 const IMAGE = `https://www.carapreziosi.it${catOrecchini}`;
 const IMAGE_ALT = `https://www.carapreziosi.it${storiaMani}`;
@@ -84,7 +84,7 @@ function OrecchiniPage() {
           <p className="eyebrow text-gold-deep mb-8">Gioielli · Orecchini</p>
           <Reveal as="h1" className="display-xl max-w-6xl">
             Orecchini{" "}
-            <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>artigianali</em> a Bari
+            <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>fatti a mano</em> a Bari
           </Reveal>
           <Reveal delay={0.15} className="mt-10 grid gap-8 md:grid-cols-12">
             <p className="md:col-span-6 md:col-start-3 text-lg text-muted-foreground leading-relaxed">
@@ -160,7 +160,7 @@ function OrecchiniPage() {
           <div className="md:col-span-6">
             <img
               src={catOrecchini}
-              alt="Orecchini artigianali realizzati nell'atelier Cara Preziosi a Bari"
+              alt="Orecchini realizzati a mano nell'atelier Cara Preziosi a Bari"
               className="w-full aspect-[4/3] object-cover"
               loading="lazy"
               decoding="async"

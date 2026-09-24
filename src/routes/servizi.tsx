@@ -11,13 +11,13 @@ export const Route = createFileRoute("/servizi")({
       {
         name: "description",
         content:
-          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
+          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi del banco del maestro orafo Cara Preziosi a Bari.",
       },
       { property: "og:title", content: "Servizi: Creazione, Restauro, Manutenzione · Cara Preziosi" },
       {
         property: "og:description",
         content:
-          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
+          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi del banco del maestro orafo Cara Preziosi a Bari.",
       },
       { property: "og:url", content: "https://www.carapreziosi.it/servizi" },
       { property: "og:type", content: "website" },
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/servizi")({
       {
         name: "twitter:description",
         content:
-          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi artigianali dell’atelier orafo Cara Preziosi a Bari.",
+          "Creazione di gioielli su misura, restauro di preziosi e manutenzione professionale. Servizi del banco del maestro orafo Cara Preziosi a Bari.",
       },
       { name: "twitter:image", content: `https://www.carapreziosi.it${services.hero.image}` },
     ],
@@ -55,7 +55,7 @@ export const Route = createFileRoute("/servizi")({
               name: "Creazione gioielli su misura",
               serviceType: "Creazione gioielli su misura",
               description:
-                "Progettazione e realizzazione artigianale di gioielli unici su misura nel laboratorio orafo Cara Preziosi a Bari.",
+                "Progettazione e realizzazione a mano di gioielli unici su misura nel laboratorio orafo Cara Preziosi a Bari.",
               provider: { "@id": "https://www.carapreziosi.it/#business" },
               areaServed: ["Bari", "Puglia", "Italia"],
               url: "https://www.carapreziosi.it/servizi",
@@ -177,7 +177,7 @@ function ServiziPage() {
               },
               { 
                 n: "III", 
-                t: "Lavorazione Artigianale", 
+                t: "Lavorazione Orafa a Mano", 
                 b: "Il cuore del servizio. Fusione, rifinitura e incastonatura avvengono nel nostro laboratorio di Bari, seguendo i tempi necessari per un'esecuzione d'eccellenza." 
               },
               { 

@@ -36,9 +36,9 @@ import ispirazioneAsset from "@/assets/ispirazione.png.asset.json";
 
 export const brand = {
   name: "Cara Preziosi",
-  tagline: "L'eccellenza dell'artigianato orafo made in Italy",
+  tagline: "L'eccellenza dell'alta oreficeria made in Italy",
   shortDescription:
-    "Atelier orafo artigianale a Bari, Via Antonio Beatillo 14. Il maestro Nicola Caradonna crea, restaura e custodisce gioielli unici fatti a mano.",
+    "Atelier di alta oreficeria a Bari, Via Antonio Beatillo 14. Il maestro Nicola Caradonna crea, restaura e custodisce gioielli unici fatti a mano.",
 };
 
 export const contacts = {
@@ -70,14 +70,14 @@ export const home = {
   heroEyebrow: "Cara Preziosi · Bari",
   heroTitle: "L'arte orafa\ndelle collezioni\nCara Preziosi",
   heroLead:
-    "Atelier orafo artigianale a Bari. Gioielli fatti a mano su misura nel laboratorio di Nicola Caradonna, dove ogni pezzo custodisce una storia e la migliore tradizione orafa italiana.",
+    "Atelier di alta oreficeria a Bari. Gioielli fatti a mano su misura nel laboratorio di Nicola Caradonna, dove ogni pezzo custodisce una storia e la migliore tradizione orafa italiana.",
   heroCta: { label: "Scopri le collezioni", to: "/categorie" },
   heroCtaSecondary: { label: "Richiedi un preventivo", to: "/contatti" },
 
   intro: {
     eyebrow: "Le collezioni",
     title: "Tre famiglie di gioielli, una sola firma",
-    body: "Ogni gioiello è il risultato di una ricerca attenta dei migliori materiali, combinata con la maestria artigianale di esperti orafi.",
+    body: "Ogni gioiello è il risultato di una ricerca attenta dei migliori materiali, combinata con la maestria del maestro orafo e del suo banco di lavoro.",
   },
 
   servicesPreview: {
@@ -91,8 +91,8 @@ export const home = {
   manifesto: {
     eyebrow: "Made in Italy",
     title:
-      "Indossare un gioiello fatto a mano significa scegliere un pezzo unico, simbolo di tradizione, passione e autenticità artigianale.",
-    body: "Oggi l'autentico artigianato orafo è sempre più raro, e solo pochi maestri continuano a custodire e tramandare questo mestiere con la stessa passione di un tempo. Noi di Cara Preziosi siamo orgogliosi di far parte di questa élite, preservando un'arte che combina creatività, esperienza e attenzione ai dettagli.",
+      "Indossare un gioiello fatto a mano significa scegliere un pezzo unico, simbolo di tradizione, passione e autenticità del fatto a mano.",
+    body: "Oggi l'autentica arte orafa è sempre più rara, e solo pochi maestri continuano a custodire e tramandare questo mestiere con la stessa passione di un tempo. Noi di Cara Preziosi siamo orgogliosi di far parte di questa élite, preservando un'arte che combina creatività, esperienza e attenzione ai dettagli.",
     cta: { label: "Scopri la nostra storia", to: "/storia" },
   },
 
@@ -239,7 +239,7 @@ export const storia = {
     image: storiaHero,
     eyebrow: "Il laboratorio",
     title: "L'elegante tradizione\ndi Cara Preziosi",
-    lead: "Cara Preziosi nasce dalla passione del maestro orafo Nicola Caradonna: una bottega artigiana che custodisce e tramanda l'arte della gioielleria italiana.",
+    lead: "Cara Preziosi nasce dalla passione del maestro orafo Nicola Caradonna: una bottega orafa che custodisce e tramanda l'arte della gioielleria italiana.",
   },
   intro: {
     title: "Custodi dell'eccellenza orafa",
@@ -269,7 +269,7 @@ export const storia = {
   },
   innovazione: {
     title: "L'evoluzione della gioielleria\ntra passato e futuro",
-    body: "Cara Preziosi unisce tradizione e innovazione grazie all'uso di tecnologie all'avanguardia come la stampa 3D e la modellazione digitale. Questi strumenti permettono di creare prototipi estremamente dettagliati, garantendo precisione e personalizzazione senza precedenti. La combinazione tra il sapere artigianale e le nuove tecnologie consente di realizzare gioielli unici, ottimizzando il processo creativo senza rinunciare alla qualità e all'anima del lavoro fatto a mano.",
+    body: "Cara Preziosi unisce tradizione e innovazione grazie all'uso di tecnologie all'avanguardia come la stampa 3D e la modellazione digitale. Questi strumenti permettono di creare prototipi estremamente dettagliati, garantendo precisione e personalizzazione senza precedenti. La combinazione tra il sapere del maestro orafo e le nuove tecnologie consente di realizzare gioielli unici, ottimizzando il processo creativo senza rinunciare alla qualità e all'anima del lavoro fatto a mano.",
     image: storiaMani,
   },
   vetrina: {
