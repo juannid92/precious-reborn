@@ -67,8 +67,8 @@ function CategoriePage() {
             <div className="md:col-span-7 md:col-start-3 space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
                 Anelli, orecchini, collane e bracciali. Ogni famiglia ha la sua
-                voce, ma tutte parlano la stessa lingua: artigianato italiano,
-                mano del maestro, materia preziosa scelta a una a una.
+                voce, ma tutte parlano la stessa lingua: mano del maestro,
+                materia preziosa scelta a una a una.
               </p>
               <p>
                 Le collezioni di Cara Preziosi nascono nel nostro atelier orafo
