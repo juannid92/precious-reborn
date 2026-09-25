@@ -74,6 +74,9 @@ export function SiteFooter() {
               <a href={contacts.facebookHref} target="_blank" rel="me noreferrer" className="text-bone/70 hover:text-gold transition-colors">
                 Facebook
               </a>
+              <a href={contacts.facebookPersonalHref} target="_blank" rel="me noreferrer" className="text-bone/70 hover:text-gold transition-colors">
+                Nicola Caradonna
+              </a>
             </div>
           </div>
         </div>

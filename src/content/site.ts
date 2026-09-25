@@ -50,7 +50,8 @@ export const contacts = {
   email: "info@carapreziosi.it",
   emailHref: "mailto:info@carapreziosi.it",
   whatsappHref: "https://wa.me/393939536607",
-  facebookHref: "https://www.facebook.com/carapreziosi",
+  facebookHref: "https://www.facebook.com/caragioielleria/",
+  facebookPersonalHref: "https://www.facebook.com/nicola.caradonna.758/",
   instagramHref: "https://www.instagram.com/carapreziosi",
   mapEmbedSrc:
     "https://www.google.com/maps?q=Via+Antonio+Beatillo+14,+70121+Bari+BA&output=embed",

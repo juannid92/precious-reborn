@@ -196,7 +196,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               paymentAccepted: "Cash, Credit Card, Bank Transfer",
               sameAs: [
                 "https://www.instagram.com/carapreziosi",
-                "https://www.facebook.com/carapreziosi",
+                "https://www.facebook.com/caragioielleria/",
               ],
               knowsAbout: [
                 "Gioielli su misura",
@@ -217,6 +217,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               description:
                 "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione a mano di gioielli unici su misura.",
               worksFor: { "@id": "https://www.carapreziosi.it/#business" },
+              sameAs: ["https://www.facebook.com/nicola.caradonna.758/"],
               knowsAbout: [
                 "Creazione di gioielli su misura",
                 "Restauro di gioielli",
