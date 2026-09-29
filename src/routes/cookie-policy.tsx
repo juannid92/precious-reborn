@@ -71,6 +71,18 @@ function CookiePolicyPage() {
                   <td>Massimo 24 ore o fino alla rimozione</td>
                 </tr>
                 <tr>
+                  <td>__dpl</td>
+                  <td>Lovable, infrastruttura di hosting</td>
+                  <td>Instradamento della versione pubblicata e distribuzione del sito</td>
+                  <td>Circa 24 ore</td>
+                </tr>
+                <tr>
+                  <td>session-id</td>
+                  <td>Lovable, infrastruttura di hosting</td>
+                  <td>Gestione tecnica della sessione di erogazione</td>
+                  <td>Circa 30 minuti</td>
+                </tr>
+                <tr>
                   <td>__cf_bm</td>
                   <td>Cloudflare</td>
                   <td>Protezione da traffico automatizzato e abusi; cookie HttpOnly</td>
@@ -158,8 +170,8 @@ function CookiePolicyPage() {
 
           <h2 className={heading}>7. Trasferimenti e maggiori informazioni</h2>
           <p>
-            Google e Cloudflare possono trattare dati fuori dallo SEE applicando le garanzie
-            previste dal GDPR. Per finalità, destinatari, diritti e contatti consulta la{" "}
+            Google, Cloudflare e Lovable possono trattare dati fuori dallo SEE applicando le
+            garanzie previste dal GDPR. Per finalità, destinatari, diritti e contatti consulta la{" "}
             <Link to="/privacy-policy" className={link}>
               Privacy Policy
             </Link>

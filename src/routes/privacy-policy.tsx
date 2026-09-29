@@ -112,6 +112,10 @@ function PrivacyPolicyPage() {
               del sito;
             </li>
             <li>
+              <strong>Lovable</strong>, quale piattaforma di pubblicazione e hosting applicativo;
+              può fornire componenti tecnici e il badge della piattaforma.
+            </li>
+            <li>
               <strong>Google</strong>, per Google Analytics soltanto dopo il consenso;
             </li>
             <li>
