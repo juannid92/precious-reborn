@@ -99,8 +99,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { httpEquiv: "content-language", content: "it-IT" },
       { name: "author", content: "Nicola Caradonna — Cara Preziosi" },
-      { name: "robots", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
-      { name: "googlebot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
+      {
+        name: "robots",
+        content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      },
+      {
+        name: "googlebot",
+        content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      },
       { name: "theme-color", content: "#c9a84c" },
       { name: "geo.region", content: "IT-BA" },
       { name: "geo.placename", content: "Bari, Puglia, Italia" },
@@ -113,7 +119,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: `${brand.name} — Laboratorio orafo a Bari` },
       { name: "twitter:description", content: brand.shortDescription },
-      { name: "twitter:image", content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png" },
+      {
+        name: "twitter:image",
+        content: "https://www.carapreziosi.it/brand/cara-preziosi-logo.png",
+      },
     ],
     links: [
       { rel: "manifest", href: "/manifest.webmanifest" },
@@ -121,7 +130,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", type: "image/png", href: "/favicon-192.png", sizes: "192x192" },
       { rel: "icon", type: "image/png", href: "/favicon-512.png", sizes: "512x512" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-      { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
       {
         rel: "preload",
         as: "font",
@@ -228,7 +236,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 "Lavorazione orafa italiana fatta a mano",
               ],
             },
-
           ],
         }),
       },
@@ -246,8 +253,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
         <meta name="apple-mobile-web-app-title" content="Cara Preziosi" />
-        
-        
       </head>
       <body className="antialiased selection:bg-gold selection:text-ink">
         {children}
@@ -277,6 +282,5 @@ function RootComponent() {
         <CookiePreferencesModal />
       </ConsentProvider>
     </QueryClientProvider>
-
   );
 }

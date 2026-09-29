@@ -25,12 +25,13 @@ export type ConsentRecord = {
  * Versione corrente del set di cookie/servizi.
  * Incrementare quando si aggiungono/cambiano servizi → riappare il banner.
  */
-export const CONSENT_VERSION = 1;
+export const CONSENT_VERSION = 2;
 
 /** Durata massima del consenso (in giorni) prima di richiederlo nuovamente. */
 export const CONSENT_MAX_AGE_DAYS = 180;
 
-const STORAGE_KEY = "cara_cookie_consent_v1";
+const STORAGE_KEY = "cara_cookie_consent_v2";
+const LEGACY_STORAGE_KEYS = ["cara_cookie_consent_v1"];
 const OPEN_EVENT = "cara:open-cookie-preferences";
 
 const DEFAULT_CONSENT: ConsentState = {
@@ -70,6 +71,7 @@ function isExpired(record: ConsentRecord): boolean {
 function readStoredConsent(): ConsentRecord | null {
   if (typeof window === "undefined") return null;
   try {
+    for (const key of LEGACY_STORAGE_KEYS) window.localStorage.removeItem(key);
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as ConsentRecord;
@@ -82,8 +84,10 @@ function readStoredConsent(): ConsentRecord | null {
     ) {
       return null;
     }
-    if (parsed.version !== CONSENT_VERSION) return null;
-    if (isExpired(parsed)) return null;
+    if (parsed.version !== CONSENT_VERSION || isExpired(parsed)) {
+      window.localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
     return parsed;
   } catch {
     return null;

@@ -1,10 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Mail, Phone, MapPin, Clock, Instagram, Facebook } from "lucide-react";
 import { brand, contacts, home } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/contatti")({
   validateSearch: ((search: Record<string, unknown>) => ({
@@ -47,8 +52,18 @@ export const Route = createFileRoute("/contatti")({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.carapreziosi.it/" },
-            { "@type": "ListItem", position: 2, name: "Contatti", item: "https://www.carapreziosi.it/contatti" },
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.carapreziosi.it/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Contatti",
+              item: "https://www.carapreziosi.it/contatti",
+            },
           ],
         }),
       },
@@ -106,7 +121,6 @@ export const Route = createFileRoute("/contatti")({
   component: ContattiPage,
 });
 
-
 function ContattiPage() {
   return (
     <>
@@ -116,14 +130,17 @@ function ContattiPage() {
           <PageBreadcrumb current="Contatti" className="mb-8" />
           <p className="eyebrow text-gold-deep mb-8">L'incontro</p>
           <Reveal as="h1" className="display-xl max-w-6xl">
-            Su <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>appuntamento</em>,<br />
+            Su{" "}
+            <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>
+              appuntamento
+            </em>
+            ,<br />
             nell'atelier di Bari.
           </Reveal>
           <Reveal delay={0.15} className="mt-10 grid gap-8 md:grid-cols-12">
             <p className="md:col-span-5 md:col-start-3 text-lg text-muted-foreground leading-relaxed">
-              Scrivici, chiamaci o scrivi un messaggio. Risponderemo per
-              fissare la tua visita in atelier — un caffè, un disegno, le tue
-              idee. Senza fretta, senza pressione.
+              Scrivici, chiamaci o scrivi un messaggio. Risponderemo per fissare la tua visita in
+              atelier — un caffè, un disegno, le tue idee. Senza fretta, senza pressione.
             </p>
           </Reveal>
         </div>
@@ -136,7 +153,9 @@ function ContattiPage() {
           <Reveal className="lg:col-span-5">
             <p className="eyebrow text-gold-deep mb-8">L'atelier</p>
             <p className="display-md mb-12 leading-tight">
-              {contacts.address}<br />{contacts.city}
+              {contacts.address}
+              <br />
+              {contacts.city}
             </p>
 
             <ul className="space-y-7 text-base">
@@ -152,21 +171,27 @@ function ContattiPage() {
                 <Phone className="h-5 w-5 mt-0.5 text-gold-deep shrink-0" />
                 <div>
                   <p className="eyebrow text-muted-foreground mb-1">Telefono</p>
-                  <a href={contacts.phoneHref} className="underline-gold">{contacts.phone}</a>
+                  <a href={contacts.phoneHref} className="underline-gold">
+                    {contacts.phone}
+                  </a>
                 </div>
               </li>
               <li className="flex items-start gap-4">
                 <Mail className="h-5 w-5 mt-0.5 text-gold-deep shrink-0" />
                 <div>
                   <p className="eyebrow text-muted-foreground mb-1">Email</p>
-                  <a href={contacts.emailHref} className="underline-gold">{contacts.email}</a>
+                  <a href={contacts.emailHref} className="underline-gold">
+                    {contacts.email}
+                  </a>
                 </div>
               </li>
               <li className="flex items-start gap-4">
                 <MapPin className="h-5 w-5 mt-0.5 text-gold-deep shrink-0" />
                 <div>
                   <p className="eyebrow text-muted-foreground mb-1">Come arrivare</p>
-                  <p className="text-sm text-muted-foreground">Centro storico di Bari, a piedi dal Lungomare.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Centro storico di Bari, a piedi dal Lungomare.
+                  </p>
                 </div>
               </li>
             </ul>
@@ -216,14 +241,26 @@ function ContattiPage() {
               <p className="eyebrow text-gold-deep">§ Visita</p>
             </div>
             <Reveal as="h2" className="display-md md:col-span-9">
-              Cosa portare al <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>primo incontro</em>
+              Cosa portare al{" "}
+              <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>
+                primo incontro
+              </em>
             </Reveal>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
             {[
-              { t: "Un'idea, anche vaga", b: "Una foto Pinterest, uno schizzo a matita, un ricordo. Da lì partiamo." },
-              { t: "Un riferimento personale", b: "Un gioiello di famiglia, una pietra ereditata. Lo studiamo insieme." },
-              { t: "Tempo", b: "L'appuntamento dura ~45 minuti. Senza fretta, senza obbligo di scelta." },
+              {
+                t: "Un'idea, anche vaga",
+                b: "Una foto Pinterest, uno schizzo a matita, un ricordo. Da lì partiamo.",
+              },
+              {
+                t: "Un riferimento personale",
+                b: "Un gioiello di famiglia, una pietra ereditata. Lo studiamo insieme.",
+              },
+              {
+                t: "Tempo",
+                b: "L'appuntamento dura ~45 minuti. Senza fretta, senza obbligo di scelta.",
+              },
             ].map((x, i) => (
               <Reveal key={i} delay={i * 0.08}>
                 <div className="border-t border-ink/15 pt-6">
@@ -245,7 +282,10 @@ function ContattiPage() {
               <p className="eyebrow text-gold-deep">§ FAQ</p>
             </div>
             <Reveal as="h2" className="display-md md:col-span-9">
-              Domande <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>frequenti</em>
+              Domande{" "}
+              <em className="italic font-display text-gold-deep" style={{ fontStyle: "italic" }}>
+                frequenti
+              </em>
             </Reveal>
           </div>
           <div className="grid md:grid-cols-12 gap-8">
@@ -288,18 +328,24 @@ function ContattiPage() {
         </div>
       </section>
 
-      {/* MAP */}
-
-      <section className="bg-obsidian">
-        <div className="relative w-full h-[60vh] min-h-[400px]">
-          <iframe
-            src={contacts.mapEmbedSrc}
-            title="Atelier Cara Preziosi — Bari"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="absolute inset-0 w-full h-full grayscale contrast-110 brightness-90"
-            style={{ border: 0, filter: "grayscale(100%) contrast(1.1) brightness(0.85)" }}
-          />
+      {/* MAP — nessun embed di terze parti caricato automaticamente */}
+      <section className="bg-obsidian text-bone">
+        <div className="container-cara py-20 md:py-28 text-center">
+          <MapPin className="mx-auto h-8 w-8 text-gold" aria-hidden="true" />
+          <p className="eyebrow text-gold mt-5">Come raggiungerci</p>
+          <h2 className="font-display text-3xl md:text-5xl mt-3">{contacts.address}</h2>
+          <p className="mt-3 text-bone/70">{contacts.city}</p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${contacts.address}, ${contacts.city}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary mt-8 inline-flex"
+          >
+            Apri in Google Maps
+          </a>
+          <p className="mt-4 text-xs text-bone/55">
+            Google riceverà dati tecnici solo dopo l'apertura del link.
+          </p>
         </div>
       </section>
     </>
@@ -308,11 +354,17 @@ function ContattiPage() {
 
 function ContactForm() {
   const { richiesta, pietra } = Route.useSearch();
-  const stoneName = pietra && pietra.includes("%")
-    ? (() => { try { return decodeURIComponent(pietra); } catch { return pietra; } })()
-    : pietra;
+  const stoneName =
+    pietra && pietra.includes("%")
+      ? (() => {
+          try {
+            return decodeURIComponent(pietra);
+          } catch {
+            return pietra;
+          }
+        })()
+      : pietra;
   const [sending, setSending] = useState(false);
-
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -350,26 +402,60 @@ function ContactForm() {
         <Field name="phone" label="Telefono" type="tel" />
       </div>
       <Field name="email" label="Email" type="email" required />
-      <FieldTextarea name="message" label="Cosa hai in mente?" required defaultValue={stoneName ? `Sono interessato alla pietra: ${stoneName}\n\nSono interessato a questa pietra e vorrei ricevere una proposta per la creazione.` : richiesta} />
-      <button
-        type="submit"
-        disabled={sending}
-        className="btn-primary group disabled:opacity-60"
-      >
+      <FieldTextarea
+        name="message"
+        label="Cosa hai in mente?"
+        required
+        defaultValue={
+          stoneName
+            ? `Sono interessato alla pietra: ${stoneName}\n\nSono interessato a questa pietra e vorrei ricevere una proposta per la creazione.`
+            : richiesta
+        }
+      />
+      <label className="flex items-start gap-3 text-sm text-muted-foreground">
+        <input
+          type="checkbox"
+          name="privacy-acknowledgement"
+          required
+          className="mt-1 h-4 w-4 shrink-0 accent-current"
+        />
+        <span>
+          Dichiaro di aver letto la{" "}
+          <Link to="/privacy-policy" className="underline-gold text-ink">
+            Privacy Policy
+          </Link>
+          . I dati saranno inseriti in un messaggio WhatsApp precompilato e verranno trasmessi solo
+          se deciderò di inviarlo.
+        </span>
+      </label>
+      <button type="submit" disabled={sending} className="btn-primary group disabled:opacity-60">
         {sending ? "Apertura WhatsApp…" : "Invia su WhatsApp"}
       </button>
       <p className="text-xs text-muted-foreground">
-        Inviando il messaggio si aprirà WhatsApp con i tuoi dati già compilati,
-        pronti per essere inviati all'atelier.
+        Inviando il messaggio si aprirà WhatsApp con i tuoi dati già compilati, pronti per essere
+        inviati all'atelier.
       </p>
     </form>
   );
 }
 
-function Field({ name, label, type = "text", required }: { name: string; label: string; type?: string; required?: boolean }) {
+function Field({
+  name,
+  label,
+  type = "text",
+  required,
+}: {
+  name: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+}) {
   return (
     <label className="block group">
-      <span className="eyebrow text-muted-foreground block mb-3">{label}{required && <span className="text-gold-deep">*</span>}</span>
+      <span className="eyebrow text-muted-foreground block mb-3">
+        {label}
+        {required && <span className="text-gold-deep">*</span>}
+      </span>
       <input
         name={name}
         type={type}
@@ -380,10 +466,23 @@ function Field({ name, label, type = "text", required }: { name: string; label: 
   );
 }
 
-function FieldTextarea({ name, label, required, defaultValue }: { name: string; label: string; required?: boolean; defaultValue?: string }) {
+function FieldTextarea({
+  name,
+  label,
+  required,
+  defaultValue,
+}: {
+  name: string;
+  label: string;
+  required?: boolean;
+  defaultValue?: string;
+}) {
   return (
     <label className="block group">
-      <span className="eyebrow text-muted-foreground block mb-3">{label}{required && <span className="text-gold-deep">*</span>}</span>
+      <span className="eyebrow text-muted-foreground block mb-3">
+        {label}
+        {required && <span className="text-gold-deep">*</span>}
+      </span>
       <textarea
         name={name}
         rows={5}

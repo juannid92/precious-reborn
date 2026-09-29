@@ -3,7 +3,22 @@ import { useServerFn } from "@tanstack/react-start";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, ArrowLeft, Sparkles, Circle, Gem, Heart, Star, Crown, Feather, CircleDot, Box, RotateCcw, Download, Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  Sparkles,
+  Circle,
+  Gem,
+  Heart,
+  Star,
+  Crown,
+  Feather,
+  CircleDot,
+  Box,
+  RotateCcw,
+  Download,
+  Loader2,
+} from "lucide-react";
 
 import { brand, home } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
@@ -35,7 +50,10 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
         content:
           "Progetta il tuo gioiello personalizzato con il configuratore 3D di Cara Preziosi. Un percorso su misura con il maestro orafo Nicola Caradonna.",
       },
-      { property: "og:title", content: "Crea il tuo gioiello con configuratore 3D · Cara Preziosi" },
+      {
+        property: "og:title",
+        content: "Crea il tuo gioiello con configuratore 3D · Cara Preziosi",
+      },
       {
         property: "og:description",
         content:
@@ -46,7 +64,10 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
       { property: "og:locale", content: "it_IT" },
       { property: "og:image", content: `https://www.carapreziosi.it${home.heroImage}` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Crea il tuo gioiello con configuratore 3D · Cara Preziosi" },
+      {
+        name: "twitter:title",
+        content: "Crea il tuo gioiello con configuratore 3D · Cara Preziosi",
+      },
       {
         name: "twitter:description",
         content:
@@ -62,8 +83,18 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.carapreziosi.it/" },
-            { "@type": "ListItem", position: 2, name: "Crea il tuo gioiello", item: "https://www.carapreziosi.it/crea-il-tuo-gioiello" },
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.carapreziosi.it/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Crea il tuo gioiello",
+              item: "https://www.carapreziosi.it/crea-il-tuo-gioiello",
+            },
           ],
         }),
       },
@@ -143,7 +174,6 @@ export const Route = createFileRoute("/crea-il-tuo-gioiello")({
         }),
       },
     ],
-
   }),
   component: AtelierCreatePage,
 });
@@ -169,10 +199,34 @@ const BUDGETS: Array<{
   min: number;
   max: number | null;
 }> = [
-  { id: "up-to-1000", label: "500€+", description: "Pezzi essenziali, gesto raffinato.", min: 500, max: 1000 },
-  { id: "1000-2000", label: "1.000 – 2.000€", description: "Lavorazione su misura, dettagli curati.", min: 1000, max: 2000 },
-  { id: "3000-5000", label: "3.000 – 5.000€", description: "Creazioni più articolate, pietre selezionate.", min: 3000, max: 5000 },
-  { id: "5000-plus", label: "5.000€+", description: "Alto di gamma, pezzi di rappresentanza.", min: 5000, max: null },
+  {
+    id: "up-to-1000",
+    label: "500€+",
+    description: "Pezzi essenziali, gesto raffinato.",
+    min: 500,
+    max: 1000,
+  },
+  {
+    id: "1000-2000",
+    label: "1.000 – 2.000€",
+    description: "Lavorazione su misura, dettagli curati.",
+    min: 1000,
+    max: 2000,
+  },
+  {
+    id: "3000-5000",
+    label: "3.000 – 5.000€",
+    description: "Creazioni più articolate, pietre selezionate.",
+    min: 3000,
+    max: 5000,
+  },
+  {
+    id: "5000-plus",
+    label: "5.000€+",
+    description: "Alto di gamma, pezzi di rappresentanza.",
+    min: 5000,
+    max: null,
+  },
 ];
 
 function formatBudget(b: { min: number; max: number | null }): string {
@@ -181,19 +235,69 @@ function formatBudget(b: { min: number; max: number | null }): string {
 }
 
 const JEWELRY_TYPES = [
-  { id: "anello", label: "Anello", description: "Solitari, fedi, anelli di rappresentanza.", icon: <Circle className="h-4 w-4" /> },
-  { id: "collana", label: "Collana", description: "Pendenti, girocollo, lunghe editoriali.", icon: <CircleDot className="h-4 w-4" /> },
-  { id: "bracciale", label: "Bracciale", description: "Tennis, rigidi, charm bracelets.", icon: <Circle className="h-4 w-4" /> },
-  { id: "orecchini", label: "Orecchini", description: "Punti luce, pendenti, statement.", icon: <Gem className="h-4 w-4" /> },
+  {
+    id: "anello",
+    label: "Anello",
+    description: "Solitari, fedi, anelli di rappresentanza.",
+    icon: <Circle className="h-4 w-4" />,
+  },
+  {
+    id: "collana",
+    label: "Collana",
+    description: "Pendenti, girocollo, lunghe editoriali.",
+    icon: <CircleDot className="h-4 w-4" />,
+  },
+  {
+    id: "bracciale",
+    label: "Bracciale",
+    description: "Tennis, rigidi, charm bracelets.",
+    icon: <Circle className="h-4 w-4" />,
+  },
+  {
+    id: "orecchini",
+    label: "Orecchini",
+    description: "Punti luce, pendenti, statement.",
+    icon: <Gem className="h-4 w-4" />,
+  },
 ];
 
 const STYLES = [
-  { id: "minimal", label: "Minimal", description: "Linee essenziali, geometria pura.", icon: <Feather className="h-4 w-4" /> },
-  { id: "classico", label: "Classico", description: "Eleganza senza tempo, gesto tradizionale.", icon: <Crown className="h-4 w-4" /> },
-  { id: "moderno", label: "Moderno", description: "Volumi nuovi, segno contemporaneo.", icon: <Star className="h-4 w-4" /> },
-  { id: "statement", label: "Statement", description: "Presenza scenica, pezzo che parla.", icon: <Sparkles className="h-4 w-4" /> },
-  { id: "romantico", label: "Romantico", description: "Curve morbide, intimità, dettagli a cuore.", icon: <Heart className="h-4 w-4" /> },
-  { id: "bespoke", label: "Bespoke", description: "Totalmente disegnato da zero su di te.", icon: <Gem className="h-4 w-4" /> },
+  {
+    id: "minimal",
+    label: "Minimal",
+    description: "Linee essenziali, geometria pura.",
+    icon: <Feather className="h-4 w-4" />,
+  },
+  {
+    id: "classico",
+    label: "Classico",
+    description: "Eleganza senza tempo, gesto tradizionale.",
+    icon: <Crown className="h-4 w-4" />,
+  },
+  {
+    id: "moderno",
+    label: "Moderno",
+    description: "Volumi nuovi, segno contemporaneo.",
+    icon: <Star className="h-4 w-4" />,
+  },
+  {
+    id: "statement",
+    label: "Statement",
+    description: "Presenza scenica, pezzo che parla.",
+    icon: <Sparkles className="h-4 w-4" />,
+  },
+  {
+    id: "romantico",
+    label: "Romantico",
+    description: "Curve morbide, intimità, dettagli a cuore.",
+    icon: <Heart className="h-4 w-4" />,
+  },
+  {
+    id: "bespoke",
+    label: "Bespoke",
+    description: "Totalmente disegnato da zero su di te.",
+    icon: <Gem className="h-4 w-4" />,
+  },
 ];
 
 const METALS = [
@@ -216,6 +320,7 @@ const STONES = [
 function AtelierCreatePage() {
   const [step, setStep] = useState(0);
   const [inspiration, setInspiration] = useState<string | null>(null);
+  const [aiNoticeAccepted, setAiNoticeAccepted] = useState(false);
   const [type, setType] = useState<string | null>(null);
   const [style, setStyle] = useState<string | null>(null);
   const [metal, setMetal] = useState<string | null>(null);
@@ -268,6 +373,7 @@ function AtelierCreatePage() {
     trellisRequestIdRef.current = null;
     trellisSourceUrlRef.current = null;
     setInspiration(null);
+    setAiNoticeAccepted(false);
     setType(null);
     setStyle(null);
     setMetal(null);
@@ -432,10 +538,7 @@ function AtelierCreatePage() {
     const sameSource = trellisSourceUrlRef.current === sourceImageUrl;
     if (existingId && sameSource && model3dStage !== "ready") {
       if (import.meta.env.DEV) {
-        console.log(
-          "[atelier-3d] riuso requestId esistente (no nuovo job):",
-          existingId,
-        );
+        console.log("[atelier-3d] riuso requestId esistente (no nuovo job):", existingId);
       }
       resume3DJobPolling(existingId);
       return;
@@ -527,7 +630,10 @@ function AtelierCreatePage() {
       scene.scale.setScalar(1 / scaleFactor);
       scene.updateMatrixWorld(true);
 
-      const ab = stlBinary.buffer.slice(stlBinary.byteOffset, stlBinary.byteOffset + stlBinary.byteLength) as ArrayBuffer;
+      const ab = stlBinary.buffer.slice(
+        stlBinary.byteOffset,
+        stlBinary.byteOffset + stlBinary.byteLength,
+      ) as ArrayBuffer;
 
       const blob = new Blob([ab], { type: "application/octet-stream" });
       const url = URL.createObjectURL(blob);
@@ -555,8 +661,20 @@ function AtelierCreatePage() {
         ease: "power4.out",
         delay: 0.25,
       });
-      gsap.from("[data-atelier-hero-eyebrow]", { autoAlpha: 0, y: 16, duration: 0.9, delay: 0.15, ease: "power2.out" });
-      gsap.from("[data-atelier-hero-meta]", { autoAlpha: 0, y: 20, duration: 1, delay: 0.6, ease: "power2.out" });
+      gsap.from("[data-atelier-hero-eyebrow]", {
+        autoAlpha: 0,
+        y: 16,
+        duration: 0.9,
+        delay: 0.15,
+        ease: "power2.out",
+      });
+      gsap.from("[data-atelier-hero-meta]", {
+        autoAlpha: 0,
+        y: 20,
+        duration: 1,
+        delay: 0.6,
+        ease: "power2.out",
+      });
     }, heroRef);
     return () => ctx.revert();
   }, []);
@@ -567,7 +685,7 @@ function AtelierCreatePage() {
       gsap.fromTo(
         "[data-atelier-step-content]",
         { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }
+        { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" },
       );
     }, stageRef);
     return () => ctx.revert();
@@ -671,9 +789,12 @@ function AtelierCreatePage() {
       const sub = await submitConceptFn({
         data: {
           type: type as "anello" | "collana" | "bracciale" | "orecchini",
-          style: style as "minimal" | "classico" | "moderno" | "statement" | "romantico" | "bespoke",
+          style: style as
+            "minimal" | "classico" | "moderno" | "statement" | "romantico" | "bespoke",
           metal: metal as "oro-giallo" | "oro-bianco" | "oro-rosa" | "platino",
-          stones: stones as Array<"diamante" | "zaffiro" | "rubino" | "smeraldo" | "perla" | "nessuna">,
+          stones: stones as Array<
+            "diamante" | "zaffiro" | "rubino" | "smeraldo" | "perla" | "nessuna"
+          >,
           budget: budget ?? undefined,
           notes,
           inspirationDataUrl:
@@ -740,21 +861,26 @@ function AtelierCreatePage() {
 
   const canAdvance = useMemo(() => {
     switch (step) {
-      case 0: return true; // inspiration optional
-      case 1: return !!type;
-      case 2: return !!style;
-      case 3: return !!metal;
-      case 4: return !!budget;
-      case 5: return true;
-      case 6: return previewStage === "ready";
-      default: return true;
+      case 0:
+        return !inspiration || aiNoticeAccepted; // upload facoltativo, avviso obbligatorio se presente
+      case 1:
+        return !!type;
+      case 2:
+        return !!style;
+      case 3:
+        return !!metal;
+      case 4:
+        return !!budget;
+      case 5:
+        return true;
+      case 6:
+        return previewStage === "ready";
+      default:
+        return true;
     }
-  }, [step, type, style, metal, budget, previewStage]);
+  }, [step, type, style, metal, budget, previewStage, inspiration, aiNoticeAccepted]);
 
-  const selectedBudget = useMemo(
-    () => BUDGETS.find((b) => b.id === budget) ?? null,
-    [budget],
-  );
+  const selectedBudget = useMemo(() => BUDGETS.find((b) => b.id === budget) ?? null, [budget]);
 
   const summaryItems = [
     { label: "Tipologia", value: JEWELRY_TYPES.find((t) => t.id === type)?.label ?? null },
@@ -762,21 +888,35 @@ function AtelierCreatePage() {
     { label: "Materia", value: METALS.find((m) => m.id === metal)?.label ?? null },
     {
       label: "Pietre",
-      value: stones.length ? stones.map((id) => STONES.find((s) => s.id === id)?.label).filter(Boolean).join(", ") : null,
+      value: stones.length
+        ? stones
+            .map((id) => STONES.find((s) => s.id === id)?.label)
+            .filter(Boolean)
+            .join(", ")
+        : null,
     },
     {
       label: "Budget stimato",
       value: selectedBudget ? formatBudget(selectedBudget) : null,
     },
-    { label: "Note", value: notes.trim() ? `"${notes.trim().slice(0, 60)}${notes.length > 60 ? "…" : ""}"` : null },
+    {
+      label: "Note",
+      value: notes.trim() ? `"${notes.trim().slice(0, 60)}${notes.length > 60 ? "…" : ""}"` : null,
+    },
   ];
 
   return (
     <div className="bg-bone text-ink">
       {/* ───────────────────────── HERO ───────────────────────── */}
       <section ref={heroRef} className="relative pt-36 md:pt-44 pb-20 md:pb-28 overflow-hidden">
-        <span className="glow-orb glow-orb-bone block" style={{ width: "720px", height: "720px", top: "-10%", right: "-200px" }} />
-        <span className="glow-orb block" style={{ width: "560px", height: "560px", bottom: "-20%", left: "-180px", opacity: 0.4 }} />
+        <span
+          className="glow-orb glow-orb-bone block"
+          style={{ width: "720px", height: "720px", top: "-10%", right: "-200px" }}
+        />
+        <span
+          className="glow-orb block"
+          style={{ width: "560px", height: "560px", bottom: "-20%", left: "-180px", opacity: 0.4 }}
+        />
 
         <div className="container-cara relative">
           <Link
@@ -788,9 +928,7 @@ function AtelierCreatePage() {
             Torna al sito
           </Link>
           <PageBreadcrumb current="Crea il tuo gioiello" className="mb-8" />
-          <p className="eyebrow text-gold-deep mb-8">
-            Atelier · Creazione personalizzata
-          </p>
+          <p className="eyebrow text-gold-deep mb-8">Atelier · Creazione personalizzata</p>
           <h1
             className="font-display leading-[0.98] text-ink max-w-[18ch]"
             style={{
@@ -799,10 +937,16 @@ function AtelierCreatePage() {
             }}
           >
             <span className="block overflow-hidden">
-              <span data-atelier-hero-line className="inline-block">Inizia a immaginare</span>
+              <span data-atelier-hero-line className="inline-block">
+                Inizia a immaginare
+              </span>
             </span>
             <span className="block overflow-hidden">
-              <span data-atelier-hero-line className="inline-block italic text-gold-deep" style={{ fontStyle: "italic" }}>
+              <span
+                data-atelier-hero-line
+                className="inline-block italic text-gold-deep"
+                style={{ fontStyle: "italic" }}
+              >
                 il tuo gioiello.
               </span>
             </span>
@@ -810,15 +954,17 @@ function AtelierCreatePage() {
           <div data-atelier-hero-meta className="mt-10 grid gap-6 md:grid-cols-12 md:items-end">
             <p className="md:col-span-7 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
               Carica un'immagine d'ispirazione, definisci stile e materia, ricevi una prima
-              interpretazione del nostro atelier. È l'inizio di un percorso su misura — non un acquisto online.
+              interpretazione del nostro atelier. È l'inizio di un percorso su misura — non un
+              acquisto online.
             </p>
             <div className="md:col-span-5 md:text-right space-y-2">
               <p className="eyebrow text-ink/55">Sette gesti · zero serie</p>
-              <p className="font-display italic text-xl text-ink/70">Una conversazione, non un form.</p>
+              <p className="font-display italic text-xl text-ink/70">
+                Una conversazione, non un form.
+              </p>
             </div>
           </div>
           <StoneStepCallout />
-
         </div>
       </section>
 
@@ -827,7 +973,11 @@ function AtelierCreatePage() {
         <div className="container-cara">
           {/* Stepper */}
           <div className="mb-12 md:mb-16">
-            <CreationStepper steps={STEPS as unknown as { id: string; label: string; index: number }[]} current={step} onJump={setStep} />
+            <CreationStepper
+              steps={STEPS as unknown as { id: string; label: string; index: number }[]}
+              current={step}
+              onJump={setStep}
+            />
           </div>
 
           <div className="grid gap-10 lg:gap-14 lg:grid-cols-12">
@@ -843,11 +993,34 @@ function AtelierCreatePage() {
                   >
                     <ImageUploadDropzone
                       value={inspiration}
-                      onChange={(dataUrl) => setInspiration(dataUrl)}
+                      onChange={(dataUrl) => {
+                        setInspiration(dataUrl);
+                        setAiNoticeAccepted(false);
+                      }}
                     />
-                    <p className="mt-4 text-xs text-muted-foreground">
-                      Puoi anche saltare questo passaggio: alcuni percorsi nascono solo dalle parole.
-                    </p>
+                    {inspiration ? (
+                      <label className="mt-5 flex items-start gap-3 rounded-2xl border border-ink/15 bg-bone/50 p-4 text-sm text-muted-foreground">
+                        <input
+                          type="checkbox"
+                          checked={aiNoticeAccepted}
+                          onChange={(event) => setAiNoticeAccepted(event.target.checked)}
+                          className="mt-1 h-4 w-4 shrink-0 accent-current"
+                        />
+                        <span>
+                          Confermo di avere il diritto di usare questa immagine, che non contiene
+                          persone identificabili, documenti o dati sensibili. Ho letto la{" "}
+                          <Link to="/privacy-policy" className="underline-gold text-ink">
+                            Privacy Policy
+                          </Link>
+                          e comprendo che l'immagine e le indicazioni saranno inviate a fal.ai per
+                          generare il concept e l'anteprima 3D.
+                        </span>
+                      </label>
+                    ) : (
+                      <p className="mt-4 text-xs text-muted-foreground">
+                        Puoi saltare questo passaggio: alcuni percorsi nascono solo dalle parole.
+                      </p>
+                    )}
                   </StepFrame>
                 )}
 
@@ -966,8 +1139,9 @@ function AtelierCreatePage() {
                           {formatBudget(selectedBudget)}
                         </p>
                         <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                          Stima di partenza. Il prezzo finale dipende da carati, qualità delle pietre e
-                          complessità della lavorazione, e verrà confermato dal maestro orafo.
+                          Stima di partenza. Il prezzo finale dipende da carati, qualità delle
+                          pietre e complessità della lavorazione, e verrà confermato dal maestro
+                          orafo.
                         </p>
                       </div>
                     )}
@@ -1044,11 +1218,12 @@ function AtelierCreatePage() {
                             )}
 
                             {/* Errore generazione 3D */}
-                            {(model3dStage === "error" || model3dStage === "timeout_pending") && model3dError && (
-                              <p className="text-sm text-red-600 leading-relaxed">
-                                {model3dError}
-                              </p>
-                            )}
+                            {(model3dStage === "error" || model3dStage === "timeout_pending") &&
+                              model3dError && (
+                                <p className="text-sm text-red-600 leading-relaxed">
+                                  {model3dError}
+                                </p>
+                              )}
 
                             {/* Preview 3D interattiva + download */}
                             {model3dStage === "ready" && modelUrl && (
@@ -1095,11 +1270,7 @@ function AtelierCreatePage() {
                                 <RotateCcw className="h-4 w-4" />
                                 Ricomincia
                               </button>
-                              <button
-                                type="button"
-                                onClick={goBack}
-                                className="btn-ghost text-ink"
-                              >
+                              <button type="button" onClick={goBack} className="btn-ghost text-ink">
                                 <ArrowLeft className="h-4 w-4" />
                                 Torna indietro
                               </button>
@@ -1125,8 +1296,9 @@ function AtelierCreatePage() {
                           Una conversazione vera, su misura.
                         </p>
                         <p className="mt-4 text-muted-foreground leading-relaxed">
-                          La tua richiesta verrà inoltrata al laboratorio Cara Preziosi. Continueremo
-                          insieme da un'idea a un pezzo finito, con sopralluoghi e revisioni concordate.
+                          La tua richiesta verrà inoltrata al laboratorio Cara Preziosi.
+                          Continueremo insieme da un'idea a un pezzo finito, con sopralluoghi e
+                          revisioni concordate.
                         </p>
                         {selectedBudget && (
                           <p className="mt-5 text-sm text-ink/80">
@@ -1137,17 +1309,26 @@ function AtelierCreatePage() {
                           </p>
                         )}
                         <div className="mt-7 flex flex-wrap gap-3">
-                          <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-primary">
+                          <Link
+                            to="/contatti"
+                            search={{ richiesta: "", pietra: "" }}
+                            className="btn-primary"
+                          >
                             Invia richiesta all'atelier
                             <ArrowRight className="h-4 w-4" />
                           </Link>
-                          <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="btn-ghost text-ink">
+                          <Link
+                            to="/contatti"
+                            search={{ richiesta: "", pietra: "" }}
+                            className="btn-ghost text-ink"
+                          >
                             Prenota una visita
                           </Link>
                         </div>
                       </div>
                       <p className="text-xs text-muted-foreground text-center">
-                        Il configuratore è una bozza di dialogo. Niente verrà finalizzato senza il tuo confronto diretto.
+                        Il configuratore è una bozza di dialogo. Niente verrà finalizzato senza il
+                        tuo confronto diretto.
                       </p>
                     </div>
                   </StepFrame>
@@ -1217,8 +1398,8 @@ function AtelierCreatePage() {
 
               <div className="rounded-2xl border border-ink/10 bg-bone/40 p-5 text-sm text-muted-foreground leading-relaxed">
                 <p className="eyebrow text-ink/55 mb-2">Promemoria atelier</p>
-                Ogni pezzo viene disegnato, fuso e rifinito a mano nel laboratorio di Bari.
-                Nessuna produzione di serie, nessuna delega esterna.
+                Ogni pezzo viene disegnato, fuso e rifinito a mano nel laboratorio di Bari. Nessuna
+                produzione di serie, nessuna delega esterna.
               </div>
             </div>
           </div>
