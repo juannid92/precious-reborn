@@ -17,6 +17,7 @@ import { fal } from "@fal-ai/client";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/integrations/supabase/client.server";
 import { assertTrustedOrigin } from "./ai-guard";
+import { enforcePrivacyRetention } from "./privacy-retention.server";
 
 const ENDPOINT = "fal-ai/trellis-2";
 
@@ -63,6 +64,7 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => SubmitInputSchema.parse(input))
   .handler(async ({ data }): Promise<SubmitTrellis3DResult> => {
     assertTrustedOrigin();
+    await enforcePrivacyRetention();
     fal.config({ credentials: ensureFalKey() });
     const supabase = getSupabaseAdmin();
 

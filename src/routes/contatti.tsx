@@ -424,16 +424,16 @@ function ContactForm() {
           <Link to="/privacy-policy" className="underline-gold text-ink">
             Privacy Policy
           </Link>
-          . I dati saranno inseriti in un messaggio WhatsApp precompilato e verranno trasmessi solo
-          se deciderò di inviarlo.
+          . Cliccando “Invia su WhatsApp” i dati saranno trasferiti a Meta/WhatsApp per precompilare
+          il messaggio, anche prima dell'invio finale nell'app.
         </span>
       </label>
       <button type="submit" disabled={sending} className="btn-primary group disabled:opacity-60">
         {sending ? "Apertura WhatsApp…" : "Invia su WhatsApp"}
       </button>
       <p className="text-xs text-muted-foreground">
-        Inviando il messaggio si aprirà WhatsApp con i tuoi dati già compilati, pronti per essere
-        inviati all'atelier.
+        Premendo il pulsante si aprirà WhatsApp con i dati già compilati; potrai controllarli prima
+        dell'invio finale all'atelier.
       </p>
     </form>
   );

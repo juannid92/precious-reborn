@@ -5,6 +5,7 @@
  * le server functions chiamano queste funzioni lato server.
  */
 import { getSupabaseAdmin } from "@/integrations/supabase/client.server";
+import { enforcePrivacyRetention } from "./privacy-retention.server";
 
 const MONTATURE_DIAG = "MONTATURE_DIAG";
 
@@ -103,9 +104,7 @@ function mapRow(r: Record<string, unknown>): Montatura {
     categoria: String(r.categoria),
     descrizione: r.descrizione ? String(r.descrizione) : null,
     metalli: Array.isArray(r.metalli) ? r.metalli.map(String) : [],
-    forme_compatibili: Array.isArray(r.forme_compatibili)
-      ? r.forme_compatibili.map(String)
-      : [],
+    forme_compatibili: Array.isArray(r.forme_compatibili) ? r.forme_compatibili.map(String) : [],
     carati_min: typeof r.carati_min === "number" ? r.carati_min : null,
     carati_max: typeof r.carati_max === "number" ? r.carati_max : null,
     immagine: r.immagine ? String(r.immagine) : null,
@@ -133,11 +132,7 @@ export async function caricaMontature(forma: string): Promise<Montatura[]> {
   let result = await queryPerForma(formaNorm);
   let formaEffettiva = formaNorm;
 
-  if (
-    !result.error &&
-    (result.data ?? []).length === 0 &&
-    formaNorm.includes(" ")
-  ) {
+  if (!result.error && (result.data ?? []).length === 0 && formaNorm.includes(" ")) {
     const primaParola = formaNorm.split(/\s+/)[0];
     console.log(MONTATURE_DIAG, "retry con prima parola:", primaParola);
     const retry = await queryPerForma(primaParola);
@@ -163,10 +158,9 @@ export async function caricaMontature(forma: string): Promise<Montatura[]> {
 }
 
 export async function caricaConfigSito(): Promise<SiteConfig> {
+  await enforcePrivacyRetention();
   const supabase = getSupabaseAdmin();
-  const { data, error } = await supabase
-    .from("site_config")
-    .select("key, value");
+  const { data, error } = await supabase.from("site_config").select("key, value");
 
   if (error) {
     console.error("[site_config] query error", error.message);
@@ -185,6 +179,7 @@ export async function caricaConfigSito(): Promise<SiteConfig> {
 }
 
 export async function salvaRichiesta(dati: RichiestaDati): Promise<string | null> {
+  await enforcePrivacyRetention();
   const supabase = getSupabaseAdmin();
 
   const { data, error } = await supabase

@@ -167,9 +167,8 @@ function PrivacyPolicyPage() {
               permane il consenso;
             </li>
             <li>
-              contenuti AI e metadati dei job: per il tempo necessario a produrre e rendere
-              disponibile l'anteprima, oltre agli eventuali tempi tecnici di backup e cancellazione
-              dei fornitori.
+              metadati dei job 3D: massimo 90 giorni; i contenuti elaborati dai fornitori AI seguono
+              inoltre i tempi tecnici di backup e cancellazione previsti dai rispettivi servizi.
             </li>
           </ul>
 
