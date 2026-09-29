@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import {
   Outlet,
   Link,
@@ -130,6 +131,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", type: "image/png", href: "/favicon-192.png", sizes: "192x192" },
       { rel: "icon", type: "image/png", href: "/favicon-512.png", sizes: "512x512" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
       {
         rel: "preload",
         as: "font",
@@ -181,7 +183,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               additionalType: "https://schema.org/LocalBusiness",
               name: "Cara Preziosi",
               description:
-                "Cara Preziosi è un atelier di alta oreficeria a Bari specializzato in gioielli su misura, restauro e manutenzione professionale.",
+                "Cara Preziosi è un atelier orafo artigianale a Bari specializzato in gioielli su misura, restauro e manutenzione professionale.",
               url: "https://www.carapreziosi.it/",
               image:
                 "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0229c937-7c28-4ea0-8257-25c6ab4e4415/id-preview-990a0072--8f416fe5-a54e-4f07-a4e6-84f14f7f4dd2.lovable.app-1779116023030.png",
@@ -204,13 +206,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               paymentAccepted: "Cash, Credit Card, Bank Transfer",
               sameAs: [
                 "https://www.instagram.com/carapreziosi",
-                "https://www.facebook.com/caragioielleria/",
+                "https://www.facebook.com/carapreziosi",
               ],
               knowsAbout: [
                 "Gioielli su misura",
                 "Restauro di gioielli",
                 "Lucidatura e messa a misura",
-                "Lavorazione orafa fatta a mano",
+                "Lavorazione artigianale orafa",
                 "Microfusione a cera persa",
                 "Incastonatura di pietre preziose",
                 "Progettazione e disegno del gioiello",
@@ -223,9 +225,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: "Nicola Caradonna",
               jobTitle: "Maestro orafo",
               description:
-                "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione a mano di gioielli unici su misura.",
+                "Nicola Caradonna è un maestro orafo attivo a Bari da oltre 40 anni, specializzato nella creazione artigianale di gioielli unici su misura.",
               worksFor: { "@id": "https://www.carapreziosi.it/#business" },
-              sameAs: ["https://www.facebook.com/nicola.caradonna.758/"],
               knowsAbout: [
                 "Creazione di gioielli su misura",
                 "Restauro di gioielli",
@@ -233,7 +234,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 "Incastonatura di pietre preziose",
                 "Lucidatura e messa a misura di anelli",
                 "Progettazione del gioiello e disegno CAD",
-                "Lavorazione orafa italiana fatta a mano",
+                "Lavorazione artigianale orafa italiana",
               ],
             },
           ],
@@ -262,12 +263,33 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function RemoveLovableBadge() {
+  useEffect(() => {
+    const removeBadge = () => {
+      document
+        .querySelectorAll<HTMLElement>('#lovable-badge, a[href*="lovable.dev/projects/"]')
+        .forEach((element) => {
+          const badge = element.closest<HTMLElement>("#lovable-badge") ?? element;
+          badge.remove();
+        });
+    };
+
+    removeBadge();
+    const observer = new MutationObserver(removeBadge);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
       <ConsentProvider>
+        <RemoveLovableBadge />
         <SmoothScroll />
         <Atmosphere />
         <div className="relative z-[1] flex min-h-screen flex-col text-foreground">

@@ -53,22 +53,22 @@
 
   /* Bone & Gold — palette estesa */
   --bone: oklch(0.965 0.012 80);
-  --bone-deep: oklch(0.92 0.020 82);
-  --ivory: oklch(0.982 0.014 86);          /* ivory luminous */
-  --pearl: oklch(0.955 0.022 88);          /* pearl haze */
+  --bone-deep: oklch(0.92 0.02 82);
+  --ivory: oklch(0.982 0.014 86); /* ivory luminous */
+  --pearl: oklch(0.955 0.022 88); /* pearl haze */
   --cream: oklch(0.985 0.008 85);
-  --champagne: oklch(0.88 0.030 85);       /* champagne mist */
+  --champagne: oklch(0.88 0.03 85); /* champagne mist */
   --champagne-mist: oklch(0.91 0.038 80);
-  --smoke-taupe: oklch(0.78 0.022 70);     /* smoke taupe */
-  --ink: oklch(0.255 0.115 265);           /* deep vivid blue (was warm black) */
+  --smoke-taupe: oklch(0.78 0.022 70); /* smoke taupe */
+  --ink: oklch(0.255 0.115 265); /* deep vivid blue (was warm black) */
   --ink-soft: oklch(0.38 0.105 265);
-  --obsidian: oklch(0.215 0.130 265);      /* deep vivid blue */
-  --obsidian-smoke: oklch(0.30 0.115 265); /* slightly lighter blue */
-  --bronze-glow: oklch(0.45 0.110 260);    /* electric blue glow */
+  --obsidian: oklch(0.215 0.13 265); /* deep vivid blue */
+  --obsidian-smoke: oklch(0.3 0.115 265); /* slightly lighter blue */
+  --bronze-glow: oklch(0.45 0.11 260); /* electric blue glow */
   --gold: oklch(0.72 0.082 75);
   --gold-deep: oklch(0.58 0.085 60);
   --gold-soft: oklch(0.85 0.045 82);
-  --gold-diffusion: oklch(0.80 0.075 78);  /* warm gold diffusion */
+  --gold-diffusion: oklch(0.8 0.075 78); /* warm gold diffusion */
 
   /* Shadcn base mapped to brand */
   --background: var(--bone);
@@ -95,15 +95,15 @@
 .dark {
   --background: var(--obsidian);
   --foreground: var(--bone);
-  --card: oklch(0.18 0.010 55);
+  --card: oklch(0.18 0.01 55);
   --card-foreground: var(--bone);
-  --popover: oklch(0.18 0.010 55);
+  --popover: oklch(0.18 0.01 55);
   --popover-foreground: var(--bone);
   --primary: var(--gold);
   --primary-foreground: var(--obsidian);
-  --secondary: oklch(0.22 0.010 55);
+  --secondary: oklch(0.22 0.01 55);
   --secondary-foreground: var(--bone);
-  --muted: oklch(0.22 0.010 55);
+  --muted: oklch(0.22 0.01 55);
   --muted-foreground: oklch(0.72 0.018 75);
   --accent: var(--gold);
   --accent-foreground: var(--obsidian);
@@ -126,10 +126,19 @@
   }
 
   /* Lenis: do not enable smooth scroll on root, Lenis manages */
-  html.lenis, html.lenis body { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto !important; }
-  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-  .lenis.lenis-stopped { overflow: hidden; }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
 
   body {
     color: var(--color-foreground);
@@ -142,23 +151,32 @@
   }
 
   /* protezione globale: nessun elemento di contenuto dovrebbe sforare */
-  img, video, svg, canvas {
+  img,
+  video,
+  svg,
+  canvas {
     max-width: 100%;
     height: auto;
   }
 
   /* protezione typo: titoli display molto grandi su viewport stretti */
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     overflow-wrap: break-word;
     word-break: normal;
   }
 
-
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     font-weight: 350;
     letter-spacing: -0.02em;
-    font-variation-settings: "opsz" 144, "SOFT" 40;
+    font-variation-settings:
+      "opsz" 144,
+      "SOFT" 40;
   }
 
   ::selection {
@@ -167,7 +185,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.001ms !important;
       transition-duration: 0.001ms !important;
     }
@@ -185,8 +205,16 @@
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
-  @media (min-width: 768px) { .container-cara { padding-inline: 2.5rem; } }
-  @media (min-width: 1280px) { .container-cara { padding-inline: 4rem; } }
+  @media (min-width: 768px) {
+    .container-cara {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-cara {
+      padding-inline: 4rem;
+    }
+  }
 
   .container-narrow {
     width: 100%;
@@ -194,7 +222,11 @@
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
-  @media (min-width: 768px) { .container-narrow { padding-inline: 2.5rem; } }
+  @media (min-width: 768px) {
+    .container-narrow {
+      padding-inline: 2.5rem;
+    }
+  }
 
   /* ─── Display fluid sizes — art-directed, opsz progressive ─── */
   .display-xl {
@@ -203,7 +235,9 @@
     line-height: 0.94;
     letter-spacing: -0.038em;
     font-size: clamp(3.25rem, 11vw, 11rem);
-    font-variation-settings: "opsz" 144, "SOFT" 55;
+    font-variation-settings:
+      "opsz" 144,
+      "SOFT" 55;
     text-wrap: balance;
   }
   .display-lg {
@@ -212,7 +246,9 @@
     line-height: 0.96;
     letter-spacing: -0.032em;
     font-size: clamp(2.5rem, 7vw, 6.5rem);
-    font-variation-settings: "opsz" 144, "SOFT" 42;
+    font-variation-settings:
+      "opsz" 144,
+      "SOFT" 42;
     text-wrap: balance;
   }
   .display-md {
@@ -221,7 +257,9 @@
     line-height: 1.02;
     letter-spacing: -0.027em;
     font-size: clamp(2rem, 4.2vw, 3.75rem);
-    font-variation-settings: "opsz" 96, "SOFT" 32;
+    font-variation-settings:
+      "opsz" 96,
+      "SOFT" 32;
     text-wrap: balance;
   }
 
@@ -250,7 +288,8 @@
     color: var(--muted-foreground);
   }
   /* italic Cormorant per inserti corsivi raffinati */
-  em, .italic-display {
+  em,
+  .italic-display {
     font-family: var(--font-serif);
     font-style: italic;
     font-feature-settings: "ss01";
@@ -259,14 +298,14 @@
   /* ─── Underline gold: gradiente, slide a destra (no shrink) ─── */
   .underline-gold {
     position: relative;
-    background-image: linear-gradient(to right,
-      var(--gold) 0%, var(--gold-deep) 100%);
+    background-image: linear-gradient(to right, var(--gold) 0%, var(--gold-deep) 100%);
     background-position: 0 100%;
     background-repeat: no-repeat;
     background-size: 100% 1px;
     padding-bottom: 0.22em;
-    transition: background-size 0.6s cubic-bezier(0.76, 0, 0.24, 1),
-                color 0.4s ease;
+    transition:
+      background-size 0.6s cubic-bezier(0.76, 0, 0.24, 1),
+      color 0.4s ease;
   }
   .underline-gold:hover {
     background-size: 100% 2px;
@@ -291,7 +330,9 @@
     transform-origin: right center;
     transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
   }
-  .nav-link:hover { color: var(--gold-deep); }
+  .nav-link:hover {
+    color: var(--gold-deep);
+  }
   .nav-link:hover::after,
   .nav-link[data-active="true"]::after {
     transform: scaleX(1);
@@ -331,31 +372,47 @@
     border-radius: 9999px;
     overflow: hidden;
     isolation: isolate;
-    transition: color 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.5s ease;
-    box-shadow: 0 1px 0 0 oklch(1 0 0 / 0.05) inset, 0 1px 2px oklch(0 0 0 / 0.12);
+    transition:
+      color 0.5s ease,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.5s ease;
+    box-shadow:
+      0 1px 0 0 oklch(1 0 0 / 0.05) inset,
+      0 1px 2px oklch(0 0 0 / 0.12);
   }
   .btn-primary::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold) 60%, var(--gold-deep) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--gold-deep) 0%,
+      var(--gold) 60%,
+      var(--gold-deep) 100%
+    );
     transform: translateY(101%);
     transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
   }
   .btn-primary:hover {
     color: var(--bone);
     transform: translateY(-1px);
-    box-shadow: 0 10px 30px -12px oklch(0.58 0.085 60 / 0.55),
-                0 1px 0 oklch(1 0 0 / 0.08) inset;
+    box-shadow:
+      0 10px 30px -12px oklch(0.58 0.085 60 / 0.55),
+      0 1px 0 oklch(1 0 0 / 0.08) inset;
   }
-  .btn-primary:hover::before { transform: translateY(0); }
+  .btn-primary:hover::before {
+    transform: translateY(0);
+  }
   .btn-primary:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--bone), 0 0 0 3px var(--gold-deep);
+    box-shadow:
+      0 0 0 2px var(--bone),
+      0 0 0 3px var(--gold-deep);
   }
-  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
 
   .btn-ghost {
     position: relative;
@@ -371,8 +428,10 @@
     border-radius: 9999px;
     overflow: hidden;
     isolation: isolate;
-    transition: color 0.5s ease, border-color 0.5s ease,
-                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+      color 0.5s ease,
+      border-color 0.5s ease,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .btn-ghost::before {
     content: "";
@@ -389,30 +448,40 @@
     border-color: var(--gold-deep);
     transform: translateY(-1px);
   }
-  .btn-ghost:hover::before { transform: scaleX(1); }
+  .btn-ghost:hover::before {
+    transform: scaleX(1);
+  }
   .btn-ghost:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--bone), 0 0 0 3px var(--gold-deep);
+    box-shadow:
+      0 0 0 2px var(--bone),
+      0 0 0 3px var(--gold-deep);
   }
 
-  .rule { height: 1px; background: currentColor; opacity: 0.16; width: 100%; }
+  .rule {
+    height: 1px;
+    background: currentColor;
+    opacity: 0.16;
+    width: 100%;
+  }
 
   /* ─── Hairline gold — divisore editoriale ─── */
   .hairline-gold {
     height: 1px;
     width: 100%;
-    background: linear-gradient(to right,
+    background: linear-gradient(
+      to right,
       transparent 0%,
       oklch(0.72 0.082 75 / 0.5) 25%,
       oklch(0.58 0.085 60 / 0.75) 50%,
       oklch(0.72 0.082 75 / 0.5) 75%,
-      transparent 100%);
+      transparent 100%
+    );
   }
   .hairline-gold-soft {
     height: 1px;
     width: 100%;
-    background: linear-gradient(to right,
-      transparent, oklch(0.72 0.082 75 / 0.25), transparent);
+    background: linear-gradient(to right, transparent, oklch(0.72 0.082 75 / 0.25), transparent);
   }
 
   /* ─── Section stitch — micro-glow di cucitura tra sezioni ─── */
@@ -429,14 +498,14 @@
     pointer-events: none;
     z-index: 50;
   }
-  .section-stitch::before { 
+  .section-stitch::before {
     top: -80px;
     background: linear-gradient(to bottom, transparent, var(--color-background) 50%, transparent);
     backdrop-filter: blur(8px);
     mask-image: linear-gradient(to bottom, transparent, black, transparent);
   }
-  .section-stitch::after { 
-    bottom: -80px; 
+  .section-stitch::after {
+    bottom: -80px;
     background: linear-gradient(to top, transparent, var(--color-background) 50%, transparent);
     backdrop-filter: blur(8px);
     mask-image: linear-gradient(to top, transparent, black, transparent);
@@ -453,9 +522,11 @@
     left: 0;
     width: 100%;
     height: 24vh;
-    background: linear-gradient(to bottom, 
+    background: linear-gradient(
+      to bottom,
       color-mix(in oklch, var(--color-background) 100%, transparent),
-      transparent);
+      transparent
+    );
     pointer-events: none;
     z-index: 10;
   }
@@ -470,9 +541,11 @@
     left: 0;
     width: 100%;
     height: 24vh;
-    background: linear-gradient(to top, 
+    background: linear-gradient(
+      to top,
       color-mix(in oklch, var(--color-background) 100%, transparent),
-      transparent);
+      transparent
+    );
     pointer-events: none;
     z-index: 10;
   }
@@ -494,7 +567,7 @@
     overflow: hidden;
     isolation: isolate;
     box-shadow:
-      0 30px 60px -30px oklch(0.30 0.020 60 / 0.35),
+      0 30px 60px -30px oklch(0.3 0.02 60 / 0.35),
       0 0 0 1px oklch(0.86 0.015 75 / 0.6) inset;
   }
   .media-frame::after {
@@ -502,15 +575,19 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(ellipse 80% 40% at 50% 100%,
-      oklch(0.12 0.010 55 / 0.28), transparent 70%);
+    background: radial-gradient(
+      ellipse 80% 40% at 50% 100%,
+      oklch(0.12 0.01 55 / 0.28),
+      transparent 70%
+    );
     mix-blend-mode: multiply;
     z-index: 2;
   }
   .media-frame > img,
   .media-frame > video {
-    transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
-                filter 0.8s ease;
+    transition:
+      transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.8s ease;
     will-change: transform;
   }
   .media-frame:hover > img,
@@ -527,8 +604,11 @@
     content: "";
     position: absolute;
     inset: -8% -6% -6% -8%;
-    background: radial-gradient(ellipse 60% 50% at 50% 50%,
-      oklch(0.78 0.075 75 / 0.35), transparent 70%);
+    background: radial-gradient(
+      ellipse 60% 50% at 50% 50%,
+      oklch(0.78 0.075 75 / 0.35),
+      transparent 70%
+    );
     filter: blur(40px);
     z-index: -1;
     pointer-events: none;
@@ -536,10 +616,17 @@
 
   /* ─── Micro float — galleggio impercettibile per elementi chiave ─── */
   @keyframes float-soft {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-6px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
   }
-  .float-soft { animation: float-soft 9s ease-in-out infinite; }
+  .float-soft {
+    animation: float-soft 9s ease-in-out infinite;
+  }
 
   /* ─── Glow orb opt-in ─── */
   .glow-orb {
@@ -580,16 +667,35 @@
  */
 
 @keyframes atmo-drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(-1.8%, 1.2%, 0) scale(1.03); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-1.8%, 1.2%, 0) scale(1.03);
+  }
 }
 @keyframes atmo-breathe {
-  0%, 100% { opacity: 0.92; transform: scale(1); }
-  50%      { opacity: 0.78; transform: scale(1.04); }
+  0%,
+  100% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.78;
+    transform: scale(1.04);
+  }
 }
 @keyframes atmo-haze {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.55; }
-  50%      { transform: translate3d(1.2%, -1.6%, 0); opacity: 0.7; }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(1.2%, -1.6%, 0);
+    opacity: 0.7;
+  }
 }
 
 /* ───── Global Atmosphere root ───── */
@@ -601,12 +707,12 @@
   overflow: hidden;
   contain: strict;
   background:
-    radial-gradient(ellipse 80% 60% at 92% 8%,  oklch(0.42 0.155 264 / 0.40), transparent 62%),
-    radial-gradient(ellipse 85% 65% at 8% 100%, oklch(0.38 0.150 266 / 0.36), transparent 60%),
-    radial-gradient(ellipse 70% 55% at 78% 70%, oklch(0.80 0.090 72 / 0.55), transparent 65%),
-    radial-gradient(ellipse 65% 50% at 14% 22%, oklch(0.84 0.078 76 / 0.50), transparent 65%),
-    radial-gradient(ellipse 85% 60% at 50% 0%,  oklch(0.975 0.014 84), transparent 70%),
-    linear-gradient(180deg, oklch(0.955 0.018 82) 0%, oklch(0.92 0.030 78) 100%);
+    radial-gradient(ellipse 80% 60% at 92% 8%, oklch(0.42 0.155 264 / 0.4), transparent 62%),
+    radial-gradient(ellipse 85% 65% at 8% 100%, oklch(0.38 0.15 266 / 0.36), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 78% 70%, oklch(0.8 0.09 72 / 0.55), transparent 65%),
+    radial-gradient(ellipse 65% 50% at 14% 22%, oklch(0.84 0.078 76 / 0.5), transparent 65%),
+    radial-gradient(ellipse 85% 60% at 50% 0%, oklch(0.975 0.014 84), transparent 70%),
+    linear-gradient(180deg, oklch(0.955 0.018 82) 0%, oklch(0.92 0.03 78) 100%);
 }
 
 /* 1. Campo cromatico — panna + biscotto */
@@ -614,11 +720,11 @@
   position: absolute;
   inset: -10%;
   background:
-    radial-gradient(ellipse 70% 55% at 8% -5%,   oklch(0.975 0.022 84 / 0.95), transparent 62%),
-    radial-gradient(ellipse 62% 50% at 96% 14%,  oklch(0.84 0.080 72 / 0.55), transparent 68%),
-    radial-gradient(ellipse 78% 55% at 50% 58%,  oklch(0.92 0.040 80 / 0.45), transparent 72%),
-    radial-gradient(ellipse 60% 48% at 12% 92%,  oklch(0.82 0.090 70 / 0.55), transparent 68%),
-    radial-gradient(ellipse 52% 42% at 92% 100%, oklch(0.88 0.060 76 / 0.55), transparent 68%);
+    radial-gradient(ellipse 70% 55% at 8% -5%, oklch(0.975 0.022 84 / 0.95), transparent 62%),
+    radial-gradient(ellipse 62% 50% at 96% 14%, oklch(0.84 0.08 72 / 0.55), transparent 68%),
+    radial-gradient(ellipse 78% 55% at 50% 58%, oklch(0.92 0.04 80 / 0.45), transparent 72%),
+    radial-gradient(ellipse 60% 48% at 12% 92%, oklch(0.82 0.09 70 / 0.55), transparent 68%),
+    radial-gradient(ellipse 52% 42% at 92% 100%, oklch(0.88 0.06 76 / 0.55), transparent 68%);
   animation: atmo-drift 36s ease-in-out infinite;
   will-change: transform;
 }
@@ -628,10 +734,10 @@
   position: absolute;
   inset: -8%;
   background:
-    radial-gradient(circle 48vmax at 88% 18%, oklch(0.40 0.160 264 / 0.55), transparent 60%),
-    radial-gradient(circle 44vmax at 10% 82%, oklch(0.38 0.155 266 / 0.50), transparent 62%),
-    radial-gradient(circle 36vmax at 60% 50%, oklch(0.82 0.090 72 / 0.55), transparent 64%),
-    radial-gradient(circle 30vmax at 75% 96%, oklch(0.46 0.150 264 / 0.40), transparent 66%);
+    radial-gradient(circle 48vmax at 88% 18%, oklch(0.4 0.16 264 / 0.55), transparent 60%),
+    radial-gradient(circle 44vmax at 10% 82%, oklch(0.38 0.155 266 / 0.5), transparent 62%),
+    radial-gradient(circle 36vmax at 60% 50%, oklch(0.82 0.09 72 / 0.55), transparent 64%),
+    radial-gradient(circle 30vmax at 75% 96%, oklch(0.46 0.15 264 / 0.4), transparent 66%);
   filter: blur(20px);
   mix-blend-mode: multiply;
   animation: atmo-breathe 32s ease-in-out infinite;
@@ -642,14 +748,15 @@
 .atmosphere-rails {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(108deg,
-      transparent 12%,
-      oklch(0.975 0.026 85 / 0.22) 28%,
-      transparent 44%,
-      transparent 56%,
-      oklch(0.84 0.075 72 / 0.18) 70%,
-      transparent 86%);
+  background: linear-gradient(
+    108deg,
+    transparent 12%,
+    oklch(0.975 0.026 85 / 0.22) 28%,
+    transparent 44%,
+    transparent 56%,
+    oklch(0.84 0.075 72 / 0.18) 70%,
+    transparent 86%
+  );
   mix-blend-mode: screen;
   animation: atmo-haze 42s ease-in-out infinite;
   opacity: 0.95;
@@ -659,8 +766,11 @@
 .atmosphere-vignette {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 110% 85% at 50% 50%, transparent 48%, oklch(0.55 0.090 68 / 0.28) 100%);
+  background: radial-gradient(
+    ellipse 110% 85% at 50% 50%,
+    transparent 48%,
+    oklch(0.55 0.09 68 / 0.28) 100%
+  );
   mix-blend-mode: multiply;
 }
 
@@ -693,15 +803,15 @@ section[class*="bg-bone"]:not([class*="bg-obsidian"]),
 article[class*="bg-bone"]:not([class*="bg-obsidian"]) {
   background-image:
     /* blu profondo top-right: l'ombra cromatica che si vede davvero */
-    radial-gradient(ellipse 75% 60% at 95% 8%,  oklch(0.42 0.155 264 / 0.32), transparent 62%),
+    radial-gradient(ellipse 75% 60% at 95% 8%, oklch(0.42 0.155 264 / 0.32), transparent 62%),
     /* blu profondo bottom-left: profondità diagonale */
-    radial-gradient(ellipse 80% 65% at 5% 100%, oklch(0.38 0.150 266 / 0.30), transparent 60%),
+    radial-gradient(ellipse 80% 65% at 5% 100%, oklch(0.38 0.15 266 / 0.3), transparent 60%),
     /* aurea biscotto calda al centro destra */
-    radial-gradient(ellipse 70% 55% at 78% 65%, oklch(0.80 0.090 72 / 0.55), transparent 65%),
+    radial-gradient(ellipse 70% 55% at 78% 65%, oklch(0.8 0.09 72 / 0.55), transparent 65%),
     /* aurea biscotto in alto sinistra */
     radial-gradient(ellipse 65% 50% at 12% 18%, oklch(0.84 0.075 76 / 0.45), transparent 65%),
     /* respiro panna luminoso al centro */
-    radial-gradient(ellipse 55% 45% at 50% 50%, oklch(0.98 0.020 84 / 0.40), transparent 75%);
+    radial-gradient(ellipse 55% 45% at 50% 50%, oklch(0.98 0.02 84 / 0.4), transparent 75%);
   background-attachment: fixed, fixed, scroll, scroll, scroll;
 }
 
@@ -714,8 +824,8 @@ article[class*="bg-bone"]:not([class*="bg-obsidian"])::before {
   pointer-events: none;
   z-index: -1;
   background:
-    radial-gradient(ellipse 50% 38% at 88% 92%, oklch(0.44 0.150 264 / 0.18), transparent 70%),
-    radial-gradient(ellipse 55% 42% at 8% 8%,   oklch(0.40 0.150 266 / 0.16), transparent 72%);
+    radial-gradient(ellipse 50% 38% at 88% 92%, oklch(0.44 0.15 264 / 0.18), transparent 70%),
+    radial-gradient(ellipse 55% 42% at 8% 8%, oklch(0.4 0.15 266 / 0.16), transparent 72%);
   animation: atmo-drift 30s ease-in-out infinite;
   will-change: transform;
   mix-blend-mode: multiply;
@@ -729,14 +839,18 @@ article[class*="bg-bone"]:not([class*="bg-obsidian"])::after {
   pointer-events: none;
   z-index: -1;
   background:
-    linear-gradient(to bottom,
+    linear-gradient(
+      to bottom,
       oklch(0.88 0.055 74 / 0.55) 0%,
-      oklch(0.92 0.030 80 / 0.20) 14%,
-      transparent 30%),
-    linear-gradient(to top,
-      oklch(0.86 0.060 72 / 0.50) 0%,
-      oklch(0.90 0.040 76 / 0.18) 14%,
-      transparent 30%);
+      oklch(0.92 0.03 80 / 0.2) 14%,
+      transparent 30%
+    ),
+    linear-gradient(
+      to top,
+      oklch(0.86 0.06 72 / 0.5) 0%,
+      oklch(0.9 0.04 76 / 0.18) 14%,
+      transparent 30%
+    );
 }
 
 /* I pseudo restano sotto al contenuto grazie a isolation+z-index negativo,
@@ -746,10 +860,10 @@ article[class*="bg-bone"]:not([class*="bg-obsidian"])::after {
 section[class*="bg-bone-deep"],
 article[class*="bg-bone-deep"] {
   background-image:
-    radial-gradient(ellipse 75% 60% at 95% 8%,  oklch(0.40 0.155 264 / 0.36), transparent 62%),
-    radial-gradient(ellipse 80% 65% at 5% 100%, oklch(0.36 0.150 266 / 0.32), transparent 60%),
-    radial-gradient(ellipse 70% 55% at 75% 60%, oklch(0.78 0.095 72 / 0.60), transparent 65%),
-    radial-gradient(ellipse 65% 50% at 12% 25%, oklch(0.82 0.080 76 / 0.50), transparent 65%);
+    radial-gradient(ellipse 75% 60% at 95% 8%, oklch(0.4 0.155 264 / 0.36), transparent 62%),
+    radial-gradient(ellipse 80% 65% at 5% 100%, oklch(0.36 0.15 266 / 0.32), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 75% 60%, oklch(0.78 0.095 72 / 0.6), transparent 65%),
+    radial-gradient(ellipse 65% 50% at 12% 25%, oklch(0.82 0.08 76 / 0.5), transparent 65%);
 }
 
 /* ===== OBSIDIAN sections: blu notte vivido, stratificato e respirato =====
@@ -763,20 +877,24 @@ section[class*="bg-obsidian"],
 article[class*="bg-obsidian"],
 footer[class*="bg-obsidian"] {
   background-image:
-    radial-gradient(ellipse 55% 38% at 86% 14%,  oklch(0.46 0.155 262 / 0.55), transparent 65%),
-    radial-gradient(ellipse 65% 45% at 8% 58%,   oklch(0.72 0.085 70 / 0.18), transparent 70%),
-    radial-gradient(ellipse 70% 50% at 50% 100%, oklch(0.20 0.130 268 / 0.85), transparent 68%),
-    radial-gradient(ellipse 38% 28% at 50% 48%,  oklch(0.92 0.030 82 / 0.10), transparent 75%),
-    linear-gradient(135deg,
+    radial-gradient(ellipse 55% 38% at 86% 14%, oklch(0.46 0.155 262 / 0.55), transparent 65%),
+    radial-gradient(ellipse 65% 45% at 8% 58%, oklch(0.72 0.085 70 / 0.18), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, oklch(0.2 0.13 268 / 0.85), transparent 68%),
+    radial-gradient(ellipse 38% 28% at 50% 48%, oklch(0.92 0.03 82 / 0.1), transparent 75%),
+    linear-gradient(
+      135deg,
       oklch(0.42 0.155 262 / 0.35) 0%,
       transparent 35%,
       transparent 65%,
-      oklch(0.22 0.130 270 / 0.40) 100%),
-    linear-gradient(180deg,
-      oklch(0.28 0.150 264) 0%,
-      oklch(0.225 0.140 266) 38%,
-      oklch(0.205 0.130 268) 72%,
-      oklch(0.185 0.120 270) 100%);
+      oklch(0.22 0.13 270 / 0.4) 100%
+    ),
+    linear-gradient(
+      180deg,
+      oklch(0.28 0.15 264) 0%,
+      oklch(0.225 0.14 266) 38%,
+      oklch(0.205 0.13 268) 72%,
+      oklch(0.185 0.12 270) 100%
+    );
   background-blend-mode: normal;
 }
 
@@ -790,9 +908,9 @@ footer[class*="bg-obsidian"]::before {
   z-index: -1;
   background:
     radial-gradient(ellipse 50% 34% at 82% 16%, oklch(0.78 0.075 72 / 0.16), transparent 72%),
-    radial-gradient(ellipse 60% 42% at 16% 88%, oklch(0.72 0.080 70 / 0.14), transparent 70%),
-    radial-gradient(ellipse 35% 26% at 52% 52%, oklch(0.96 0.020 82 / 0.08), transparent 78%),
-    radial-gradient(ellipse 28% 20% at 28% 30%, oklch(0.55 0.150 260 / 0.22), transparent 72%);
+    radial-gradient(ellipse 60% 42% at 16% 88%, oklch(0.72 0.08 70 / 0.14), transparent 70%),
+    radial-gradient(ellipse 35% 26% at 52% 52%, oklch(0.96 0.02 82 / 0.08), transparent 78%),
+    radial-gradient(ellipse 28% 20% at 28% 30%, oklch(0.55 0.15 260 / 0.22), transparent 72%);
   animation: atmo-breathe 28s ease-in-out infinite;
   will-change: opacity, transform;
 }
@@ -806,22 +924,34 @@ footer[class*="bg-obsidian"]::after {
   pointer-events: none;
   z-index: -1;
   background:
-    linear-gradient(to bottom,
-      oklch(0.88 0.045 78 / 0.20) 0%,
-      oklch(0.72 0.075 72 / 0.10) 10%,
-      transparent 24%),
-    linear-gradient(to top,
-      oklch(0.86 0.050 76 / 0.20) 0%,
-      oklch(0.68 0.080 70 / 0.10) 12%,
-      transparent 26%);
+    linear-gradient(
+      to bottom,
+      oklch(0.88 0.045 78 / 0.2) 0%,
+      oklch(0.72 0.075 72 / 0.1) 10%,
+      transparent 24%
+    ),
+    linear-gradient(
+      to top,
+      oklch(0.86 0.05 76 / 0.2) 0%,
+      oklch(0.68 0.08 70 / 0.1) 12%,
+      transparent 26%
+    );
   mix-blend-mode: screen;
 }
 
 /* ===== Mobile: stessa palette, animazioni rallentate, blur ridotto ===== */
 @media (max-width: 768px) {
-  .atmosphere-field   { animation-duration: 52s; }
-  .atmosphere-pools   { animation-duration: 44s; filter: blur(18px); }
-  .atmosphere-rails   { animation-duration: 58s; opacity: 0.7; }
+  .atmosphere-field {
+    animation-duration: 52s;
+  }
+  .atmosphere-pools {
+    animation-duration: 44s;
+    filter: blur(18px);
+  }
+  .atmosphere-rails {
+    animation-duration: 58s;
+    opacity: 0.7;
+  }
   section[class*="bg-bone"]:not([class*="bg-obsidian"])::before,
   article[class*="bg-bone"]:not([class*="bg-obsidian"])::before {
     animation-duration: 44s;
@@ -833,18 +963,26 @@ footer[class*="bg-obsidian"]::after {
   }
 }
 
-
-
 @media (prefers-reduced-motion: reduce) {
   .atmosphere-field,
   .atmosphere-pools,
   .atmosphere-rails,
-  section::before, article::before, footer::before { animation: none !important; }
+  section::before,
+  article::before,
+  footer::before {
+    animation: none !important;
+  }
 }
-
 
 /* Process pinned section — prevent FOUC before GSAP sets initial state */
 [data-image],
 [data-title] {
   opacity: 0;
+}
+
+/* Il badge della piattaforma di hosting non fa parte dell'esperienza pubblica. */
+#lovable-badge,
+a[href*="lovable.dev/projects/"] {
+  display: none !important;
+  visibility: hidden !important;
 }
