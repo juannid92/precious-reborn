@@ -65,6 +65,12 @@ function CookiePolicyPage() {
                   <td>180 giorni</td>
                 </tr>
                 <tr>
+                  <td>cara.pietraScelta</td>
+                  <td>Cara Preziosi, localStorage</td>
+                  <td>Trasferisce tra le pagine la pietra scelta, senza dati anagrafici</td>
+                  <td>Massimo 24 ore o fino alla rimozione</td>
+                </tr>
+                <tr>
                   <td>__cf_bm</td>
                   <td>Cloudflare</td>
                   <td>Protezione da traffico automatizzato e abusi; cookie HttpOnly</td>
@@ -128,8 +134,10 @@ function CookiePolicyPage() {
             I font Inter, Fraunces e Cormorant Garamond sono ospitati localmente: la visualizzazione
             delle pagine non contatta Google Fonts. La pagina Contatti non incorpora automaticamente
             Google Maps; la mappa si apre sul sito di Google soltanto se selezioni il relativo link.
-            Analogamente, WhatsApp, Instagram e Facebook ricevono dati tecnici solo quando scegli di
-            aprire i rispettivi collegamenti.
+            WhatsApp, Instagram e Facebook ricevono dati tecnici quando apri i rispettivi
+            collegamenti. Le immagini del catalogo possono provenire da CDN dei fornitori come
+            contenuto funzionale; le viste 360 esterne vengono invece caricate soltanto dopo un clic
+            esplicito.
           </p>
 
           <h2 className={heading}>6. Come esprimere o revocare la scelta</h2>

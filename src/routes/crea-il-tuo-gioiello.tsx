@@ -1461,6 +1461,7 @@ type SelectedStone = {
   lab?: string | null;
   certNumber?: string | null;
   image?: string | null;
+  savedAt?: number;
 };
 
 function StoneStepCallout() {
@@ -1469,7 +1470,13 @@ function StoneStepCallout() {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(SELECTED_STONE_KEY);
-      if (raw) setStone(JSON.parse(raw) as SelectedStone);
+      if (raw) {
+        const parsed = JSON.parse(raw) as SelectedStone;
+        const isFresh =
+          typeof parsed.savedAt === "number" && Date.now() - parsed.savedAt < 24 * 60 * 60 * 1000;
+        if (isFresh) setStone(parsed);
+        else window.localStorage.removeItem(SELECTED_STONE_KEY);
+      }
     } catch {
       setStone(null);
     }

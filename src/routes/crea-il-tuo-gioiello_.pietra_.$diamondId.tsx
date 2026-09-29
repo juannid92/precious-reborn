@@ -60,7 +60,6 @@ const GLOSSARY: Array<{ term: string; text: string }> = [
 ];
 
 function DettaglioPietraPage() {
-
   const { diamondId } = Route.useParams();
   const navigate = useNavigate();
   const fetchDiamond = useServerFn(getNivodaDiamond);
@@ -151,9 +150,7 @@ function DettaglioPietraPage() {
             { label: "Trattamenti", value: item.treated },
             {
               label: "Certificato",
-              value: item.lab
-                ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}`
-                : null,
+              value: item.lab ? `${item.lab}${item.certNumber ? ` ${item.certNumber}` : ""}` : null,
             },
           ]),
         },
@@ -168,7 +165,6 @@ function DettaglioPietraPage() {
         tipo: "diamante",
       }
     : { richiesta: "", pietra: "", pid: "", tipo: "" };
-
 
   const chooseStone = () => {
     if (!item) return;
@@ -185,6 +181,7 @@ function DettaglioPietraPage() {
           lab: item.lab,
           certNumber: item.certNumber,
           image: item.image,
+          savedAt: Date.now(),
         }),
       );
     } catch {
@@ -234,14 +231,13 @@ function DettaglioPietraPage() {
               {/* Media */}
               <div className="lg:col-span-6">
                 <div className="relative rounded-2xl border border-ink/12 overflow-hidden bg-bone-deep/40 aspect-square">
-                  <MediaPietraNivoda 
-                    image={activeView === "image" || !item.video ? item.image : null} 
+                  <MediaPietraNivoda
+                    image={activeView === "image" || !item.video ? item.image : null}
                     video={activeView === "video" ? item.video : null}
                     alt={title}
                     interattivo={activeView === "video"}
                   />
                 </div>
-
 
                 {item.video && item.image && (
                   <div className="mt-6 flex justify-center gap-3">
@@ -326,7 +322,6 @@ function DettaglioPietraPage() {
                   </dl>
                 </details>
 
-
                 {item.certPdf && (
                   <a
                     href={item.certPdf}
@@ -340,7 +335,11 @@ function DettaglioPietraPage() {
                 )}
 
                 <div className="mt-12 flex flex-wrap items-center gap-6">
-                  <Link to="/crea-il-tuo-gioiello/pietra/$diamondId/montatura" params={{ diamondId }} className="btn-primary">
+                  <Link
+                    to="/crea-il-tuo-gioiello/pietra/$diamondId/montatura"
+                    params={{ diamondId }}
+                    className="btn-primary"
+                  >
                     Progetta il tuo gioiello con questa pietra
                   </Link>
                   <Link

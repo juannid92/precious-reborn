@@ -190,7 +190,6 @@ export const submitJewelConceptJob = createServerFn({ method: "POST" })
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         input: input as any,
       });
-      console.log("[jewel-concept] submitted, request_id:", submitted.request_id);
       return {
         requestId: submitted.request_id,
         prompt,
@@ -240,14 +239,13 @@ export const pollJewelConceptJob = createServerFn({ method: "POST" })
       }
       const imageUrl = result.data?.images?.[0]?.url;
       if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
-        console.error("[jewel-concept] risposta inattesa:", result);
+        console.error("[jewel-concept] risposta inattesa dal fornitore");
         return {
           status: "FAILED",
           requestId: data.requestId,
           error: "Fal.ai non ha restituito un URL immagine valido.",
         };
       }
-      console.log("[jewel-concept] COMPLETED, imageUrl:", imageUrl);
       return {
         status: "COMPLETED",
         requestId: data.requestId,
@@ -258,7 +256,7 @@ export const pollJewelConceptJob = createServerFn({ method: "POST" })
     }
 
     if (status.status === "FAILED") {
-      console.error("[jewel-concept] job FAILED:", status);
+      console.error("[jewel-concept] job non riuscito");
       return {
         status: "FAILED",
         requestId: data.requestId,

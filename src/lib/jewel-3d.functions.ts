@@ -51,24 +51,11 @@ function ensureFalKey(): string {
   return apiKey;
 }
 
-function ensureWebhookSecret(): string {
-  const s = process.env.FAL_WEBHOOK_SECRET;
-  if (!s) {
-    throw new Error("FAL_WEBHOOK_SECRET non configurato.");
-  }
-  return s;
-}
-
-/** URL pubblico stabile del sito (per il webhook Fal.ai). */
+/** URL pubblico stabile del sito per il webhook firmato fal.ai. */
 function publicWebhookUrl(): string {
-  // Permettiamo un override esplicito via env per casi particolari.
   const explicit = process.env.PUBLIC_SITE_URL;
-  const base = (
-    explicit ||
-    "https://precious-reborn.lovable.app"
-  ).replace(/\/$/, "");
-  const secret = encodeURIComponent(ensureWebhookSecret());
-  return `${base}/api/public/fal-trellis-webhook?secret=${secret}`;
+  const base = (explicit || "https://www.carapreziosi.it").replace(/\/$/, "");
+  return `${base}/api/public/fal-trellis-webhook`;
 }
 
 // ─── 1) Submit ──────────────────────────────────────────────────
@@ -80,7 +67,6 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
     const supabase = getSupabaseAdmin();
 
     const sourceImageUrl = data.trellisImageUrl;
-    console.log("[jewel-3d] submit chiamato per source:", sourceImageUrl);
 
     // ─── Dedup: cerca job esistente non FAILED per la stessa immagine ───
     {
@@ -97,12 +83,6 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
         console.error("[jewel-3d] dedup query error:", error);
         // proseguiamo comunque col submit (non blocchiamo per errore di lettura)
       } else if (existing?.request_id) {
-        console.log(
-          "[jewel-3d] DEDUP: riuso job esistente requestId:",
-          existing.request_id,
-          "status:",
-          existing.status,
-        );
         return { requestId: existing.request_id };
       }
     }
@@ -122,7 +102,6 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
         throw new Error("birefnet: URL immagine pulita mancante o non valido.");
       }
       cleanImageUrl = url;
-      console.log("[jewel-3d] birefnet OK, clean image:", cleanImageUrl);
     } catch (error) {
       console.error("[jewel-3d] birefnet error:", JSON.stringify(error, null, 2));
       throw new Error("Preparazione immagine 3D non riuscita. Riprova più tardi.");
@@ -144,11 +123,7 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
     };
 
     const webhookUrl = publicWebhookUrl();
-    console.log(
-      "[jewel-3d] Trellis 2 payload:",
-      JSON.stringify(trellisInput, null, 2),
-    );
-    console.log("[jewel-3d] webhook_url:", webhookUrl.replace(/secret=[^&]+/, "secret=***"));
+    console.log("[jewel-3d] Trellis 2 payload:", JSON.stringify(trellisInput, null, 2));
 
     let requestId: string;
     try {
@@ -160,7 +135,6 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
         webhookUrl,
       });
       requestId = submitted.request_id;
-      console.log("[jewel-3d] Trellis 2 submitted, request_id:", requestId);
     } catch (error) {
       console.error("[jewel-3d] Fal.ai submit error:", JSON.stringify(error, null, 2));
       throw new Error("Generazione 3D non riuscita. Riprova più tardi.");
@@ -174,10 +148,8 @@ export const submitTrellis3DJob = createServerFn({ method: "POST" })
     });
     if (insertError) {
       // Race: se un altro submit ha già inserito lo stesso request_id, va bene.
-      console.error("[jewel-3d] DB insert error:", insertError);
+      console.error("[jewel-3d] salvataggio stato non riuscito");
       // Non blocchiamo: il webhook lavora comunque per request_id.
-    } else {
-      console.log("[jewel-3d] DB insert OK requestId:", requestId);
     }
 
     return { requestId };
@@ -196,13 +168,20 @@ export const pollTrellis3DJob = createServerFn({ method: "POST" })
       .maybeSingle();
 
     if (error) {
-      console.error("[jewel-3d] poll DB error FULL:", JSON.stringify({
-        message: error.message,
-        code: (error as { code?: string }).code,
-        details: (error as { details?: string }).details,
-        hint: (error as { hint?: string }).hint,
-        requestId: data.requestId,
-      }, null, 2));
+      console.error(
+        "[jewel-3d] poll DB error FULL:",
+        JSON.stringify(
+          {
+            message: error.message,
+            code: (error as { code?: string }).code,
+            details: (error as { details?: string }).details,
+            hint: (error as { hint?: string }).hint,
+            requestId: data.requestId,
+          },
+          null,
+          2,
+        ),
+      );
       return {
         status: "FAILED",
         error: `Errore DB poll: ${error.message}${(error as { code?: string }).code ? ` [${(error as { code?: string }).code}]` : ""}`,
@@ -210,17 +189,11 @@ export const pollTrellis3DJob = createServerFn({ method: "POST" })
     }
 
     if (!row) {
-      console.log("[jewel-3d] poll: nessuna riga per requestId:", data.requestId);
       // Riga non ancora visibile (race insert) → trattiamo come in coda.
       return { status: "IN_QUEUE" };
     }
 
-    console.log(
-      "[jewel-3d] poll DB requestId:",
-      data.requestId,
-      "status:",
-      row.status,
-    );
+    console.log("[jewel-3d] poll DB requestId:", data.requestId, "status:", row.status);
 
     if (row.status === "COMPLETED") {
       if (!row.glb_url) {

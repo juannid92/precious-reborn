@@ -1,7 +1,17 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Loader2, Gem, Settings, Palette, Ruler, FileText } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Loader2,
+  Gem,
+  Settings,
+  Palette,
+  Ruler,
+  FileText,
+} from "lucide-react";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { RingStudioPreview } from "@/components/atelier/RingStudioPreview";
 import { getMontaturaImage } from "@/lib/montatura-images";
@@ -11,9 +21,7 @@ import { type NivodaDiamond } from "@/lib/nivoda-types";
 import { getMontature, getConfigSito, inviaRichiesta } from "@/lib/montature.functions";
 import type { Montatura } from "@/lib/montature.server";
 
-export const Route = createFileRoute(
-  "/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura",
-)({
+export const Route = createFileRoute("/crea-il-tuo-gioiello_/pietra_/$diamondId_/montatura")({
   validateSearch: ((search: Record<string, unknown>) => ({
     gioiello: typeof search.gioiello === "string" ? search.gioiello : "",
     montatura: typeof search.montatura === "string" ? search.montatura : "",
@@ -139,7 +147,13 @@ const HEAD_TYPE_OPTIONS: Opt<string>[] = [
   { value: "flower_halo", image: RING_STUDIO_ASSETS.ringHeadTypeFlowerHalo, label: "Halo a fiore" },
 ];
 
-const HEAD_TYPES_WITH_STONES = new Set(["pave", "single_halo", "double_halo", "crown", "flower_halo"]);
+const HEAD_TYPES_WITH_STONES = new Set([
+  "pave",
+  "single_halo",
+  "double_halo",
+  "crown",
+  "flower_halo",
+]);
 
 const HEAD_STONE_OPTIONS: Opt<string>[] = [
   { value: "diamonds", label: "Diamanti" },
@@ -150,12 +164,28 @@ const HEAD_STONE_OPTIONS: Opt<string>[] = [
 const SHANK_TYPE_OPTIONS: Opt<string>[] = [
   { value: "single", image: RING_STUDIO_ASSETS.mountingTypeSingleShank, label: "Singolo" },
   { value: "double", image: RING_STUDIO_ASSETS.mountingTypeDoubleShank, label: "Doppio" },
-  { value: "double_twist", image: RING_STUDIO_ASSETS.mountingTypeDoubleTwist, label: "Doppio intreccio" },
+  {
+    value: "double_twist",
+    image: RING_STUDIO_ASSETS.mountingTypeDoubleTwist,
+    label: "Doppio intreccio",
+  },
   { value: "knife_edge", image: RING_STUDIO_ASSETS.mountingTypeKnifeEdge, label: "Bordo a lama" },
-  { value: "square_edge", image: RING_STUDIO_ASSETS.mountingTypeSquareEdge, label: "Bordo squadrato" },
+  {
+    value: "square_edge",
+    image: RING_STUDIO_ASSETS.mountingTypeSquareEdge,
+    label: "Bordo squadrato",
+  },
   { value: "tapered", image: RING_STUDIO_ASSETS.mountingTypeTapered, label: "Graduato" },
-  { value: "contemporary", image: RING_STUDIO_ASSETS.mountingTypeContemporary, label: "Contemporaneo" },
-  { value: "hidden_halo", image: RING_STUDIO_ASSETS.mountingTypeHiddenHalo, label: "Halo nascosto" },
+  {
+    value: "contemporary",
+    image: RING_STUDIO_ASSETS.mountingTypeContemporary,
+    label: "Contemporaneo",
+  },
+  {
+    value: "hidden_halo",
+    image: RING_STUDIO_ASSETS.mountingTypeHiddenHalo,
+    label: "Halo nascosto",
+  },
   { value: "split", image: RING_STUDIO_ASSETS.mountingTypeSplit, label: "Gambo diviso" },
 ];
 
@@ -168,7 +198,11 @@ const PEEKABOO_OPTIONS: Opt<string>[] = [
 const SIDE_SETTING_OPTIONS: Opt<string>[] = [
   { value: "none", image: RING_STUDIO_ASSETS.sideSettingTypeNone, label: "Nessuna" },
   { value: "u_pave", image: RING_STUDIO_ASSETS.sideSettingTypeUPave, label: "Pavé a U" },
-  { value: "channel", image: RING_STUDIO_ASSETS.sideSettingTypeChannel, label: "Incassatura a canale" },
+  {
+    value: "channel",
+    image: RING_STUDIO_ASSETS.sideSettingTypeChannel,
+    label: "Incassatura a canale",
+  },
   { value: "prong", image: RING_STUDIO_ASSETS.sideSettingTypeProng, label: "Griffe" },
   { value: "bead", image: RING_STUDIO_ASSETS.sideSettingTypeBead, label: "Grani" },
   { value: "pave", image: RING_STUDIO_ASSETS.sideSettingTypePave, label: "Pavé" },
@@ -218,9 +252,69 @@ const RING_SIZE_SYSTEM_OPTIONS: Opt<string>[] = [
   { value: "US", label: "US" },
 ];
 
-const UK_RING_SIZES = ["F", "F 1/2", "G", "G 1/2", "H", "H 1/2", "I", "I 1/2", "J", "J 1/2", "K", "K 1/2", "L", "L 1/2", "M", "M 1/2", "N", "N 1/2", "O", "O 1/2", "P", "P 1/2", "Q", "Q 1/2", "R", "R 1/2", "S", "S 1/2", "T"];
+const UK_RING_SIZES = [
+  "F",
+  "F 1/2",
+  "G",
+  "G 1/2",
+  "H",
+  "H 1/2",
+  "I",
+  "I 1/2",
+  "J",
+  "J 1/2",
+  "K",
+  "K 1/2",
+  "L",
+  "L 1/2",
+  "M",
+  "M 1/2",
+  "N",
+  "N 1/2",
+  "O",
+  "O 1/2",
+  "P",
+  "P 1/2",
+  "Q",
+  "Q 1/2",
+  "R",
+  "R 1/2",
+  "S",
+  "S 1/2",
+  "T",
+];
 
-const US_RING_SIZES = ["3", "3.25", "3.5", "3.75", "4", "4.25", "4.5", "4.75", "5", "5.25", "5.5", "5.75", "6", "6.25", "6.5", "6.75", "7", "7.25", "7.5", "7.75", "8", "8.25", "8.5", "8.75", "9", "9.25", "9.5", "9.75", "10"];
+const US_RING_SIZES = [
+  "3",
+  "3.25",
+  "3.5",
+  "3.75",
+  "4",
+  "4.25",
+  "4.5",
+  "4.75",
+  "5",
+  "5.25",
+  "5.5",
+  "5.75",
+  "6",
+  "6.25",
+  "6.5",
+  "6.75",
+  "7",
+  "7.25",
+  "7.5",
+  "7.75",
+  "8",
+  "8.25",
+  "8.5",
+  "8.75",
+  "9",
+  "9.25",
+  "9.5",
+  "9.75",
+  "10",
+];
 
 function getMetalColorLabel(color: string | null): string {
   if (!color) return "";
@@ -242,18 +336,18 @@ function buildMetalloText(config: Configurazione): string {
     const qualita = getMetalQualityLabel(config.metalQuality);
     const testa = getMetalColorLabel(config.headMetalColor);
     const gambo = getMetalColorLabel(config.shankMetalColor);
-    
+
     if (testa === gambo || (!testa && !gambo)) {
       return `${testa || "Oro"} ${qualita}`;
     }
-    
+
     if (!testa) {
       return `Gambo in ${gambo} ${qualita}`;
     }
     if (!gambo) {
       return `Testa in ${testa} ${qualita}`;
     }
-    
+
     return `Testa in ${testa} ${qualita}, gambo in ${gambo} ${qualita}`;
   }
   return "";
@@ -277,15 +371,24 @@ function buildRiepilogoConfigurazione(
 
   if (gioiello === "anello") {
     righe.push(`Testa: ${optionLabel(HEAD_TYPE_OPTIONS, config.headType) || "Da definire"}`);
-    if (config.headStoneType) righe.push(`Pietre della testa: ${optionLabel(HEAD_STONE_OPTIONS, config.headStoneType)}`);
+    if (config.headStoneType)
+      righe.push(`Pietre della testa: ${optionLabel(HEAD_STONE_OPTIONS, config.headStoneType)}`);
     righe.push(`Gambo: ${optionLabel(SHANK_TYPE_OPTIONS, config.shankType) || "Da definire"}`);
-    if (config.peekaboo && config.peekaboo !== "none") righe.push(`Peek-a-boo: ${optionLabel(PEEKABOO_OPTIONS, config.peekaboo)}`);
+    if (config.peekaboo && config.peekaboo !== "none")
+      righe.push(`Peek-a-boo: ${optionLabel(PEEKABOO_OPTIONS, config.peekaboo)}`);
     if (config.sideSetting && config.sideSetting !== "none") {
-      righe.push(`Incastonatura laterale: ${optionLabel(SIDE_SETTING_OPTIONS, config.sideSetting)}`);
-      if (config.sideStoneType) righe.push(`Pietre laterali: ${optionLabel(SIDE_STONE_OPTIONS, config.sideStoneType)}`);
-      if (config.sideStoneLength) righe.push(`Lunghezza pietre laterali: ${optionLabel(SIDE_STONE_LENGTH_OPTIONS, config.sideStoneLength)}`);
+      righe.push(
+        `Incastonatura laterale: ${optionLabel(SIDE_SETTING_OPTIONS, config.sideSetting)}`,
+      );
+      if (config.sideStoneType)
+        righe.push(`Pietre laterali: ${optionLabel(SIDE_STONE_OPTIONS, config.sideStoneType)}`);
+      if (config.sideStoneLength)
+        righe.push(
+          `Lunghezza pietre laterali: ${optionLabel(SIDE_STONE_LENGTH_OPTIONS, config.sideStoneLength)}`,
+        );
     }
-    if (config.carvingType) righe.push(`Decorazione: ${optionLabel(CARVING_TYPE_OPTIONS, config.carvingType)}`);
+    if (config.carvingType)
+      righe.push(`Decorazione: ${optionLabel(CARVING_TYPE_OPTIONS, config.carvingType)}`);
   }
 
   if ((gioiello === "anello" || gioiello === "veretta") && config.ringSize) {
@@ -330,9 +433,7 @@ function StepIndicator({ passo, diamondId }: { passo: number; diamondId: string 
               {done ? <Check className="h-3.5 w-3.5" /> : n}
             </button>
             {i < STEP_LABELS.length - 1 && (
-              <div className={`w-6 h-px mx-1 ${
-                passo > n ? "bg-gold-deep/40" : "bg-white/10"
-              }`} />
+              <div className={`w-6 h-px mx-1 ${passo > n ? "bg-gold-deep/40" : "bg-white/10"}`} />
             )}
           </div>
         );
@@ -474,15 +575,15 @@ function CategoriaCard({
         {icons[valore] ?? <Gem className="h-7 w-7" />}
       </div>
       <div className="text-center">
-        <p className={`font-display text-xl transition-colors ${
-          selected ? "text-gold-deep" : "text-bone/80 group-hover:text-bone"
-        }`}>
+        <p
+          className={`font-display text-xl transition-colors ${
+            selected ? "text-gold-deep" : "text-bone/80 group-hover:text-bone"
+          }`}
+        >
           {etichetta}
         </p>
       </div>
-      {selected && (
-        <div className="w-2 h-2 rounded-full bg-gold-deep" />
-      )}
+      {selected && <div className="w-2 h-2 rounded-full bg-gold-deep" />}
     </button>
   );
 }
@@ -516,12 +617,21 @@ function OptionCard({
     >
       {image && (
         <span className="mx-auto mb-3 grid h-[72px] w-full place-items-center rounded-lg bg-[#f8f8f7]">
-          <img src={image} alt="" width={64} height={64} className="h-16 w-16 object-contain" loading="lazy" />
+          <img
+            src={image}
+            alt=""
+            width={64}
+            height={64}
+            className="h-16 w-16 object-contain"
+            loading="lazy"
+          />
         </span>
       )}
-      <span className={`block text-sm font-medium transition-colors ${
-        selected ? "text-gold-deep" : "text-bone/80"
-      }`}>
+      <span
+        className={`block text-sm font-medium transition-colors ${
+          selected ? "text-gold-deep" : "text-bone/80"
+        }`}
+      >
         {label}
       </span>
     </button>
@@ -591,8 +701,8 @@ function PersonalizzazioneSezione({
               <OptionCard
                 key={opt.value}
                 label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                image={opt.image}
+                disabled={opt.disabled}
                 selected={config.headStoneType === opt.value}
                 onClick={() => updateField("headStoneType", opt.value)}
               />
@@ -603,9 +713,7 @@ function PersonalizzazioneSezione({
 
       <section>
         <h3 className="font-display text-lg mb-1">Tipo di gambo</h3>
-        <p className="text-bone/50 text-sm mb-6">
-          La forma della banda che scorre lungo il dito.
-        </p>
+        <p className="text-bone/50 text-sm mb-6">La forma della banda che scorre lungo il dito.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {SHANK_TYPE_OPTIONS.map((opt) => (
             <OptionCard
@@ -641,9 +749,7 @@ function PersonalizzazioneSezione({
 
       <section>
         <h3 className="font-display text-lg mb-1">Incastonatura laterale</h3>
-        <p className="text-bone/50 text-sm mb-6">
-          Come sono incastonate le pietre lungo il gambo.
-        </p>
+        <p className="text-bone/50 text-sm mb-6">Come sono incastonate le pietre lungo il gambo.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {SIDE_SETTING_OPTIONS.map((opt) => (
             <OptionCard
@@ -672,8 +778,8 @@ function PersonalizzazioneSezione({
                   <OptionCard
                     key={opt.value}
                     label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                    image={opt.image}
+                    disabled={opt.disabled}
                     selected={config.sideStoneType === opt.value}
                     onClick={() => updateField("sideStoneType", opt.value)}
                   />
@@ -687,8 +793,8 @@ function PersonalizzazioneSezione({
                   <OptionCard
                     key={opt.value}
                     label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                    image={opt.image}
+                    disabled={opt.disabled}
                     selected={config.sideStoneLength === opt.value}
                     onClick={() => updateField("sideStoneLength", opt.value)}
                   />
@@ -737,21 +843,23 @@ function MaterialiSezione({
   };
 
   const handleMetalTypeChange = (value: string) => {
-    onUpdate(value === "platinum"
-      ? {
-          ...config,
-          metalType: "platinum",
-          metalQuality: null,
-          headMetalColor: null,
-          shankMetalColor: null,
-        }
-      : {
-          ...config,
-          metalType: "gold",
-          metalQuality: "KT_18",
-          headMetalColor: "yellow_gold",
-          shankMetalColor: "yellow_gold",
-        });
+    onUpdate(
+      value === "platinum"
+        ? {
+            ...config,
+            metalType: "platinum",
+            metalQuality: null,
+            headMetalColor: null,
+            shankMetalColor: null,
+          }
+        : {
+            ...config,
+            metalType: "gold",
+            metalQuality: "KT_18",
+            headMetalColor: "yellow_gold",
+            shankMetalColor: "yellow_gold",
+          },
+    );
   };
 
   const handleRingSizeSystemChange = (value: string) => {
@@ -775,9 +883,7 @@ function MaterialiSezione({
       {/* TIPO DI METALLO */}
       <section>
         <h3 className="font-display text-lg mb-1">Tipo di metallo</h3>
-        <p className="text-bone/50 text-sm mb-6">
-          Il materiale della montatura.
-        </p>
+        <p className="text-bone/50 text-sm mb-6">Il materiale della montatura.</p>
         <div className="grid grid-cols-2 gap-3">
           {METAL_TYPE_OPTIONS.map((opt) => (
             <OptionCard
@@ -796,16 +902,14 @@ function MaterialiSezione({
       {isGold && (
         <section>
           <h3 className="font-display text-lg mb-1">Qualità dell&apos;oro</h3>
-          <p className="text-bone/50 text-sm mb-6">
-            La purezza dell&apos;oro utilizzato.
-          </p>
+          <p className="text-bone/50 text-sm mb-6">La purezza dell&apos;oro utilizzato.</p>
           <div className="grid grid-cols-3 gap-3">
             {METAL_QUALITY_OPTIONS.map((opt) => (
               <OptionCard
                 key={opt.value}
                 label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                image={opt.image}
+                disabled={opt.disabled}
                 selected={config.metalQuality === opt.value}
                 onClick={() => updateField("metalQuality", opt.value)}
               />
@@ -826,8 +930,8 @@ function MaterialiSezione({
               <OptionCard
                 key={opt.value}
                 label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                image={opt.image}
+                disabled={opt.disabled}
                 selected={config.headMetalColor === opt.value}
                 onClick={() => updateField("headMetalColor", opt.value)}
               />
@@ -841,15 +945,16 @@ function MaterialiSezione({
         <section>
           <h3 className="font-display text-lg mb-1">Colore del gambo</h3>
           <p className="text-bone/50 text-sm mb-6">
-            Il colore dell&apos;oro nella banda dell&apos;anello. Può essere diverso dalla testa per creare combinazioni bicolore.
+            Il colore dell&apos;oro nella banda dell&apos;anello. Può essere diverso dalla testa per
+            creare combinazioni bicolore.
           </p>
           <div className="grid grid-cols-3 gap-3">
             {METAL_COLOR_OPTIONS.map((opt) => (
               <OptionCard
                 key={opt.value}
                 label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                image={opt.image}
+                disabled={opt.disabled}
                 selected={config.shankMetalColor === opt.value}
                 onClick={() => updateField("shankMetalColor", opt.value)}
               />
@@ -871,16 +976,14 @@ function MaterialiSezione({
         <>
           <section>
             <h3 className="font-display text-lg mb-1">Sistema di misura</h3>
-            <p className="text-bone/50 text-sm mb-6">
-              Il sistema di misura dell&apos;anello.
-            </p>
+            <p className="text-bone/50 text-sm mb-6">Il sistema di misura dell&apos;anello.</p>
             <div className="grid grid-cols-2 gap-3">
               {RING_SIZE_SYSTEM_OPTIONS.map((opt) => (
                 <OptionCard
                   key={opt.value}
                   label={opt.label}
-              image={opt.image}
-              disabled={opt.disabled}
+                  image={opt.image}
+                  disabled={opt.disabled}
                   selected={config.ringSizeSystem === opt.value}
                   onClick={() => handleRingSizeSystemChange(opt.value)}
                 />
@@ -889,10 +992,10 @@ function MaterialiSezione({
           </section>
 
           <section>
-            <h3 className="font-display text-lg mb-1">Misura{config.ringSizeSystem ? ` (${config.ringSizeSystem})` : ""}</h3>
-            <p className="text-bone/50 text-sm mb-6">
-              Seleziona la misura dell&apos;anello.
-            </p>
+            <h3 className="font-display text-lg mb-1">
+              Misura{config.ringSizeSystem ? ` (${config.ringSizeSystem})` : ""}
+            </h3>
+            <p className="text-bone/50 text-sm mb-6">Seleziona la misura dell&apos;anello.</p>
             <select
               value={config.ringSize ?? ""}
               onChange={(e) => updateField("ringSize", e.target.value)}
@@ -930,12 +1033,27 @@ function MaterialiSezione({
 
           <section className="space-y-4">
             <div className="rounded-xl border border-white/15 bg-white/[0.035] p-5">
-              <p className="text-xs uppercase tracking-widest text-bone/45">Marchiatura · Marchio di garanzia</p>
-              <p className="mt-2 flex items-center gap-2 text-sm text-bone/75"><Check className="h-4 w-4 text-gold-deep" />Inclusa per gli ordini UE e Regno Unito</p>
+              <p className="text-xs uppercase tracking-widest text-bone/45">
+                Marchiatura · Marchio di garanzia
+              </p>
+              <p className="mt-2 flex items-center gap-2 text-sm text-bone/75">
+                <Check className="h-4 w-4 text-gold-deep" />
+                Inclusa per gli ordini UE e Regno Unito
+              </p>
             </div>
             <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/15 bg-white/[0.035] p-5">
-              <input type="checkbox" checked={config.sampleRequested} onChange={(event) => updateField("sampleRequested", event.target.checked)} className="mt-1 h-4 w-4 accent-[#b8894b]" />
-              <span><span className="block font-medium text-bone">Richiedi un anello campione</span><span className="mt-1 block text-sm text-bone/50">Replica dimostrativa in argento e zirconia, da concordare con l’atelier.</span></span>
+              <input
+                type="checkbox"
+                checked={config.sampleRequested}
+                onChange={(event) => updateField("sampleRequested", event.target.checked)}
+                className="mt-1 h-4 w-4 accent-[#b8894b]"
+              />
+              <span>
+                <span className="block font-medium text-bone">Richiedi un anello campione</span>
+                <span className="mt-1 block text-sm text-bone/50">
+                  Replica dimostrativa in argento e zirconia, da concordare con l’atelier.
+                </span>
+              </span>
             </label>
           </section>
         </>
@@ -981,7 +1099,9 @@ function MontaturaPietraPage() {
       .catch(() => {
         if (alive) setStoneStatus("error");
       });
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [diamondId, fetchDiamond]);
 
   useEffect(() => {
@@ -998,8 +1118,14 @@ function MontaturaPietraPage() {
     if (!item?.shape) return;
     setMontatureStatus("loading");
     fetchMontature({ data: { forma: item.shape } })
-      .then((m) => { setMontature(m); setMontatureStatus("ready"); })
-      .catch(() => { setMontature([]); setMontatureStatus("ready"); });
+      .then((m) => {
+        setMontature(m);
+        setMontatureStatus("ready");
+      })
+      .catch(() => {
+        setMontature([]);
+        setMontatureStatus("ready");
+      });
   }, [item?.shape, fetchMontature]);
 
   const title = item?.title ?? item?.shapeLabel ?? "Pietra certificata";
@@ -1049,8 +1175,12 @@ function MontaturaPietraPage() {
     });
   };
 
-  const goNext = () => { if (passo < 6) goTo(passo + 1); };
-  const goPrev = () => { if (passo > 1) goTo(passo - 1); };
+  const goNext = () => {
+    if (passo < 6) goTo(passo + 1);
+  };
+  const goPrev = () => {
+    if (passo > 1) goTo(passo - 1);
+  };
 
   const setGioiello = (val: string) => {
     const isNewAnello = val === "anello";
@@ -1132,7 +1262,7 @@ function MontaturaPietraPage() {
     const configToSave: Configurazione = {
       ...config,
       engravingText: config.engravingText.trim(),
-      ringSize: showRingOptions ? (config.ringSize || null) : null,
+      ringSize: showRingOptions ? config.ringSize || null : null,
       ringSizeSystem: showRingOptions ? config.ringSizeSystem : null,
     };
     const riepilogo = buildRiepilogoConfigurazione(configToSave, gioiello, montaturaSel);
@@ -1156,6 +1286,7 @@ function MontaturaPietraPage() {
           misura: showRingOptions ? (configToSave.ringSize ?? "") : "",
           note,
           canale,
+          privacy_acknowledged: true,
           configurazione: configToSave,
           riepilogo_configurazione: riepilogo,
           immagine_pietra: item.image ?? null,
@@ -1176,7 +1307,9 @@ function MontaturaPietraPage() {
         `Contatti: ${email}${telefono ? ` · ${telefono}` : ""}`,
         `Anteprima montatura: ${imageShareUrl}`,
         item.image ? `Immagine pietra: ${item.image}` : "",
-      ].filter(Boolean).join("\n");
+      ]
+        .filter(Boolean)
+        .join("\n");
 
       if (canale === "whatsapp" && whatsappNum) {
         const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodeURIComponent(messaggio)}`;
@@ -1249,7 +1382,8 @@ function MontaturaPietraPage() {
             </div>
             <h1 className="font-display text-3xl md:text-4xl mb-6">Richiesta ricevuta</h1>
             <p className="text-bone/70 text-lg leading-relaxed mb-4">
-              Grazie. Il maestro orafo Nicola Caradonna analizzerà la tua richiesta e ti contatterà per definire insieme i dettagli del progetto.
+              Grazie. Il maestro orafo Nicola Caradonna analizzerà la tua richiesta e ti contatterà
+              per definire insieme i dettagli del progetto.
             </p>
             <p className="text-bone/50 text-sm mb-4">
               Nessuna fretta: ogni gioiello viene studiato con cura prima di ogni proposta.
@@ -1294,12 +1428,13 @@ function MontaturaPietraPage() {
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             {/* COLONNA PRINCIPALE */}
             <div className="lg:col-span-7">
-
               {/* ── PASSO 1: TIPO DI GIOIELLO ── */}
               {passo === 1 && (
                 <div>
                   <h2 className="font-display text-2xl mb-2">Che tipo di gioiello desideri?</h2>
-                  <p className="text-bone/60 mb-10">Scegli la famiglia di gioiello per iniziare a progettare.</p>
+                  <p className="text-bone/60 mb-10">
+                    Scegli la famiglia di gioiello per iniziare a progettare.
+                  </p>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {CATEGORIE.map((cat) => (
                       <CategoriaCard
@@ -1321,7 +1456,9 @@ function MontaturaPietraPage() {
                   {montaturaFiltrate.length > 0 ? (
                     <>
                       <p className="text-bone/60 mb-8">
-                        {montaturaFiltrate.length} montatura{montaturaFiltrate.length !== 1 ? "e" : ""} disponibili per {capitalize(gioiello ?? "")}.
+                        {montaturaFiltrate.length} montatura
+                        {montaturaFiltrate.length !== 1 ? "e" : ""} disponibili per{" "}
+                        {capitalize(gioiello ?? "")}.
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         {montaturaFiltrate.map((m) => (
@@ -1338,8 +1475,12 @@ function MontaturaPietraPage() {
                   ) : (
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-10 text-center">
                       <p className="text-bone/70 text-sm leading-relaxed">
-                        Per questa forma non abbiamo ancora montature a catalogo.{' '}
-                        <Link to="/contatti" search={{ richiesta: "", pietra: "" }} className="text-gold-deep underline underline-offset-4 hover:text-gold-deep/80 transition-colors">
+                        Per questa forma non abbiamo ancora montature a catalogo.{" "}
+                        <Link
+                          to="/contatti"
+                          search={{ richiesta: "", pietra: "" }}
+                          className="text-gold-deep underline underline-offset-4 hover:text-gold-deep/80 transition-colors"
+                        >
                           Scrivici e la realizziamo su misura.
                         </Link>
                       </p>
@@ -1359,14 +1500,12 @@ function MontaturaPietraPage() {
                   </p>
 
                   {isAnello ? (
-                    <PersonalizzazioneSezione
-                      config={config}
-                      onUpdate={setConfigInUrl}
-                    />
+                    <PersonalizzazioneSezione config={config} onUpdate={setConfigInUrl} />
                   ) : (
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
                       <p className="text-bone/60 text-sm">
-                        La personalizzazione per {capitalize(gioiello ?? "")} è disponibile nella fase successiva.
+                        La personalizzazione per {capitalize(gioiello ?? "")} è disponibile nella
+                        fase successiva.
                       </p>
                     </div>
                   )}
@@ -1424,24 +1563,66 @@ function MontaturaPietraPage() {
                     <form id="form-riepilogo" onSubmit={handleFormSubmit} className="space-y-6">
                       <div className="grid gap-6 md:grid-cols-2">
                         <label className="block">
-                          <span className="eyebrow text-bone/50 block mb-3">Nome<span className="text-gold-deep">*</span></span>
-                          <input name="nome" type="text" required className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors" />
+                          <span className="eyebrow text-bone/50 block mb-3">
+                            Nome<span className="text-gold-deep">*</span>
+                          </span>
+                          <input
+                            name="nome"
+                            type="text"
+                            required
+                            className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors"
+                          />
                         </label>
                         <label className="block">
                           <span className="eyebrow text-bone/50 block mb-3">Telefono</span>
-                          <input name="telefono" type="tel" className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors" />
+                          <input
+                            name="telefono"
+                            type="tel"
+                            className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors"
+                          />
                         </label>
                       </div>
                       <label className="block">
-                        <span className="eyebrow text-bone/50 block mb-3">Email<span className="text-gold-deep">*</span></span>
-                        <input name="email" type="email" required className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors" />
+                        <span className="eyebrow text-bone/50 block mb-3">
+                          Email<span className="text-gold-deep">*</span>
+                        </span>
+                        <input
+                          name="email"
+                          type="email"
+                          required
+                          className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors"
+                        />
                       </label>
                       <label className="block">
                         <span className="eyebrow text-bone/50 block mb-3">Note</span>
-                        <textarea name="note" rows={3} className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors resize-none" />
+                        <textarea
+                          name="note"
+                          rows={3}
+                          className="w-full bg-transparent border-b border-white/20 py-3 text-base text-bone focus:outline-none focus:border-gold-deep transition-colors resize-none"
+                        />
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-white/15 p-4 text-sm leading-relaxed text-bone/70">
+                        <input
+                          type="checkbox"
+                          name="privacy_acknowledged"
+                          required
+                          className="mt-1 h-4 w-4 shrink-0 accent-current"
+                        />
+                        <span>
+                          Ho letto la{" "}
+                          <Link to="/privacy-policy" className="underline-gold text-bone">
+                            Privacy Policy
+                          </Link>
+                          . La configurazione e i dati di contatto saranno salvati da Cara Preziosi
+                          per gestire la richiesta; scegliendo WhatsApp saranno inoltre trasferiti a
+                          Meta/WhatsApp all'apertura del collegamento.
+                        </span>
                       </label>
                       {submitError && (
-                        <p role="alert" className="rounded-xl border border-red-400/30 bg-red-400/10 p-4 text-sm text-red-200">
+                        <p
+                          role="alert"
+                          className="rounded-xl border border-red-400/30 bg-red-400/10 p-4 text-sm text-red-200"
+                        >
                           {submitError}
                         </p>
                       )}
@@ -1465,9 +1646,7 @@ function MontaturaPietraPage() {
                     <button
                       type="button"
                       onClick={() => goToWithConfig(passo + 1, config)}
-                      disabled={
-                        (passo === 2 && !montaturaCodice)
-                      }
+                      disabled={passo === 2 && !montaturaCodice}
                       className="btn-primary disabled:opacity-40"
                     >
                       Avanti
@@ -1489,7 +1668,11 @@ function MontaturaPietraPage() {
                         type="submit"
                         form="form-riepilogo"
                         disabled={isSubmitting}
-                        className={whatsappNum ? "inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-bone hover:border-gold-deep/60 transition-all disabled:opacity-50" : "btn-primary disabled:opacity-50"}
+                        className={
+                          whatsappNum
+                            ? "inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-bone hover:border-gold-deep/60 transition-all disabled:opacity-50"
+                            : "btn-primary disabled:opacity-50"
+                        }
                       >
                         {isSubmitting ? "Invio in corso…" : "Invia richiesta per email"}
                       </button>
@@ -1510,12 +1693,21 @@ function MontaturaPietraPage() {
                       stoneShape={item?.shape ?? "ROUND"}
                       stoneCarats={stoneCarats ?? 1}
                       centerStoneType={"LABGROWN_DIAMOND"}
-                      mountingImage={montaturaSel ? getMontaturaImage(montaturaSel.codice, montaturaSel.immagine) : null}
+                      mountingImage={
+                        montaturaSel
+                          ? getMontaturaImage(montaturaSel.codice, montaturaSel.immagine)
+                          : null
+                      }
                     />
                     {montaturaSel && (
                       <div className="mt-5 border-t border-white/10 pt-4 text-center">
                         <p className="text-sm text-bone/75">{montaturaSel.nome}</p>
-                        <p className="mt-1 text-xs text-bone/45">{buildMetalloText(config) || "Materiale da definire"}{config.ringSize ? ` · Misura ${config.ringSizeSystem} ${config.ringSize}` : ""}</p>
+                        <p className="mt-1 text-xs text-bone/45">
+                          {buildMetalloText(config) || "Materiale da definire"}
+                          {config.ringSize
+                            ? ` · Misura ${config.ringSizeSystem} ${config.ringSize}`
+                            : ""}
+                        </p>
                       </div>
                     )}
                   </div>

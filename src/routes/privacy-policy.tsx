@@ -61,8 +61,10 @@ function PrivacyPolicyPage() {
             </li>
             <li>
               <strong>Dati del catalogo pietre</strong>: filtri e identificativi degli articoli
-              consultati; le interrogazioni al fornitore Nivoda avvengono dal server e non
-              comportano la trasmissione diretta dei dati del browser a Nivoda.
+              consultati. Le ricerche sono eseguite dal server; immagini e viste 360 possono essere
+              fornite da Nivoda o dai relativi fornitori tecnici e ricevono IP e dati del browser
+              soltanto quando il contenuto viene richiesto. Le viste 360 richiedono un clic
+              esplicito.
             </li>
           </ul>
 
@@ -113,8 +115,8 @@ function PrivacyPolicyPage() {
               <strong>Google</strong>, per Google Analytics soltanto dopo il consenso;
             </li>
             <li>
-              <strong>Meta Platforms / WhatsApp</strong>, quando scegli di aprire WhatsApp e inviare
-              il messaggio precompilato;
+              <strong>Meta Platforms / WhatsApp</strong>, quando scegli di aprire il collegamento
+              WhatsApp con il messaggio precompilato;
             </li>
             <li>
               <strong>fal.ai</strong>, per elaborare prompt, immagini di ispirazione e generare
@@ -125,8 +127,9 @@ function PrivacyPolicyPage() {
               relativi URL;
             </li>
             <li>
-              <strong>Nivoda</strong>, quale fornitore del catalogo professionale di diamanti
-              interrogato tramite i sistemi server.
+              <strong>Nivoda e fornitori tecnici dei media di prodotto</strong>, per catalogo,
+              immagini e viste 360 delle pietre. Le viste interattive non vengono caricate
+              automaticamente.
             </li>
           </ul>
           <p>

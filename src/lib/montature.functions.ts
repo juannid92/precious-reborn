@@ -3,6 +3,7 @@
  * Thin wrapper: la logica vive in ./montature.server.ts.
  */
 import { createServerFn } from "@tanstack/react-start";
+import { assertTrustedOrigin } from "./ai-guard";
 import { z } from "zod";
 import {
   caricaMontature,
@@ -62,7 +63,8 @@ const RichiestaSchema = z.object({
   metallo: z.string().max(200),
   misura: z.string().max(32),
   note: z.string().max(2000),
-  canale: z.string().max(32),
+  canale: z.enum(["email", "whatsapp"]),
+  privacy_acknowledged: z.literal(true),
   /** Configurazione come oggetto */
   configurazione: ConfigurazioneSchema.optional(),
   /** Testo riepilogativo in italiano */
@@ -76,6 +78,7 @@ const RichiestaSchema = z.object({
 export const inviaRichiesta = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => RichiestaSchema.parse(input))
   .handler(async ({ data }): Promise<{ id: string | null }> => {
+    assertTrustedOrigin();
     const richiestaDati: RichiestaDati = {
       cliente_nome: data.cliente_nome,
       cliente_email: data.cliente_email,
