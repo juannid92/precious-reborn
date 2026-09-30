@@ -15,6 +15,15 @@ import {
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { RingStudioPreview } from "@/components/atelier/RingStudioPreview";
 import { getMontaturaImage } from "@/lib/montatura-images";
+import {
+  hasHeadStones,
+  isCarvingAvailable,
+  isHeadDisabled,
+  isPeekabooAvailable,
+  isShankDisabled,
+  isSideDisabled,
+  normalizeRingConfig,
+} from "@/lib/ring-preview-sku";
 import { RING_STUDIO_ASSETS } from "@/lib/ring-studio-assets";
 import { getNivodaGemstone } from "@/lib/gemstones.functions";
 import type { Gemstone } from "@/lib/gemstones-types";
@@ -218,6 +227,11 @@ const SIDE_STONE_OPTIONS: Opt<string>[] = [
 ];
 
 const SIDE_STONE_LENGTH_OPTIONS: Opt<string>[] = [
+  { value: "half", label: "Metà" },
+  { value: "three_quarters", label: "Tre quarti" },
+];
+
+const CARVING_LENGTH_OPTIONS: Opt<string>[] = [
   { value: "half", label: "Metà" },
   { value: "three_quarters", label: "Tre quarti" },
 ];
@@ -642,11 +656,21 @@ function OptionCard({
 
 function PersonalizzazioneSezione({
   config,
-  onUpdate,
+  onUpdate: onUpdateRaw,
+  stoneCarats,
 }: {
   config: Configurazione;
   onUpdate: (updated: Configurazione) => void;
+  stoneCarats: number | null;
 }) {
+  // Come nel Ring Studio Nivoda: le combinazioni non valide vengono riallineate.
+  const onUpdate = (updated: Configurazione) =>
+    onUpdateRaw(normalizeRingConfig(updated, stoneCarats));
+  const head = config.headType ?? "";
+  const shank = config.shankType ?? "";
+  const side = config.sideSetting ?? "none";
+  const showPeekaboo = isPeekabooAvailable(shank);
+  const showCarving = isCarvingAvailable(shank, side);
   const updateField = <K extends keyof Configurazione>(key: K, value: Configurazione[K]) => {
     onUpdate({ ...config, [key]: value });
   };
@@ -682,7 +706,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
-              disabled={opt.disabled}
+              disabled={opt.disabled || isHeadDisabled(opt.value, stoneCarats)}
               selected={config.headType === opt.value}
               onClick={() => handleHeadTypeChange(opt.value)}
             />
@@ -690,7 +714,7 @@ function PersonalizzazioneSezione({
         </div>
       </section>
 
-      {config.headType && HEAD_TYPES_WITH_STONES.has(config.headType) && (
+      {config.headType && HEAD_TYPES_WITH_STONES.has(config.headType) && hasHeadStones(config.headType) && (
         <section>
           <h3 className="font-display text-lg mb-1">Pietre della testa</h3>
           <p className="text-bone/50 text-sm mb-6">
@@ -720,7 +744,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
-              disabled={opt.disabled}
+              disabled={opt.disabled || isShankDisabled(opt.value, head)}
               selected={config.shankType === opt.value}
               onClick={() => updateField("shankType", opt.value)}
             />
@@ -728,6 +752,7 @@ function PersonalizzazioneSezione({
         </div>
       </section>
 
+      {showPeekaboo && (
       <section>
         <h3 className="font-display text-lg mb-1">Pietra peek-a-boo</h3>
         <p className="text-bone/50 text-sm mb-6">
@@ -746,6 +771,7 @@ function PersonalizzazioneSezione({
           ))}
         </div>
       </section>
+      )}
 
       <section>
         <h3 className="font-display text-lg mb-1">Incastonatura laterale</h3>
@@ -756,7 +782,7 @@ function PersonalizzazioneSezione({
               key={opt.value}
               label={opt.label}
               image={opt.image}
-              disabled={opt.disabled}
+              disabled={opt.disabled || isSideDisabled(opt.value, shank)}
               selected={config.sideSetting === opt.value}
               onClick={() => handleSideSettingChange(opt.value)}
             />
@@ -805,6 +831,8 @@ function PersonalizzazioneSezione({
         </section>
       )}
 
+      {showCarving && (
+      <>
       <section>
         <h3 className="font-display text-lg mb-1">Decorazione del gambo</h3>
         <p className="text-bone/50 text-sm mb-6">
@@ -823,6 +851,27 @@ function PersonalizzazioneSezione({
           ))}
         </div>
       </section>
+
+      {config.carvingType && config.carvingType !== "plain" && (
+        <section>
+          <h3 className="font-display text-lg mb-1">Lunghezza della decorazione</h3>
+          <p className="text-bone/50 text-sm mb-6">Estensione della lavorazione lungo il gambo.</p>
+          <div className="grid grid-cols-2 gap-3">
+            {CARVING_LENGTH_OPTIONS.map((opt) => (
+              <OptionCard
+                key={opt.value}
+                label={opt.label}
+                image={opt.image}
+                disabled={opt.disabled}
+                selected={(config.carvingLength ?? "half") === opt.value}
+                onClick={() => updateField("carvingLength", opt.value)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+      </>
+      )}
     </div>
   );
 }
@@ -1503,7 +1552,11 @@ function MontaturaGemmaPage() {
                   </p>
 
                   {isAnello ? (
-                    <PersonalizzazioneSezione config={config} onUpdate={setConfigInUrl} />
+                    <PersonalizzazioneSezione
+                      config={config}
+                      onUpdate={setConfigInUrl}
+                      stoneCarats={stoneCarats}
+                    />
                   ) : (
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
                       <p className="text-bone/60 text-sm">
@@ -1691,7 +1744,7 @@ function MontaturaGemmaPage() {
                 <div className="lg:sticky lg:top-28">
                   <div className="rounded-2xl border border-gold-deep/20 bg-[#0a0a0a]/80 p-4 sm:p-6 backdrop-blur-sm">
                     <RingStudioPreview
-                      config={config}
+                      config={isAnello ? config : { ...config, headType: null }}
                       stoneAlt={title}
                       stoneShape={item?.shape ?? "ROUND"}
                       stoneCarats={stoneCarats ?? 1}
